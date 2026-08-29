@@ -1,6 +1,7 @@
 
 [variables]
 NIXPACKS_PHP_VERSION = "8.4"
+NIXPACKS_NODE_VERSION = "20"
 COMPOSER_ALLOW_SUPERUSER = "1"
 
 [phases.install]
