@@ -46,10 +46,17 @@ COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/php-fpm-global.conf /usr/local/etc/php-fpm.conf
 
-# Debug: show effective php-fpm configs
-RUN echo "=== GLOBAL php-fpm.conf ===" && cat /usr/local/etc/php-fpm.conf \
-    && echo "=== POOL www.conf ===" && cat /usr/local/etc/php-fpm.d/www.conf \
-    && echo "=== PHP ini (app.ini) ===" && cat /usr/local/etc/php/conf.d/app.ini
+# Debug: show effective php-fpm configs (separate RUN steps for clear logs)
+RUN echo "===GLOBAL==="
+RUN cat /usr/local/etc/php-fpm.conf
+RUN echo "===POOL==="
+RUN cat /usr/local/etc/php-fpm.d/www.conf
+RUN echo "===PHPINI==="
+RUN cat /usr/local/etc/php/conf.d/app.ini
+RUN echo "===LS PHPFPMD==="
+RUN ls -la /usr/local/etc/php-fpm.d/
+RUN echo "===PHP-FPM CONFIG TEST==="
+RUN php-fpm -t
 
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
