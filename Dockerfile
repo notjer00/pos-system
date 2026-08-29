@@ -48,6 +48,8 @@ COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx-site.conf /etc/nginx/http.d/default.conf
+COPY docker/start-nginx.sh /usr/local/bin/start-nginx.sh
+RUN chmod +x /usr/local/bin/start-nginx.sh
 
 # Configure Supervisor
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -83,7 +85,9 @@ RUN composer run-script post-autoload-dump \
     && php artisan event:cache
 
 # Set permissions
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && mkdir -p /var/log/nginx /var/run/nginx \
+    && chown -R www-data:www-data /var/log/nginx /var/run/nginx
 
 EXPOSE 8000
 
