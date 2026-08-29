@@ -57,11 +57,8 @@ WORKDIR /app
 # Copy composer files first for better caching
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies
+# Install PHP dependencies (--no-scripts since app code not present yet)
 RUN composer install --no-dev --optimize-autoloader --no-scripts
-
-# Generate Wayfinder routes (required before npm run build)
-RUN php artisan wayfinder:generate
 
 # Copy package.json for npm install caching
 COPY package.json package-lock.json* ./
@@ -69,13 +66,16 @@ COPY package.json package-lock.json* ./
 # Install Node dependencies
 RUN npm install
 
-# Copy application code
+# Copy application code (needed for artisan commands and wayfinder:generate)
 COPY . .
+
+# Generate Wayfinder routes (required before npm run build)
+RUN php artisan wayfinder:generate
 
 # Build frontend assets
 RUN npm run build
 
-# Run Laravel optimization commands
+# Run Laravel optimization commands (includes package:discover via post-autoload-dump)
 RUN composer run-script post-autoload-dump \
     && php artisan config:cache \
     && php artisan route:cache \
