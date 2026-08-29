@@ -60,11 +60,14 @@ COPY composer.json composer.lock ./
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
+# Generate Wayfinder routes (required before npm run build)
+RUN php artisan wayfinder:generate
+
 # Copy package.json for npm install caching
 COPY package.json package-lock.json* ./
 
 # Install Node dependencies
-RUN npm ci
+RUN npm install
 
 # Copy application code
 COPY . .
