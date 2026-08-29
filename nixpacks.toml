@@ -3,9 +3,6 @@ NIXPACKS_PHP_VERSION = "8.4"
 NIXPACKS_NODE_VERSION = "20"
 COMPOSER_ALLOW_SUPERUSER = "1"
 
-[phases.setup]
-nixOverlays = ["./php-libmysqlclient-overlay.nix"]
-
 [phases.install]
 cmds = [
     "mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx",
