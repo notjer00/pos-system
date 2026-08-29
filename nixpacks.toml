@@ -4,6 +4,13 @@ NIXPACKS_PHP_VERSION = "8.4"
 NIXPACKS_NODE_VERSION = "20"
 COMPOSER_ALLOW_SUPERUSER = "1"
 
+[nixpkgs]
+# Override PHP to build with libmysqlclient instead of mysqlnd for full auth plugin support
+php84 = (import <nixpkgs> {}).php84.override {
+  withMysqlnd = false;
+  withLibmysqlclient = true;
+};
+
 [phases.install]
 cmds = [
     "mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx",
