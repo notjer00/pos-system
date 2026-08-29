@@ -9,7 +9,7 @@ cmds = [
     "mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx",
     "composer clear-cache",
     "composer install --no-dev --optimize-autoloader",
-    "npm ci"
+    "npm install"
 ]
 
 [phases.build]
