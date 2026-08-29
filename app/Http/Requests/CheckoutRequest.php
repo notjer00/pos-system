@@ -40,7 +40,7 @@ class CheckoutRequest extends FormRequest
                 $variant = ProductVariant::find($item['product_variant_id']);
                 if ($variant && $variant->current_stock < $item['quantity']) {
                     $validator->errors()->add(
-                        "items.$index.quantity",
+                       "items.$index.quantity",
                         "Insufficient stock for {$variant->product->name} ({$variant->size}/{$variant->color}). Available: {$variant->current_stock}"
                     );
                 }
