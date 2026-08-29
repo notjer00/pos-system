@@ -44,6 +44,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Configure PHP
 COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+COPY docker/php-fpm-global.conf /usr/local/etc/php-fpm.conf
 
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
@@ -86,8 +87,8 @@ RUN composer run-script post-autoload-dump \
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
-    && mkdir -p /var/log/nginx /var/run/nginx \
-    && chown -R www-data:www-data /var/log/nginx /var/run/nginx
+    && mkdir -p /var/log/nginx /var/run/nginx /var/lib/nginx/tmp/client_body /var/lib/nginx/tmp/proxy /var/lib/nginx/tmp/fastcgi /var/lib/nginx/tmp/uwsgi /var/lib/nginx/tmp/scgi /var/lib/nginx/logs \
+    && chown -R www-data:www-data /var/log/nginx /var/run/nginx /var/lib/nginx /etc/nginx/http.d
 
 EXPOSE 8000
 
