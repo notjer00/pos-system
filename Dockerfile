@@ -87,8 +87,8 @@ RUN composer run-script post-autoload-dump \
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
-    && mkdir -p /var/log/nginx /var/run/nginx /var/lib/nginx/tmp/client_body /var/lib/nginx/tmp/proxy /var/lib/nginx/tmp/fastcgi /var/lib/nginx/tmp/uwsgi /var/lib/nginx/tmp/scgi /var/lib/nginx/logs \
-    && chown -R www-data:www-data /var/log/nginx /var/run/nginx /var/lib/nginx /etc/nginx/http.d
+    && mkdir -p /var/log/nginx /var/run/nginx /var/lib/nginx/tmp/client_body /var/lib/nginx/tmp/proxy /var/lib/nginx/tmp/fastcgi /var/lib/nginx/tmp/uwsgi /var/lib/nginx/tmp/scgi /var/lib/nginx/logs /var/log/php-fpm \
+    && chown -R www-data:www-data /var/log/nginx /var/run/nginx /var/lib/nginx /etc/nginx/http.d /var/log/php-fpm
 
 EXPOSE 8000
 
