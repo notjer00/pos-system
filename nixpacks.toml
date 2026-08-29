@@ -6,7 +6,8 @@ COMPOSER_ALLOW_SUPERUSER = "1"
 [phases.install]
 cmds = [
     "mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx",
-    "composer install --no-dev --optimize-autoloader --ignore-platform-reqs",
+    "composer clear-cache",
+    "composer install --no-dev --optimize-autoloader",
     "npm ci"
 ]
 
