@@ -2,6 +2,9 @@
 
 FROM php:8.4-fpm-alpine AS base
 
+# Remove base image's default php-fpm.d/docker.conf to avoid conflicting error_log/access.log directives
+RUN rm -f /usr/local/etc/php-fpm.d/docker.conf
+
 # Install system dependencies
 RUN apk add --no-cache \
     nginx \
@@ -25,6 +28,17 @@ RUN apk add --no-cache \
     g++ \
     make
 
+# Create ALL runtime directories EARLY (before config tests)
+RUN mkdir -p /var/log/nginx /var/run/nginx /var/lib/nginx/tmp/client_body /var/lib/nginx/tmp/proxy /var/lib/nginx/tmp/fastcgi /var/lib/nginx/tmp/uwsgi /var/lib/nginx/tmp/scgi /var/lib/nginx/logs /var/log/php-fpm \
+    && chown -R www-data:www-data /var/log/nginx /var/run/nginx /var/lib/nginx /var/log/php-fpm
+
+# Verify directories exist with correct ownership
+RUN echo "===VERIFY RUNTIME DIRECTORIES===" && \
+    ls -la /var/log/php-fpm/ && \
+    ls -la /var/log/nginx/ && \
+    ls -la /var/run/nginx/ && \
+    ls -la /var/lib/nginx/
+
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
@@ -46,17 +60,11 @@ COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/php-fpm-global.conf /usr/local/etc/php-fpm.conf
 
-# Debug: show effective php-fpm configs (separate RUN steps for clear logs)
-RUN echo "===GLOBAL==="
-RUN cat /usr/local/etc/php-fpm.conf
-RUN echo "===POOL==="
-RUN cat /usr/local/etc/php-fpm.d/www.conf
-RUN echo "===PHPINI==="
-RUN cat /usr/local/etc/php/conf.d/app.ini
-RUN echo "===LS PHPFPMD==="
-RUN ls -la /usr/local/etc/php-fpm.d/
-RUN echo "===PHP-FPM CONFIG TEST==="
-RUN php-fpm -t
+# Debug: show effective php-fpm configs
+RUN echo "===GLOBAL===" && cat /usr/local/etc/php-fpm.conf
+RUN echo "===POOL===" && cat /usr/local/etc/php-fpm.d/www.conf
+RUN echo "===PHPINI===" && cat /usr/local/etc/php/conf.d/app.ini
+RUN echo "===LS PHPFPMD===" && ls -la /usr/local/etc/php-fpm.d/
 
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
@@ -97,10 +105,11 @@ RUN composer run-script post-autoload-dump \
     && php artisan view:cache \
     && php artisan event:cache
 
-# Set permissions
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
-    && mkdir -p /var/log/nginx /var/run/nginx /var/lib/nginx/tmp/client_body /var/lib/nginx/tmp/proxy /var/lib/nginx/tmp/fastcgi /var/lib/nginx/tmp/uwsgi /var/lib/nginx/tmp/scgi /var/lib/nginx/logs /var/log/php-fpm \
-    && chown -R www-data:www-data /var/log/nginx /var/run/nginx /var/lib/nginx /etc/nginx/http.d /var/log/php-fpm
+# Set permissions for app directories
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+
+# FINAL php-fpm config test - runs AFTER all dirs created, perms set, config copied
+RUN echo "===FINAL PHP-FPM CONFIG TEST===" && php-fpm -t
 
 EXPOSE 8000
 
