@@ -190,10 +190,38 @@ class Checkout extends Component
 
         try {
             DB::transaction(function () {
+                // Determine the discount to record on the transaction.
+                // Check each product in cart for product-specific discount first.
+                // If no product-specific discount found, check for store-wide discount.
                 $activeDiscount = null;
-                $firstVariant = ProductVariant::find($this->cart[0]['variant_id']);
-                if ($firstVariant && $firstVariant->product->activeDiscount()) {
-                    $activeDiscount = $firstVariant->product->activeDiscount();
+                $storeWideDiscount = Discount::query()
+                    ->where('is_active', true)
+                    ->whereNull('product_id')
+                    ->where(function ($query) {
+                        $query->whereNull('starts_at')
+                            ->orWhere('starts_at', '<=', now());
+                    })
+                    ->where(function ($query) {
+                        $query->whereNull('ends_at')
+                            ->orWhere('ends_at', '>=', now());
+                    })
+                    ->first();
+
+                foreach ($this->cart as $item) {
+                    $variant = ProductVariant::find($item['variant_id']);
+                    if ($variant && $variant->product->activeDiscount()) {
+                        $discount = $variant->product->activeDiscount();
+                        // If it's a product-specific discount, use it
+                        if ($discount->product_id !== null) {
+                            $activeDiscount = $discount;
+                            break;
+                        }
+                    }
+                }
+
+                // If no product-specific discount found, use store-wide if available
+                if (! $activeDiscount && $storeWideDiscount) {
+                    $activeDiscount = $storeWideDiscount;
                 }
 
                 $transaction = SalesTransaction::create([
