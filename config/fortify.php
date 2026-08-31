@@ -161,7 +161,10 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Features::registration() -- DISABLED: Fortify's registration auto-logs in users
+        // bypassing OTP verification. Registration is handled by Livewire Volt component
+        // (pages.auth.register) which correctly creates user, sends OTP, and redirects
+        // to verification.otp without logging in.
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([
