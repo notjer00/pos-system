@@ -20,7 +20,8 @@
         "laravel/wayfinder": "^0.1.14",
         "livewire/livewire": "^3.6.4",
         "livewire/volt": "^1.7.0",
-        "maatwebsite/excel": "*"
+        "maatwebsite/excel": "*",
+        "resend/resend-laravel": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",

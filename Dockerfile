@@ -99,11 +99,11 @@ RUN php artisan wayfinder:generate
 RUN npm run build
 
 # Run Laravel optimization commands (includes package:discover via post-autoload-dump)
-RUN composer run-script post-autoload-dump \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache \
-    && php artisan event:cache
+# NOTE: config:cache, route:cache, view:cache, event:cache REMOVED from build step.
+# These cache env var values at BUILD TIME, but Railway injects env vars at RUNTIME.
+# Running them here bakes stale/missing values into the image.
+# Laravel works fine without these caches; they are a perf optimization, not required.
+RUN composer run-script post-autoload-dump
 
 # Set permissions for app directories
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
