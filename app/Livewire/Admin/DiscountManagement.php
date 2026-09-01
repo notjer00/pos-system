@@ -76,6 +76,10 @@ class DiscountManagement extends Component
             'product_id' => 'nullable|integer|exists:products,id',
         ]);
 
+        // Convert empty strings to null for datetime fields
+        $validated['starts_at'] = $validated['starts_at'] ?: null;
+        $validated['ends_at'] = $validated['ends_at'] ?: null;
+
         // Convert empty string to null for foreign key
         if (empty($validated['product_id'])) {
             $validated['product_id'] = null;

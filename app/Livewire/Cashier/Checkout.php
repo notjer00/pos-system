@@ -3,6 +3,7 @@
 namespace App\Livewire\Cashier;
 
 use App\Models\CommissionLog;
+use App\Models\Discount;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\SaleLineItem;
