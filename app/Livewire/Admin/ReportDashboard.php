@@ -2,9 +2,8 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\CommissionLog;
 use App\Models\ProductVariant;
-use App\Models\SalesTransaction;
+use App\Traits\HasReportQueries;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -13,7 +12,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.app')]
 class ReportDashboard extends Component
 {
-    use WithPagination;
+    use HasReportQueries, WithPagination;
 
     public $dateFrom;
 
@@ -27,27 +26,6 @@ class ReportDashboard extends Component
     {
         $this->dateFrom = now()->subDays(30)->format('Y-m-d');
         $this->dateTo = now()->format('Y-m-d');
-    }
-
-    public function getSalesSummary(): array
-    {
-        $query = SalesTransaction::with(['cashier', 'discount', 'lineItems.productVariant.product'])
-            ->where('status', 'completed')
-            ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-            ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo));
-
-        $transactions = $query->get();
-
-        $totalSales = $transactions->sum('total_amount');
-        $totalTransactions = $transactions->count();
-        $averageTransaction = $totalTransactions > 0 ? $totalSales / $totalTransactions : 0;
-
-        return [
-            'total_sales' => $totalSales,
-            'total_transactions' => $totalTransactions,
-            'average_transaction' => $averageTransaction,
-            'transactions' => $transactions,
-        ];
     }
 
     public function getBestSellers(): array
@@ -66,40 +44,6 @@ class ReportDashboard extends Component
             ->toArray();
     }
 
-    public function getCommissionSummary(): array
-    {
-        $query = CommissionLog::with(['user', 'salesTransaction'])
-            ->where('is_voided', false)
-            ->whereHas('salesTransaction', fn ($q) => $q->where('status', 'completed'))
-            ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-            ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo));
-
-        $logs = $query->get();
-
-        $byEmployee = $logs->groupBy('user_id')->map(function ($employeeLogs) {
-            return [
-                'user' => $employeeLogs->first()->user,
-                'total_commission' => $employeeLogs->sum('commission_earned'),
-                'total_sales' => $employeeLogs->sum('final_price'),
-                'transactions_count' => $employeeLogs->count(),
-            ];
-        })->values();
-
-        return [
-            'total_commission' => $logs->sum('commission_earned'),
-            'by_employee' => $byEmployee,
-        ];
-    }
-
-    public function getLowStockVariants(): array
-    {
-        return ProductVariant::with('product')
-            ->whereColumn('current_stock', '<=', 'low_stock_threshold')
-            ->orderBy('current_stock')
-            ->get()
-            ->toArray();
-    }
-
     public function exportReport(): void
     {
         $this->dispatch('notify', message: "Exporting {$this->exportFormat} report... (Feature coming soon)");
@@ -107,9 +51,9 @@ class ReportDashboard extends Component
 
     public function render()
     {
-        $salesSummary = $this->getSalesSummary();
+        $salesSummary = $this->getSalesSummary($this->dateFrom, $this->dateTo);
         $bestSellers = $this->getBestSellers();
-        $commissionSummary = $this->getCommissionSummary();
+        $commissionSummary = $this->getCommissionSummary($this->dateFrom, $this->dateTo);
         $lowStockVariants = $this->getLowStockVariants();
 
         return view('livewire.admin.report-dashboard', [

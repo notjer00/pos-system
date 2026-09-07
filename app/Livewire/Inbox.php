@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -71,12 +72,12 @@ class Inbox extends Component
 
     public function sendMessage(): void
     {
-        $this->validate([
-            'recipientId' => 'required|exists:users,id',
-            'messageBody' => 'required|string|max:5000',
-        ]);
+        $validated = Validator::make(
+            ['recipientId' => $this->recipientId, 'messageBody' => $this->messageBody],
+            ['recipientId' => 'required|exists:users,id', 'messageBody' => 'required|string|max:5000']
+        )->validate();
 
-        $recipient = User::find($this->recipientId);
+        $recipient = User::find($validated['recipientId']);
 
         // Check permissions: Cashier can only message Admin, Admin can message anyone
         $user = Auth::user();
@@ -88,8 +89,8 @@ class Inbox extends Component
 
         Message::create([
             'sender_id' => Auth::id(),
-            'receiver_id' => $this->recipientId,
-            'body' => $this->messageBody,
+            'receiver_id' => $validated['recipientId'],
+            'body' => $validated['messageBody'],
             'is_read' => false,
         ]);
 

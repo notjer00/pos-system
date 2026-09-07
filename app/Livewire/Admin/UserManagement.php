@@ -86,6 +86,7 @@ class UserManagement extends Component
             $message = 'User updated successfully!';
         } else {
             $validated['password'] = Hash::make($validated['password']);
+            $validated['email_verified_at'] = now();
             User::create($validated);
             $message = 'User created successfully!';
         }

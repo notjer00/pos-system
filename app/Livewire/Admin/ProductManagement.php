@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,6 +16,14 @@ class ProductManagement extends Component
     use WithPagination;
 
     public $search = '';
+
+    public $filterCategory = '';
+
+    public $filterGender = '';
+
+    public $filterStatus = '';
+
+    public $expandedProduct = null;
 
     public $showModal = false;
 
@@ -38,6 +47,8 @@ class ProductManagement extends Component
 
     public $variantColors = ['Black', 'White', 'Gray', 'Navy', 'Blue', 'Red', 'Green', 'Pink', 'Yellow', 'Purple', 'Orange', 'Floral', 'Solid Blue'];
 
+    public $customColor = '';
+
     protected $listeners = ['refreshProducts' => '$refresh'];
 
     public function mount(): void
@@ -58,6 +69,57 @@ class ProductManagement extends Component
             ['size' => '', 'footwear_size' => '', 'color' => '', 'current_stock' => 0, 'low_stock_threshold' => 5, 'sku' => ''],
         ];
         $this->editingProduct = null;
+        $this->customColor = '';
+    }
+
+    #[Computed]
+    public function availableCategories(): array
+    {
+        return Product::whereNotNull('category')
+            ->distinct()
+            ->pluck('category')
+            ->sort()
+            ->values()
+            ->toArray();
+    }
+
+    #[Computed]
+    public function availableColors(): array
+    {
+        $usedColors = ProductVariant::distinct()
+            ->pluck('color')
+            ->toArray();
+
+        return array_unique(array_merge($this->variantColors, $usedColors));
+    }
+
+    public function toggleExpand(int $productId): void
+    {
+        $this->expandedProduct = $this->expandedProduct === $productId ? null : $productId;
+    }
+
+    public function quickUpdateStock(int $variantId, int $quantity): void
+    {
+        $variant = ProductVariant::findOrFail($variantId);
+        $newStock = max(0, $variant->current_stock + $quantity);
+        $variant->update(['current_stock' => $newStock]);
+        $this->dispatch('notify', message: 'Stock updated');
+    }
+
+    public function setQuickStock(int $variantId, int $value): void
+    {
+        $variant = ProductVariant::findOrFail($variantId);
+        $variant->update(['current_stock' => max(0, $value)]);
+        $this->dispatch('notify', message: 'Stock updated');
+    }
+
+    public function addCustomColor(): void
+    {
+        $color = trim($this->customColor);
+        if ($color !== '' && ! in_array($color, $this->variantColors)) {
+            $this->variantColors[] = $color;
+        }
+        $this->customColor = '';
     }
 
     public function addVariant(): void
@@ -105,7 +167,6 @@ class ProductManagement extends Component
 
     public function getCurrentSizeOptions(): array
     {
-        // Use the product's size_system to determine options
         $tempProduct = new Product(['size_system' => $this->size_system]);
 
         return $tempProduct->getSizeOptions();
@@ -170,7 +231,6 @@ class ProductManagement extends Component
                 $variantId = $variantData['id'] ?? null;
                 unset($variantData['id']);
 
-                // Auto-generate SKU using the model's method
                 if (empty($variantData['sku'])) {
                     $tempVariant = new ProductVariant([
                         'product_id' => $this->editingProduct->id,
@@ -223,6 +283,15 @@ class ProductManagement extends Component
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', "%{$this->search}%")
                     ->orWhere('category', 'like', "%{$this->search}%");
+            })
+            ->when($this->filterCategory !== '', function ($query) {
+                $query->where('category', $this->filterCategory);
+            })
+            ->when($this->filterGender !== '', function ($query) {
+                $query->where('gender', $this->filterGender);
+            })
+            ->when($this->filterStatus !== '', function ($query) {
+                $query->where('is_active', $this->filterStatus === 'active');
             })
             ->latest()
             ->paginate(10);
