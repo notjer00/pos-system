@@ -11,7 +11,7 @@ use App\Livewire\Cashier\RecentTransactions;
 use App\Livewire\Inbox;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', Dashboard::class)->name('dashboard');

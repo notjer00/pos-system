@@ -13,8 +13,11 @@ use Livewire\Volt\Component;
 new #[Layout('layouts.guest')] class extends Component
 {
     public string $name = '';
+
     public string $email = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     /**
@@ -52,8 +55,9 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<x-auth-card>
     <form wire:submit="register">
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -101,4 +105,5 @@ new #[Layout('layouts.guest')] class extends Component
             </x-primary-button>
         </div>
     </form>
-</div>
+</x-auth-card>
+
