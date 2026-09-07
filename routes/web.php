@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Livewire\Admin\DiscountManagement;
 use App\Livewire\Admin\ProductManagement;
 use App\Livewire\Admin\ReportDashboard;
@@ -10,10 +11,10 @@ use App\Livewire\Cashier\RecentTransactions;
 use App\Livewire\Inbox;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     Route::middleware('role:admin')->group(function () {
         Route::get('admin/products', ProductManagement::class)->name('admin.products');

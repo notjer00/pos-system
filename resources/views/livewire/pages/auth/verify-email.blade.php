@@ -35,7 +35,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<x-auth-card>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
     </div>
@@ -55,4 +55,4 @@ new #[Layout('layouts.guest')] class extends Component
             {{ __('Log Out') }}
         </button>
     </div>
-</div>
+</x-auth-card>

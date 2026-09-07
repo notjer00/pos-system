@@ -22,4 +22,116 @@
     .variant-btn {
         @apply min-h-[100px];
     }
+
+    .stat-card {
+        @apply transition-all duration-200 hover:shadow-md;
+    }
+}
+
+/* --- Custom animations --- */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes float-slow {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(18px, -22px) scale(1.06);
+    }
+}
+
+@keyframes float-slower {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-22px, 16px) scale(1.08);
+    }
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.55;
+    }
+    50% {
+        transform: scale(1.18);
+        opacity: 0.9;
+    }
+}
+
+@keyframes logo-float {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.02);
+    }
+}
+
+@keyframes spin-slower {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-in {
+    animation: fade-in 0.8s ease-out both;
+}
+
+.animate-float-slow {
+    animation: float-slow 9s ease-in-out infinite;
+}
+
+.animate-float-slower {
+    animation: float-slower 12s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+    animation: glow-pulse 4s ease-in-out infinite;
+}
+
+.animate-logo-float {
+    animation: logo-float 6s ease-in-out infinite;
+}
+
+.animate-spin-slower {
+    animation: spin-slower 45s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up,
+    .animate-fade-in,
+    .animate-float-slow,
+    .animate-float-slower,
+    .animate-glow-pulse,
+    .animate-logo-float,
+    .animate-spin-slower {
+        animation: none;
+    }
 }

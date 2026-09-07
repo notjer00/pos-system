@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\OtpVerificationMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,7 @@ use Livewire\Volt\Component;
 new #[Layout('layouts.guest')] class extends Component
 {
     public string $otp = '';
+
     public string $userId = '';
 
     public function mount(): void
@@ -32,26 +34,31 @@ new #[Layout('layouts.guest')] class extends Component
 
         if (! $user) {
             $this->addError('otp', 'Invalid verification session. Please register again.');
+
             return;
         }
 
         if ($user->hasVerifiedEmail()) {
             $this->redirect(route('dashboard', absolute: false), navigate: true);
+
             return;
         }
 
         if (! $user->otp_code || ! $user->otp_expires_at) {
             $this->addError('otp', 'OTP has expired or was not generated. Please request a new one.');
+
             return;
         }
 
         if (now()->isAfter($user->otp_expires_at)) {
             $this->addError('otp', 'OTP has expired. Please request a new one.');
+
             return;
         }
 
         if (! Hash::check($this->otp, $user->otp_code)) {
             $this->addError('otp', 'Invalid OTP. Please try again.');
+
             return;
         }
 
@@ -64,7 +71,7 @@ new #[Layout('layouts.guest')] class extends Component
         ]);
 
         $freshUser = $user->fresh();
-        logger('OTP verified for user: ' . $user->id . ', update result: ' . ($updated ? 'true' : 'false') . ', now: ' . $now . ', fresh email_verified_at: ' . ($freshUser->email_verified_at ?? 'null') . ', fresh otp_code: ' . ($freshUser->otp_code ?? 'null'));
+        logger('OTP verified for user: '.$user->id.', update result: '.($updated ? 'true' : 'false').', now: '.$now.', fresh email_verified_at: '.($freshUser->email_verified_at ?? 'null').', fresh otp_code: '.($freshUser->otp_code ?? 'null'));
 
         Session::forget('pending_verification_user_id');
 
@@ -79,6 +86,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         if (! $user || $user->hasVerifiedEmail()) {
             $this->redirect(route('register', absolute: false), navigate: true);
+
             return;
         }
 
@@ -91,7 +99,7 @@ new #[Layout('layouts.guest')] class extends Component
             'otp_expires_at' => $otpExpiresAt,
         ]);
 
-        Mail::to($user->email)->send(new \App\Mail\OtpVerificationMail($otpCode, $user->name));
+        Mail::to($user->email)->send(new OtpVerificationMail($otpCode, $user->name));
 
         Session::flash('status', 'otp-resent');
     }
@@ -103,7 +111,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<x-auth-card>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('We\'ve sent a 6-digit verification code to your email. Please enter it below to verify your account.') }}
     </div>
@@ -162,4 +170,4 @@ new #[Layout('layouts.guest')] class extends Component
             </div>
         </div>
     </form>
-</div>
+</x-auth-card>

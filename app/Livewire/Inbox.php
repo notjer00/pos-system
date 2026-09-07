@@ -6,7 +6,6 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,11 +15,17 @@ class Inbox extends Component
     use WithPagination;
 
     public $search = '';
+
     public $showComposeModal = false;
+
     public $showMessageModal = false;
+
     public $selectedMessage = null;
+
     public $recipientId = '';
+
     public $messageBody = '';
+
     public $filter = 'all'; // all, unread, sent
 
     protected $listeners = ['refreshInbox' => '$refresh'];
@@ -36,7 +41,7 @@ class Inbox extends Component
         $this->messageBody = '';
     }
 
-    public function compose(int $recipientId = null): void
+    public function compose(?int $recipientId = null): void
     {
         $this->resetForm();
         if ($recipientId) {
@@ -77,6 +82,7 @@ class Inbox extends Component
         $user = Auth::user();
         if ($user->isCashier() && ! $recipient->isAdmin()) {
             $this->addError('recipientId', 'Cashiers can only message administrators.');
+
             return;
         }
 
@@ -115,14 +121,14 @@ class Inbox extends Component
                 ->whereIn('role', ['cashier', 'admin'])
                 ->orderBy('name')
                 ->get()
-                ->mapWithKeys(fn ($u) => [$u->id => $u->name . ' (' . ucfirst($u->role) . ')'])
+                ->mapWithKeys(fn ($u) => [$u->id => $u->name.' ('.ucfirst($u->role).')'])
                 ->toArray();
         } else {
             // Cashier can only message admins
             return User::where('role', 'admin')
                 ->orderBy('name')
                 ->get()
-                ->mapWithKeys(fn ($u) => [$u->id => $u->name . ' (Admin)'])
+                ->mapWithKeys(fn ($u) => [$u->id => $u->name.' (Admin)'])
                 ->toArray();
         }
     }
