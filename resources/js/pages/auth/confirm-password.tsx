@@ -28,30 +28,30 @@ export default function ConfirmPassword() {
 
             <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
-                    <div className="space-y-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                    <div className="grid gap-5">
+                        <div className="grid gap-2.5">
+                            <Label htmlFor="password" className="text-sm font-medium">
+                                Password
+                            </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
-                                placeholder="Password"
+                                placeholder="Enter your password"
                                 autoComplete="current-password"
                                 autoFocus
+                                className="h-11"
                             />
-
                             <InputError message={errors.password} />
                         </div>
 
-                        <div className="flex items-center">
-                            <Button
-                                className="w-full"
-                                disabled={processing}
-                                data-test="confirm-password-button"
-                            >
-                                {processing && <Spinner />}
-                                Confirm password
-                            </Button>
-                        </div>
+                        <Button
+                            className="h-11 w-full text-sm font-semibold"
+                            disabled={processing}
+                            data-test="confirm-password-button"
+                        >
+                            {processing && <Spinner />}
+                            Confirm
+                        </Button>
                     </div>
                 )}
             </Form>
@@ -60,7 +60,6 @@ export default function ConfirmPassword() {
 }
 
 ConfirmPassword.layout = {
-    title: 'Confirm password',
-    description:
-        'This is a secure area of the application. Please confirm your password before continuing.',
+    title: 'Confirm your password',
+    description: 'This is a secure area. Please confirm your password to continue.',
 };

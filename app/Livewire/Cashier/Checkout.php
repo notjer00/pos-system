@@ -11,6 +11,7 @@ use App\Models\SalesTransaction;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -30,6 +31,10 @@ class Checkout extends Component
     public $change = 0;
 
     public $skuScan = '';
+
+    public $showVariantPicker = false;
+
+    public $selectedProduct = null;
 
     protected $listeners = ['refreshCart' => '$refresh'];
 
@@ -116,6 +121,36 @@ class Checkout extends Component
         $this->skuScan = '';
     }
 
+    public function selectProduct(Product $product): void
+    {
+        $activeVariants = $product->variants->filter(fn ($v) => $v->current_stock > 0);
+
+        if ($activeVariants->count() === 1) {
+            $this->addToCart($activeVariants->first());
+
+            return;
+        }
+
+        $this->selectedProduct = $product;
+        $this->showVariantPicker = true;
+    }
+
+    public function closeVariantPicker(): void
+    {
+        $this->showVariantPicker = false;
+        $this->selectedProduct = null;
+    }
+
+    public function addSelectedVariantToCart(int $variantId): void
+    {
+        $variant = ProductVariant::find($variantId);
+
+        if ($variant && $variant->current_stock > 0) {
+            $this->addToCart($variant);
+            $this->closeVariantPicker();
+        }
+    }
+
     public function updateQuantity(int $variantId, int $quantity): void
     {
         $variant = ProductVariant::find($variantId);
@@ -149,7 +184,8 @@ class Checkout extends Component
         return array_sum(array_column($this->cart, 'subtotal'));
     }
 
-    public function getCartItemCount(): int
+    #[Computed]
+    public function cartItemCount(): int
     {
         return array_sum(array_column($this->cart, 'quantity'));
     }
@@ -301,7 +337,7 @@ class Checkout extends Component
     {
         return view('livewire.cashier.checkout', [
             'products' => $this->products,
-            'cartItemCount' => $this->getCartItemCount(),
+            'cartItemCount' => $this->cartItemCount,
             'cartTotal' => $this->getCartTotal(),
         ]);
     }

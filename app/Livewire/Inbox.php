@@ -5,8 +5,8 @@ namespace App\Livewire;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,11 +16,17 @@ class Inbox extends Component
     use WithPagination;
 
     public $search = '';
+
     public $showComposeModal = false;
+
     public $showMessageModal = false;
+
     public $selectedMessage = null;
+
     public $recipientId = '';
+
     public $messageBody = '';
+
     public $filter = 'all'; // all, unread, sent
 
     protected $listeners = ['refreshInbox' => '$refresh'];
@@ -36,7 +42,7 @@ class Inbox extends Component
         $this->messageBody = '';
     }
 
-    public function compose(int $recipientId = null): void
+    public function compose(?int $recipientId = null): void
     {
         $this->resetForm();
         if ($recipientId) {
@@ -66,24 +72,25 @@ class Inbox extends Component
 
     public function sendMessage(): void
     {
-        $this->validate([
-            'recipientId' => 'required|exists:users,id',
-            'messageBody' => 'required|string|max:5000',
-        ]);
+        $validated = Validator::make(
+            ['recipientId' => $this->recipientId, 'messageBody' => $this->messageBody],
+            ['recipientId' => 'required|exists:users,id', 'messageBody' => 'required|string|max:5000']
+        )->validate();
 
-        $recipient = User::find($this->recipientId);
+        $recipient = User::find($validated['recipientId']);
 
         // Check permissions: Cashier can only message Admin, Admin can message anyone
         $user = Auth::user();
         if ($user->isCashier() && ! $recipient->isAdmin()) {
             $this->addError('recipientId', 'Cashiers can only message administrators.');
+
             return;
         }
 
         Message::create([
             'sender_id' => Auth::id(),
-            'receiver_id' => $this->recipientId,
-            'body' => $this->messageBody,
+            'receiver_id' => $validated['recipientId'],
+            'body' => $validated['messageBody'],
             'is_read' => false,
         ]);
 
@@ -115,14 +122,14 @@ class Inbox extends Component
                 ->whereIn('role', ['cashier', 'admin'])
                 ->orderBy('name')
                 ->get()
-                ->mapWithKeys(fn ($u) => [$u->id => $u->name . ' (' . ucfirst($u->role) . ')'])
+                ->mapWithKeys(fn ($u) => [$u->id => $u->name.' ('.ucfirst($u->role).')'])
                 ->toArray();
         } else {
             // Cashier can only message admins
             return User::where('role', 'admin')
                 ->orderBy('name')
                 ->get()
-                ->mapWithKeys(fn ($u) => [$u->id => $u->name . ' (Admin)'])
+                ->mapWithKeys(fn ($u) => [$u->id => $u->name.' (Admin)'])
                 ->toArray();
         }
     }

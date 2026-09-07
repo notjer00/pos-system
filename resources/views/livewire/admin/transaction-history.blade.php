@@ -12,7 +12,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <label class="text-sm text-gray-700">Status:</label>
-                <select wire:model="statusFilter" class="input-field w-36">
+                <select wire:model.live="statusFilter" class="input-field w-36">
                     <option value="all">All</option>
                     <option value="completed">Completed</option>
                     <option value="voided">Voided</option>
