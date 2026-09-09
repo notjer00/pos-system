@@ -1,0 +1,61 @@
+[33m1e6b8b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull: Fast-forward
+[33m0dc13d6[m[33m ([m[1;31morigin/feature/ui-design[m[33m)[m HEAD@{1}: checkout: moving from main to main
+[33m0dc13d6[m[33m ([m[1;31morigin/feature/ui-design[m[33m)[m HEAD@{2}: merge feature/ui-design: Fast-forward
+[33mf4025b2[m HEAD@{3}: checkout: moving from feature/ui-design to main
+[33m0dc13d6[m[33m ([m[1;31morigin/feature/ui-design[m[33m)[m HEAD@{4}: checkout: moving from main to feature/ui-design
+[33mf4025b2[m HEAD@{5}: reset: moving to origin/main
+[33m1964d12[m HEAD@{6}: checkout: moving from feature/ui-design to main
+[33m0dc13d6[m[33m ([m[1;31morigin/feature/ui-design[m[33m)[m HEAD@{7}: commit (amend): Add UI design and layout files
+[33m1964d12[m HEAD@{8}: checkout: moving from main to feature/ui-design
+[33m1964d12[m HEAD@{9}: commit: Add UI design and layout files
+[33mf4025b2[m HEAD@{10}: commit: Fix checkout Discount class import and discount date validation (empty string to null)
+[33mae9b973[m HEAD@{11}: commit: Fix admin-cashier messaging (missing @livewireScripts) and store-wide discount not applying
+[33m8963c91[m HEAD@{12}: commit: Fix registration bypassing OTP verification: disable Fortify auto-login registration, add email verification check to auth pipeline
+[33mdccc2af[m HEAD@{13}: commit: Remove build-time config caching to fix stale env var bug; add resend/resend-laravel package
+[33m6b8719f[m HEAD@{14}: commit: Trigger rebuild after adding mail config
+[33m979bc62[m HEAD@{15}: commit: Delete base image's conflicting docker.conf; use explicit include path for php-fpm pool config
+[33m9b52c35[m HEAD@{16}: commit: Diagnostic: separate RUN steps for clear php-fpm config visibility
+[33m25bcce2[m HEAD@{17}: commit: Fix php-fpm /proc/self/fd/2 error: php.ini error_log + catch_workers_output
+[33m652cea1[m HEAD@{18}: commit: Fix php-fpm slowlog: use real file path instead of /proc/self/fd/2
+[33m8f8c0f6[m HEAD@{19}: commit: Fix php-fpm: add include directive for pool configs
+[33mc1ed458[m HEAD@{20}: commit: Fix php-fpm error_log: use real file path instead of /proc/self/fd/2
+[33m289b8f8[m HEAD@{21}: commit: Fix php-fpm global config and nginx permissions
+[33mf4b45ff[m HEAD@{22}: commit: Fix php-fpm crash loop and Railway support
+[33mefb2f7a[m HEAD@{23}: commit: Fix route name collisions with Fortify
+[33mb592541[m HEAD@{24}: commit: Fix Alpine/musl compatibility: switch to musl native binaries
+[33m4615638[m HEAD@{25}: commit: Fix Dockerfile layer order: copy app code before wayfinder:generate
+[33m7a9e618[m HEAD@{26}: commit: Fix Dockerfile: move COPY . . before wayfinder:generate
+[33ma59723c[m HEAD@{27}: commit: Fix Dockerfile: npm install + add wayfinder:generate
+[33m5b6e46e[m HEAD@{28}: commit: Trigger rebuild with Dockerfile builder
+[33m7c1ff4f[m HEAD@{29}: commit: Switch from Nixpacks to custom Dockerfile for full MySQL auth plugin support
+[33me723909[m HEAD@{30}: commit: Fix MySQL auth by overriding PHP package with libmysqlclient via Nix overlay
+[33m20f4482[m HEAD@{31}: commit: Remove SSL workaround - libmysqlclient handles auth natively
+[33m36eb481[m HEAD@{32}: commit: Fix MySQL auth by building PHP with libmysqlclient instead of mysqlnd
+[33m88cc87e[m HEAD@{33}: commit: Fix array_filter stripping falsy SSL options (false, empty string)
+[33m4314504[m HEAD@{34}: commit: Trigger rebuild after adding SSL env var
+[33m56e1517[m HEAD@{35}: commit: Fix MySQL caching_sha2_password auth on Railway by enabling SSL/TLS
+[33mf4e2ee8[m HEAD@{36}: commit: Trigger rebuild after adding missing env vars
+[33mb125e90[m HEAD@{37}: commit: Register settings.php and auth.php routes in bootstrap/app.php - fixes missing Wayfinder route generation and broken settings pages
+[33meb96b93[m HEAD@{38}: commit: Generate wayfinder routes before npm build
+[33me44cde0[m HEAD@{39}: commit: Fix rolldown binary mismatch: pin overrides and hard dependency
+[33m72cb597[m HEAD@{40}: commit: Move rolldown Linux binding to required dependencies
+[33m8faac52[m HEAD@{41}: commit: Restore Vite 8, force rolldown Linux binding as required dependency
+[33maf4e0be[m HEAD@{42}: commit: Use Vite 7 to satisfy Inertia peer dependency and avoid rolldown
+[33m88c099e[m HEAD@{43}: commit: Downgrade Vite to avoid rolldown native binding bug
+[33md77e21c[m HEAD@{44}: commit: Force install Linux rolldown binary via optionalDependencies
+[33m4174984[m HEAD@{45}: commit: Upgrade npm to fix optional dependency bug
+[33mf486570[m HEAD@{46}: commit: Force clean node_modules to bust build cache
+[33m26bd577[m HEAD@{47}: commit: Remove package-lock.json from git to fix cross-platform optional dependency bug
+[33md7bca26[m HEAD@{48}: commit: Trigger rebuild after fixing Railway build command
+[33m4594b98[m HEAD@{49}: commit: Use npm install instead of npm ci to fix rolldown Linux binary bug
+[33m87dcb32[m HEAD@{50}: commit: Regenerate package-lock.json to fix rolldown optional dependency bug
+[33mf1d77fd[m HEAD@{51}: commit: Add .nvmrc to force Node 22
+[33m2886164[m HEAD@{52}: commit: Bump Node.js to 20 for rolldown/Vite compatibility
+[33m8e11afa[m HEAD@{53}: commit: Bump PHP requirement to 8.4 to match locked package requirements
+[33mb12fe97[m HEAD@{54}: commit: Clear composer cache before install
+[33ma1079eb[m HEAD@{55}: commit: Trigger clean rebuild
+[33m6fbeb70[m HEAD@{56}: commit: Fix syntax interpolation in CheckoutRequest
+[33m9180f30[m HEAD@{57}: commit: Remove typo from nixpacks.toml
+[33m7f766e7[m HEAD@{58}: commit: Force production build and fix composer crash
+[33mf160f49[m HEAD@{59}: Branch: renamed refs/heads/master to refs/heads/main
+[33mf160f49[m HEAD@{61}: commit (initial): feat: Initial capstone POS system with OTP and roles
