@@ -120,8 +120,17 @@ class UserManagement extends Component
             ->latest()
             ->paginate(10);
 
+        $totalUsers = User::count();
+        $adminCount = User::where('role', 'admin')->count();
+        $regularCount = User::where('role', 'cashier')->count();
+        $recentlyAdded = User::where('created_at', '>=', now()->subDays(7))->count();
+
         return view('livewire.admin.user-management', [
             'users' => $users,
+            'totalUsers' => $totalUsers,
+            'adminCount' => $adminCount,
+            'regularCount' => $regularCount,
+            'recentlyAdded' => $recentlyAdded,
         ]);
     }
 }

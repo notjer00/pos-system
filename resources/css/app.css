@@ -4,53 +4,55 @@
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 262.1 83.3% 57.8%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
+        --background: 160 10% 6%;
+        --foreground: 38 20% 88%;
+        --card: 160 10% 7%;
+        --card-foreground: 38 20% 88%;
+        --popover: 160 10% 8%;
+        --popover-foreground: 38 20% 88%;
+        --primary: 160 38% 35%;
+        --primary-foreground: 38 20% 88%;
+        --secondary: 160 10% 11%;
+        --secondary-foreground: 38 20% 88%;
+        --muted: 160 10% 11%;
+        --muted-foreground: 30 6% 50%;
+        --accent: 38 50% 52%;
+        --accent-foreground: 160 10% 6%;
+        --destructive: 0 55% 42%;
         --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 262.1 83.3% 57.8%;
+        --border: 160 10% 14%;
+        --input: 160 10% 11%;
+        --ring: 160 38% 35%;
         --radius: 0.5rem;
-        --success: 142.1 76.2% 36.3%;
+        --success: 160 38% 35%;
         --success-foreground: 0 0% 98%;
-        --warning: 38 92% 50%;
-        --warning-foreground: 28 80% 15%;
+        --warning: 38 50% 52%;
+        --warning-foreground: 160 10% 6%;
     }
 
     .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 262.1 83.3% 57.8%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
+        --background: 160 10% 5%;
+        --foreground: 38 20% 88%;
+        --card: 160 10% 6%;
+        --card-foreground: 38 20% 88%;
+        --popover: 160 10% 7%;
+        --popover-foreground: 38 20% 88%;
+        --primary: 160 38% 35%;
+        --primary-foreground: 38 20% 88%;
+        --secondary: 160 10% 10%;
+        --secondary-foreground: 38 20% 88%;
+        --muted: 160 10% 10%;
+        --muted-foreground: 30 6% 46%;
+        --accent: 38 50% 52%;
+        --accent-foreground: 160 10% 6%;
+        --destructive: 0 55% 38%;
         --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 262.1 83.3% 57.8%;
+        --border: 160 10% 12%;
+        --input: 160 10% 10%;
+        --ring: 160 38% 35%;
     }
+
+    [x-cloak] { display: none !important; }
 
     * {
         @apply border-border;
@@ -59,16 +61,76 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    /* ── Force dark backgrounds on all browser form controls ── */
+    input, select, textarea {
+        background-color: rgba(255, 255, 255, 0.04) !important;
+        color: #e8e4dc !important;
+    }
+
+    /* Kill white autofill backgrounds in WebKit/Blink browsers */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px rgba(16, 18, 21, 0.96) inset !important;
+        -webkit-text-fill-color: #e8e4dc !important;
+        caret-color: #e8e4dc !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    /* Hide browser-default spinners on number inputs */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
 }
 
 @layer components {
+    /* ── Glass Panel Base ──────────────────────── */
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .glass-panel-strong {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-panel-subtle {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
     /* ── Buttons ─────────────────────────────────── */
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors
-            bg-primary text-primary-foreground shadow-sm
-            hover:bg-primary/90
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200
+            shadow-sm
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
             disabled:pointer-events-none disabled:opacity-50;
+        background: #1a6b5a;
+        color: #f0ede6;
+    }
+    .btn-primary:hover {
+        background: #207d6a;
+        box-shadow: 0 4px 20px rgba(26, 107, 90, 0.3);
     }
 
     .btn-primary-lg {
@@ -76,33 +138,67 @@
     }
 
     .btn-secondary {
-        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors
-            border border-input bg-secondary text-secondary-foreground shadow-sm
-            hover:bg-secondary/80
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200
+            shadow-sm
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
             disabled:pointer-events-none disabled:opacity-50;
+        background: rgba(255, 255, 255, 0.06);
+        color: #e8e4dc;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.12);
     }
 
     .btn-destructive {
-        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors
-            bg-destructive text-destructive-foreground shadow-sm
-            hover:bg-destructive/90
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200
+            shadow-sm
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
             disabled:pointer-events-none disabled:opacity-50;
+        background: rgba(180, 50, 50, 0.25);
+        color: #f0a0a0;
+        border: 1px solid rgba(180, 50, 50, 0.2);
+    }
+    .btn-destructive:hover {
+        background: rgba(180, 50, 50, 0.4);
+        border-color: rgba(180, 50, 50, 0.35);
+    }
+
+    .btn-warning {
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200
+            shadow-sm
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            disabled:pointer-events-none disabled:opacity-50;
+        background: rgba(200, 155, 60, 0.25);
+        color: #d4b060;
+        border: 1px solid rgba(200, 155, 60, 0.2);
+    }
+    .btn-warning:hover {
+        background: rgba(200, 155, 60, 0.35);
+        border-color: rgba(200, 155, 60, 0.3);
     }
 
     .btn-ghost {
-        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors
-            hover:bg-accent hover:text-accent-foreground
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
             disabled:pointer-events-none disabled:opacity-50;
+        color: #c0bbb0;
+    }
+    .btn-ghost:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #e8e4dc;
     }
 
     .btn-icon {
-        @apply inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors
-            hover:bg-accent hover:text-accent-foreground
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+        @apply inline-flex items-center justify-center rounded-lg p-2 transition-all duration-200
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
             disabled:pointer-events-none disabled:opacity-50;
+        color: #8a8580;
+    }
+    .btn-icon:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #e8e4dc;
     }
 
     .btn-icon-sm {
@@ -111,10 +207,17 @@
 
     /* ── Inputs ──────────────────────────────────── */
     .input-field {
-        @apply flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors
-            placeholder:text-muted-foreground
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+        @apply flex h-10 w-full rounded-lg text-sm shadow-sm transition-all duration-200
+            placeholder:text-[#6a6560]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/30
             disabled:cursor-not-allowed disabled:opacity-50;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #e8e4dc;
+    }
+    .input-field:focus {
+        border-color: rgba(45, 133, 112, 0.4);
+        background: rgba(255, 255, 255, 0.06);
     }
 
     .input-field-lg {
@@ -122,79 +225,115 @@
     }
 
     .stat-card {
-        @apply transition-all duration-200 hover:shadow-md;
+        @apply transition-all duration-300;
     }
 
     /* ── Variant Buttons ─────────────────────────── */
     .variant-btn {
-        @apply flex flex-col items-start gap-1.5 rounded-lg border border-border bg-card p-3 text-left text-sm transition-all
-            hover:border-primary/40 hover:bg-accent/50 hover:shadow-sm
+        @apply flex flex-col items-start gap-1.5 rounded-xl p-3 text-left text-sm transition-all duration-200
+            hover:shadow-sm
             active:scale-[0.98]
             disabled:pointer-events-none disabled:opacity-50
             min-h-[100px];
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .variant-btn:hover {
+        border-color: rgba(45, 133, 112, 0.3);
+        background: rgba(255, 255, 255, 0.05);
     }
 
     .variant-btn-low-stock {
-        @apply variant-btn border-destructive/40 bg-destructive/5;
+        @apply variant-btn;
+        border-color: rgba(180, 50, 50, 0.3);
+        background: rgba(180, 50, 50, 0.05);
     }
 
     .variant-btn-selected {
-        @apply variant-btn border-primary bg-primary/5 ring-2 ring-primary/20;
+        @apply variant-btn;
+        border-color: rgba(45, 133, 112, 0.5);
+        background: rgba(45, 133, 112, 0.08);
+        box-shadow: 0 0 0 1px rgba(45, 133, 112, 0.2);
     }
 
     /* ── Dialog / Modal ──────────────────────────── */
     .dialog-overlay {
-        @apply fixed inset-0 z-50 bg-black/80;
+        @apply fixed inset-0 z-50;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
     }
 
     .dialog-content {
         @apply fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2
-            w-full max-w-lg rounded-xl border border-border bg-card p-6 shadow-xl;
+            w-full max-w-lg rounded-2xl p-6 shadow-2xl;
+        background: rgba(20, 22, 25, 0.92);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     /* ── Badge ────────────────────────────────────── */
     .badge {
-        @apply inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold transition-colors
-            border-transparent bg-secondary text-secondary-foreground;
+        @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors;
+        background: rgba(255, 255, 255, 0.06);
+        color: #c0bbb0;
+        border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .badge-primary {
-        @apply badge bg-primary/10 text-primary border-primary/20;
+        @apply badge;
+        background: rgba(45, 133, 112, 0.15);
+        color: #5cbfaa;
+        border-color: rgba(45, 133, 112, 0.2);
     }
 
     .badge-destructive {
-        @apply badge bg-destructive/10 text-destructive border-destructive/20;
+        @apply badge;
+        background: rgba(180, 50, 50, 0.15);
+        color: #f0a0a0;
+        border-color: rgba(180, 50, 50, 0.2);
     }
 
     .badge-success {
-        @apply badge bg-success/10 text-success border-success/20;
+        @apply badge;
+        background: rgba(45, 133, 112, 0.15);
+        color: #5cbfaa;
+        border-color: rgba(45, 133, 112, 0.2);
     }
 
     .badge-warning {
-        @apply badge bg-warning/10 text-warning-foreground border-warning/20;
+        @apply badge;
+        background: rgba(200, 155, 60, 0.15);
+        color: #d4b060;
+        border-color: rgba(200, 155, 60, 0.2);
     }
 
     /* ── Card ─────────────────────────────────────── */
     .card {
-        @apply rounded-xl border border-border bg-card text-card-foreground shadow-sm;
+        @apply rounded-2xl shadow-lg;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     /* ── Toggle Switch (Blade-compatible) ─────────── */
     .toggle-switch {
         @apply relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10];
     }
 
     .toggle-switch-bg {
-        @apply pointer-events-none absolute inset-0 rounded-full bg-muted transition-colors duration-200;
+        @apply pointer-events-none absolute inset-0 rounded-full transition-colors duration-200;
+        background: rgba(255, 255, 255, 0.1);
     }
 
     .toggle-switch.is-on .toggle-switch-bg {
-        @apply bg-primary;
+        background: #1a6b5a;
     }
 
     .toggle-switch-knob {
-        @apply pointer-events-none absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ease-in-out;
+        @apply pointer-events-none absolute top-0.5 left-0.5 h-4 w-4 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out;
+        background: #e8e4dc;
     }
 
     .toggle-switch.is-on .toggle-switch-knob {
@@ -208,6 +347,78 @@
 
     .cart-flash {
         animation: cartFlash 0.4s ease-out;
+    }
+
+    /* ── Checkout-specific styles ──────────────────── */
+    .checkout-panel {
+        background: rgba(255, 255, 255, 0.02);
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .checkout-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .checkout-item:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .product-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        transition: all 0.2s ease;
+    }
+
+    .product-card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(45, 133, 112, 0.2);
+    }
+
+    /* ── Enhanced form controls for dark theme ─────── */
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+    }
+
+    /* Style for disabled state */
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Remove default focus ring and add custom */
+    *:focus {
+        outline: none;
+    }
+
+    *:focus-visible {
+        outline: 2px solid rgba(45, 133, 112, 0.5);
+        outline-offset: 2px;
+    }
+
+    /* ── Scrollbar styling for dark theme ──────────── */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.15);
     }
 }
 
@@ -292,13 +503,24 @@
 
 @keyframes cartFlash {
     0% {
-        box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4);
+        box-shadow: 0 0 0 0 rgba(45, 133, 112, 0.4);
     }
     70% {
-        box-shadow: 0 0 0 6px hsl(var(--primary) / 0);
+        box-shadow: 0 0 0 6px rgba(45, 133, 112, 0);
     }
     100% {
-        box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
+        box-shadow: 0 0 0 0 rgba(45, 133, 112, 0);
+    }
+}
+
+@keyframes notification-enter {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -330,6 +552,10 @@
     animation: spin-slower 45s linear infinite;
 }
 
+.animate-notification-enter {
+    animation: notification-enter 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .animate-fade-in-up,
     .animate-fade-in,
@@ -337,7 +563,8 @@
     .animate-float-slower,
     .animate-glow-pulse,
     .animate-logo-float,
-    .animate-spin-slower {
+    .animate-spin-slower,
+    .animate-notification-enter {
         animation: none;
     }
 }

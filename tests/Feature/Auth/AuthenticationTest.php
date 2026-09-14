@@ -12,7 +12,7 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['role' => 'admin']);
 
     $component = Volt::test('pages.auth.login')
         ->set('form.email', $user->email)
@@ -23,6 +23,22 @@ test('users can authenticate using the login screen', function () {
     $component
         ->assertHasNoErrors()
         ->assertRedirect(route('dashboard', absolute: false));
+
+    $this->assertAuthenticated();
+});
+
+test('cashier users are redirected to checkout after login', function () {
+    $user = User::factory()->create(['role' => 'cashier']);
+
+    $component = Volt::test('pages.auth.login')
+        ->set('form.email', $user->email)
+        ->set('form.password', 'password');
+
+    $component->call('login');
+
+    $component
+        ->assertHasNoErrors()
+        ->assertRedirect(route('cashier.checkout', absolute: false));
 
     $this->assertAuthenticated();
 });
