@@ -1,10 +1,10 @@
-<div class="p-4 sm:p-6 space-y-6">
+<div class="p-4 sm:p-6 space-y-6" x-data>
     {{-- Hero Section --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color: #5cbfaa;">Admin Panel</p>
             <h1 class="text-2xl font-bold" style="color: #e8e4dc;">User Management</h1>
-            <p class="text-sm mt-1" style="color: #6a6560;">Manage users and their account information.</p>
+            <p class="text-sm mt-1" style="color: #6a6560;">Manage system users, roles, and account access.</p>
         </div>
         <button wire:click="create" class="btn-primary">
             <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
         <div class="rounded-2xl p-5 transition-all duration-300" style="background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06);">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium" style="color: #6a6560;">Regular Users</p>
+                    <p class="text-sm font-medium" style="color: #6a6560;">Cashiers</p>
                     <p class="text-2xl font-bold mt-1" style="color: #e8e4dc;">{{ $regularCount }}</p>
                 </div>
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: rgba(61,139,139,0.1); border: 1px solid rgba(61,139,139,0.1);">
@@ -101,7 +101,7 @@
                             <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">ID</th>
                             <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">User</th>
                             <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">Email</th>
-                            <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">Status</th>
+                            <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">Role</th>
                             <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">Created</th>
                             <th class="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #6a6560;">Actions</th>
                         </tr>
@@ -152,12 +152,11 @@
                                             Edit
                                         </button>
                                         <button
-                                            wire:click="delete({{ $user->id }})"
+                                            @click.prevent="$dispatch('confirm-delete', { id: {{ $user->id }}, title: 'Delete User?', message: 'Are you sure you want to delete this user? This action cannot be undone.' })"
                                             class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
                                             style="background: rgba(255,255,255,0.04); color: #c0bbb0; border: 1px solid rgba(255,255,255,0.06);"
                                             onmouseover="this.style.background='rgba(180,50,50,0.12)'; this.style.color='#f0a0a0'; this.style.borderColor='rgba(180,50,50,0.15)';"
                                             onmouseout="this.style.background='rgba(255,255,255,0.04)'; this.style.color='#c0bbb0'; this.style.borderColor='rgba(255,255,255,0.06)';"
-                                            onclick="return confirm('Delete this user?')"
                                             @if ($user->id === auth()->id()) disabled style="opacity: 0.4; cursor: not-allowed;" @endif
                                         >Delete</button>
                                     </div>
@@ -203,44 +202,62 @@
                         </button>
                     </div>
 
-                    <form wire:submit.prevent="save" class="space-y-4">
+                    <form wire:submit.prevent="save" class="space-y-5">
+                        {{-- Section: Account Information --}}
                         <div>
-                            <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Name *</label>
-                            <input type="text" wire:model="name" class="input-field w-full" required>
-                            @error('name') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                            <p class="text-[11px] font-semibold uppercase tracking-widest mb-3" style="color: #5cbfaa;">Account Information</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Name *</label>
+                                    <input type="text" wire:model="name" class="input-field w-full" required>
+                                    @error('name') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Email *</label>
+                                    <input type="email" wire:model="email" class="input-field w-full" required>
+                                    @error('email') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
                         </div>
 
+                        {{-- Section: Security --}}
                         <div>
-                            <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Email *</label>
-                            <input type="email" wire:model="email" class="input-field w-full" required>
-                            @error('email') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                            <p class="text-[11px] font-semibold uppercase tracking-widest mb-3" style="color: #5cbfaa;">Security</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">
+                                        Password {{ $editingUser ? '(leave blank to keep current)' : '*' }}
+                                    </label>
+                                    <input type="password" wire:model="password" class="input-field w-full" @if (!$editingUser) required @endif>
+                                    @error('password') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Confirm Password</label>
+                                    <input type="password" wire:model="password_confirmation" class="input-field w-full" @if (!$editingUser) required @endif>
+                                </div>
+                            </div>
                         </div>
 
+                        {{-- Section: Access & Commission --}}
                         <div>
-                            <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">
-                                Password {{ $editingUser ? '(leave blank to keep current)' : '*' }}
-                            </label>
-                            <input type="password" wire:model="password" class="input-field w-full" @if (!$editingUser) required @endif>
-                            @error('password') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
-                        </div>
+                            <p class="text-[11px] font-semibold uppercase tracking-widest mb-3" style="color: #5cbfaa;">Access & Commission</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Role *</label>
+                                    <select wire:model="role" class="input-field w-full" required>
+                                        <option value="cashier">Cashier</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
 
-                        <div>
-                            <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Confirm Password</label>
-                            <input type="password" wire:model="password_confirmation" class="input-field w-full" @if (!$editingUser) required @endif>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Role *</label>
-                            <select wire:model="role" class="input-field w-full" required>
-                                <option value="cashier">Cashier</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Commission Rate (%) *</label>
-                            <input type="number" step="0.01" min="0" max="100" wire:model="commission_rate" class="input-field w-full" required>
-                            @error('commission_rate') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                                <div>
+                                    <label class="block text-sm font-medium mb-1.5" style="color: #8a8580;">Commission Rate (%) *</label>
+                                    <input type="number" step="0.01" min="0" max="100" wire:model="commission_rate" class="input-field w-full" required>
+                                    @error('commission_rate') <p class="mt-1.5 text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <div class="flex justify-end gap-3 pt-2" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem;">
@@ -254,4 +271,6 @@
             </div>
         </div>
     @endif
+
+    <x-confirm-delete-modal />
 </div>

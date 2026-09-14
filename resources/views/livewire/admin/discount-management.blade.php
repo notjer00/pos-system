@@ -1,4 +1,4 @@
-<div class="flex h-[calc(100vh-4rem)] flex-col overflow-hidden">
+<div class="flex h-[calc(100vh-4rem)] flex-col overflow-hidden" x-data>
 
     {{-- ── Top Bar ────────────────────────────────────────── --}}
     <div class="flex items-center justify-between border-b border-border px-6 py-3">
@@ -140,10 +140,9 @@
                                                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                                             </button>
                                             <button
-                                                wire:click="delete({{ $discount->id }})"
+                                                @click.prevent="$dispatch('confirm-delete', { id: {{ $discount->id }}, title: 'Delete Discount?', message: 'Are you sure you want to delete this discount? This action cannot be undone.' })"
                                                 class="btn-icon-sm text-muted-foreground hover:text-destructive"
                                                 title="Delete"
-                                                onclick="return confirm('Delete this discount? This cannot be undone.')"
                                             >
                                                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                                             </button>
@@ -334,4 +333,6 @@
             </form>
         </div>
     @endif
+
+    <x-confirm-delete-modal />
 </div>
