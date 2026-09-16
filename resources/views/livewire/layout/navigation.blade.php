@@ -127,27 +127,6 @@ new class extends Component
                     </svg>
                     Transactions
                 </a>
-
-                <a href="{{ route('admin.inbox') }}" wire:navigate
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
-                   @if (request()->routeIs('admin.inbox'))
-                       style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #e8e4dc;"
-                   @else
-                       style="color: #8a8580; border: 1px solid transparent;"
-                       onmouseover="this.style.background='rgba(255,255,255,0.04)'; this.style.color='#e8e4dc'; this.style.borderColor='rgba(255,255,255,0.06)';"
-                       onmouseout="this.style.background=''; this.style.color='#8a8580'; this.style.borderColor='transparent';"
-                   @endif
-                >
-                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                    </svg>
-                    Messages
-                    @if (auth()->user()->unreadMessagesCount() > 0)
-                        <span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full" style="background: rgba(180,50,50,0.3); color: #f0a0a0; border: 1px solid rgba(180,50,50,0.2);">
-                            {{ auth()->user()->unreadMessagesCount() }}
-                        </span>
-                    @endif
-                </a>
             @endif
 
             @if (auth()->user()->isCashier())
@@ -181,27 +160,6 @@ new class extends Component
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                     </svg>
                     My Transactions
-                </a>
-
-                <a href="{{ route('cashier.inbox') }}" wire:navigate
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
-                   @if (request()->routeIs('cashier.inbox'))
-                       style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #e8e4dc;"
-                   @else
-                       style="color: #8a8580; border: 1px solid transparent;"
-                       onmouseover="this.style.background='rgba(255,255,255,0.04)'; this.style.color='#e8e4dc'; this.style.borderColor='rgba(255,255,255,0.06)';"
-                       onmouseout="this.style.background=''; this.style.color='#8a8580'; this.style.borderColor='transparent';"
-                   @endif
-                >
-                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                    </svg>
-                    Messages
-                    @if (auth()->user()->unreadMessagesCount() > 0)
-                        <span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full" style="background: rgba(180,50,50,0.3); color: #f0a0a0; border: 1px solid rgba(180,50,50,0.2);">
-                            {{ auth()->user()->unreadMessagesCount() }}
-                        </span>
-                    @endif
                 </a>
             @endif
         </nav>
@@ -342,22 +300,6 @@ new class extends Component
                     </svg>
                     Transactions
                 </a>
-                <a href="{{ route('admin.inbox') }}" wire:navigate @click="mobileOpen = false"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
-                   @if (request()->routeIs('admin.inbox'))
-                       style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #e8e4dc;"
-                   @else
-                       style="color: #8a8580; border: 1px solid transparent;"
-                   @endif
-                >
-                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                    </svg>
-                    Messages
-                    @if (auth()->user()->unreadMessagesCount() > 0)
-                        <span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full" style="background: rgba(180,50,50,0.3); color: #f0a0a0; border: 1px solid rgba(180,50,50,0.2);">{{ auth()->user()->unreadMessagesCount() }}</span>
-                    @endif
-                </a>
             @endif
 
             @if (auth()->user()->isCashier())
@@ -386,22 +328,6 @@ new class extends Component
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                     </svg>
                     My Transactions
-                </a>
-                <a href="{{ route('cashier.inbox') }}" wire:navigate @click="mobileOpen = false"
-                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
-                   @if (request()->routeIs('cashier.inbox'))
-                       style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #e8e4dc;"
-                   @else
-                       style="color: #8a8580; border: 1px solid transparent;"
-                   @endif
-                >
-                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                    </svg>
-                    Messages
-                    @if (auth()->user()->unreadMessagesCount() > 0)
-                        <span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full" style="background: rgba(180,50,50,0.3); color: #f0a0a0; border: 1px solid rgba(180,50,50,0.2);">{{ auth()->user()->unreadMessagesCount() }}</span>
-                    @endif
                 </a>
             @endif
         </nav>

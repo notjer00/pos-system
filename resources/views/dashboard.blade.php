@@ -176,27 +176,6 @@
                             <p class="text-xs" style="color: #6a6560;">View all sales history</p>
                         </div>
                     </a>
-
-                    <a href="{{ route('admin.inbox') }}" wire:navigate class="group flex items-center gap-4 rounded-2xl p-4 transition-all duration-300"
-                       style="background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06);"
-                       onmouseover="this.style.borderColor='rgba(200,155,60,0.15)'; this.style.boxShadow='0 4px 24px rgba(200,155,60,0.04)';"
-                       onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.boxShadow='none';">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 relative" style="background: rgba(200,155,60,0.08); border: 1px solid rgba(200,155,60,0.08);">
-                            <svg class="w-5 h-5" style="color: #d4b060;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                            @if (auth()->user()->unreadMessagesCount() > 0)
-                                <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold"
-                                      style="background: #c89b3c; color: #0d0f10;">
-                                    {{ auth()->user()->unreadMessagesCount() }}
-                                </span>
-                            @endif
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold" style="color: #e8e4dc;">Messages</p>
-                            <p class="text-xs" style="color: #6a6560;">Communicate with team</p>
-                        </div>
-                    </a>
                 </div>
             </div>
 
@@ -380,25 +359,6 @@
                         <div>
                             <p class="text-sm font-semibold" style="color: #e8e4dc;">Transactions</p>
                             <p class="text-xs" style="color: #6a6560;">View today's sales</p>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('cashier.inbox') }}" wire:navigate class="group flex items-center gap-4 rounded-2xl p-4 transition-all duration-300"
-                       style="background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06);">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center relative" style="background: rgba(200,155,60,0.08); border: 1px solid rgba(200,155,60,0.08);">
-                            <svg class="w-5 h-5" style="color: #d4b060;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                            @if (auth()->user()->unreadMessagesCount() > 0)
-                                <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold"
-                                      style="background: #c89b3c; color: #0d0f10;">
-                                    {{ auth()->user()->unreadMessagesCount() }}
-                                </span>
-                            @endif
-                        </div>
-                        <div>
-                            <p class="text-sm font-semibold" style="color: #e8e4dc;">Messages</p>
-                            <p class="text-xs" style="color: #6a6560;">Contact admin</p>
                         </div>
                     </a>
                 </div>

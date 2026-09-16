@@ -8,7 +8,6 @@ use App\Livewire\Admin\TransactionHistory;
 use App\Livewire\Admin\UserManagement;
 use App\Livewire\Cashier\Checkout;
 use App\Livewire\Cashier\RecentTransactions;
-use App\Livewire\Inbox;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +21,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('admin/reports', ReportDashboard::class)->name('admin.reports');
         Route::get('admin/users', UserManagement::class)->name('admin.users');
         Route::get('admin/transactions', TransactionHistory::class)->name('admin.transactions');
-        Route::get('admin/inbox', Inbox::class)->name('admin.inbox');
 
         Route::get('admin/reports/export/{filename}', function (string $filename) {
             $path = storage_path("app/{$filename}");
@@ -42,7 +40,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('role:cashier')->group(function () {
         Route::get('cashier/checkout', Checkout::class)->name('cashier.checkout');
         Route::get('cashier/transactions', RecentTransactions::class)->name('cashier.transactions');
-        Route::get('cashier/inbox', Inbox::class)->name('cashier.inbox');
     });
 });
 
