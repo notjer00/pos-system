@@ -60,7 +60,7 @@ test('users can not authenticate with invalid password', function () {
 });
 
 test('navigation menu can be rendered', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['role' => 'admin']);
 
     $this->actingAs($user);
 

@@ -13,15 +13,15 @@ test('password can be updated', function () {
 
     $component = Volt::test('profile.update-password-form')
         ->set('current_password', 'password')
-        ->set('password', 'new-password')
-        ->set('password_confirmation', 'new-password')
+        ->set('password', 'Password1')
+        ->set('password_confirmation', 'Password1')
         ->call('updatePassword');
 
     $component
         ->assertHasNoErrors()
         ->assertNoRedirect();
 
-    $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+    $this->assertTrue(Hash::check('Password1', $user->refresh()->password));
 });
 
 test('correct password must be provided to update password', function () {

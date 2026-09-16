@@ -56,6 +56,8 @@ class Product extends Model
                 $query->whereNull('ends_at')
                     ->orWhere('ends_at', '>=', now());
             })
+            ->orderByDesc('percentage')
+            ->orderByDesc('created_at')
             ->first();
 
         if ($productDiscount) {
@@ -74,6 +76,8 @@ class Product extends Model
                 $query->whereNull('ends_at')
                     ->orWhere('ends_at', '>=', now());
             })
+            ->orderByDesc('percentage')
+            ->orderByDesc('created_at')
             ->first();
     }
 

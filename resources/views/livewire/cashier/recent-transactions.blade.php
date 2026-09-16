@@ -118,7 +118,7 @@
     @endif
 
     {{-- Void Modal --}}
-    @if ($showVoidModal && $selectedTransaction)
+    <div x-show="$wire.showVoidModal" x-cloak style="display: none;" x-transition.opacity.duration.200ms>
         <div class="dialog-overlay" wire:click="closeModals"></div>
         <div class="dialog-content max-w-md">
             <div class="flex items-center justify-between mb-6">
@@ -130,21 +130,21 @@
                 </button>
             </div>
 
-            <form wire:submit.prevent="processVoid" class="space-y-4">
+            <div class="space-y-4">
                 {{-- Transaction Details --}}
                 <div class="rounded-xl p-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
                     <div class="space-y-2">
                         <div class="flex justify-between">
                             <span class="text-sm" style="color: #8a8580;">Transaction</span>
-                            <span class="text-sm font-medium" style="color: #e8e4dc;">#{{ $selectedTransaction->id }}</span>
+                            <span class="text-sm font-medium" style="color: #e8e4dc;">#{{ $selectedTransaction?->id }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm" style="color: #8a8580;">Time</span>
-                            <span class="text-sm font-medium" style="color: #e8e4dc;">{{ $selectedTransaction->created_at->format('H:i:s') }}</span>
+                            <span class="text-sm font-medium" style="color: #e8e4dc;">{{ $selectedTransaction?->created_at?->format('H:i:s') }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-sm" style="color: #8a8580;">Total</span>
-                            <span class="text-sm font-semibold" style="color: #e8e4dc;">₱{{ number_format($selectedTransaction->total_amount, 2) }}</span>
+                            <span class="text-sm font-semibold" style="color: #e8e4dc;">₱{{ number_format($selectedTransaction?->total_amount ?? 0, 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -165,14 +165,14 @@
                     <button type="button" wire:click="closeModals" class="btn-secondary">
                         Cancel
                     </button>
-                    <button type="submit" class="btn-warning">
+                    <button type="button" wire:click="processVoid" class="btn-warning">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Void Transaction
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
-    @endif
+    </div>
 </div>

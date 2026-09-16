@@ -23,7 +23,7 @@ new #[Layout('layouts.guest')] class extends Component
         $user = auth()->user();
         $redirectTo = $user->isAdmin() ? route('dashboard', absolute: false) : route('cashier.checkout', absolute: false);
 
-        $this->redirectIntended(default: $redirectTo, navigate: true);
+        $this->redirect($redirectTo, navigate: true);
     }
 }; ?>
 

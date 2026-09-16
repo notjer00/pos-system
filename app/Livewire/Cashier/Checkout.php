@@ -242,6 +242,8 @@ class Checkout extends Component
                         $query->whereNull('ends_at')
                             ->orWhere('ends_at', '>=', now());
                     })
+                    ->orderByDesc('percentage')
+                    ->orderByDesc('created_at')
                     ->first();
 
                 foreach ($this->cart as $item) {

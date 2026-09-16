@@ -85,7 +85,8 @@
                                             $isLowStock = $variant->isLowStock();
                                         @endphp
                                         <button
-                                            wire:click="selectProduct({{ $product->id }})"
+                                            type="button"
+                                            wire:click="addSelectedVariantToCart({{ $variant->id }})"
                                             class="{{ $isLowStock ? 'variant-btn-low-stock' : 'variant-btn' }}"
                                         >
                                             <div class="flex items-center justify-between w-full">
@@ -355,12 +356,21 @@
     {{-- ═══════════════════════════════════════════════════════ --}}
     {{-- ── Variant Picker Dialog ───────────────────────────── --}}
     {{-- ═══════════════════════════════════════════════════════ --}}
-    @if ($showVariantPicker && $selectedProduct)
+    <div x-show="$wire.showVariantPicker" x-cloak style="display: none;" x-transition.opacity.duration.200ms>
         <div class="dialog-overlay" wire:click="closeVariantPicker"></div>
-        <div class="dialog-content max-w-md">
+        <div
+            class="dialog-content max-w-md"
+            x-data
+            @click="
+                const btn = $event.target.closest('[data-variant-id]');
+                if (btn) {
+                    $wire.addSelectedVariantToCart(Number(btn.dataset.variantId));
+                }
+            "
+        >
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-semibold" style="color: #e8e4dc;">{{ $selectedProduct->name }}</h3>
+                    <h3 class="text-lg font-semibold" style="color: #e8e4dc;">{{ $selectedProduct?->name }}</h3>
                     <p class="mt-0.5 text-sm" style="color: #6a6560;">Select a variant to add to cart</p>
                 </div>
                 <button wire:click="closeVariantPicker" class="btn-icon" style="color: #6a6560;">
@@ -369,8 +379,8 @@
             </div>
 
             @php
-                $pickerDiscount = $selectedProduct->activeDiscount();
-                $pickerVariants = $selectedProduct->variants->filter(fn ($v) => $v->current_stock > 0);
+                $pickerDiscount = $selectedProduct?->activeDiscount();
+                $pickerVariants = $selectedProduct ? $selectedProduct->variants->filter(fn ($v) => $v->current_stock > 0) : collect();
             @endphp
 
             <div class="mt-5 grid grid-cols-2 gap-2 max-h-80 overflow-y-auto pr-1">
@@ -380,7 +390,8 @@
                         $pLow = $variant->isLowStock();
                     @endphp
                     <button
-                        wire:click="addSelectedVariantToCart({{ $variant->id }})"
+                        type="button"
+                        data-variant-id="{{ $variant->id }}"
                         class="{{ $pLow ? 'variant-btn-low-stock' : 'variant-btn' }} justify-between"
                     >
                         <div class="w-full space-y-0.5">
@@ -410,5 +421,5 @@
                 </button>
             </div>
         </div>
-    @endif
+    </div>
 </div>

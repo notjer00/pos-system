@@ -76,7 +76,7 @@ class ProductVariant extends Model
         // Ensure uniqueness by appending a counter if needed
         $counter = 1;
         $sku = $baseSku;
-        while (static::where('sku', $sku)->where('product_id', $this->product_id)->exists()) {
+        while (static::where('sku', $sku)->exists()) {
             $sku = $baseSku.'-'.$counter;
             $counter++;
         }

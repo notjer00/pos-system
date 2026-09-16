@@ -15,6 +15,8 @@ class TransactionReversalService
         $this->authorizeVoid($user);
 
         return DB::transaction(function () use ($transaction, $user, $note) {
+            $transaction = $transaction->newQuery()->lockForUpdate()->findOrFail($transaction->getKey());
+
             if (! $transaction->isCompleted()) {
                 throw ValidationException::withMessages([
                     'transaction' => 'Only completed transactions can be voided.',
@@ -57,6 +59,8 @@ class TransactionReversalService
         $this->authorizeRefund($user);
 
         return DB::transaction(function () use ($transaction, $user, $note) {
+            $transaction = $transaction->newQuery()->lockForUpdate()->findOrFail($transaction->getKey());
+
             if (! $transaction->isCompleted()) {
                 throw ValidationException::withMessages([
                     'transaction' => 'Only completed transactions can be refunded.',

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Exports\ReportExport;
 use App\Models\ProductVariant;
 use App\Traits\HasReportQueries;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,9 @@ class ReportDashboard extends Component
 
     public $reportType = 'sales';
 
-    public $exportFormat = 'pdf';
+    public $exportFormat = 'csv';
+
+    public ?string $downloadUrl = null;
 
     public function mount(): void
     {
@@ -46,7 +49,26 @@ class ReportDashboard extends Component
 
     public function exportReport(): void
     {
-        $this->dispatch('notify', message: "Exporting {$this->exportFormat} report... (Feature coming soon)");
+        $salesSummary = $this->getSalesSummary($this->dateFrom, $this->dateTo);
+        $bestSellers = $this->getBestSellers();
+        $commissionSummary = $this->getCommissionSummary($this->dateFrom, $this->dateTo);
+        $lowStockVariants = $this->getLowStockVariants();
+
+        $export = new ReportExport(
+            $salesSummary,
+            $bestSellers,
+            $commissionSummary,
+            $lowStockVariants,
+            $this->dateFrom,
+            $this->dateTo,
+        );
+
+        $filename = "report-{$this->dateFrom}-to-{$this->dateTo}.csv";
+        $path = storage_path("app/{$filename}");
+
+        $export->generateCsv($path);
+
+        $this->downloadUrl = route('admin.reports.export', $filename);
     }
 
     public function render()

@@ -17,6 +17,9 @@
 
         <!-- Styles -->
         @vite('resources/css/app.css')
+
+        <!-- Livewire Scripts -->
+        @livewireScripts
     </head>
     <body class="font-sans text-gray-900 antialiased">
         {{ $slot }}

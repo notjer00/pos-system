@@ -9,20 +9,34 @@ use App\Livewire\Admin\UserManagement;
 use App\Livewire\Cashier\Checkout;
 use App\Livewire\Cashier\RecentTransactions;
 use App\Livewire\Inbox;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', Dashboard::class)->name('dashboard');
-
     Route::middleware('role:admin')->group(function () {
+        Route::get('dashboard', Dashboard::class)->name('dashboard');
         Route::get('admin/products', ProductManagement::class)->name('admin.products');
         Route::get('admin/discounts', DiscountManagement::class)->name('admin.discounts');
         Route::get('admin/reports', ReportDashboard::class)->name('admin.reports');
         Route::get('admin/users', UserManagement::class)->name('admin.users');
         Route::get('admin/transactions', TransactionHistory::class)->name('admin.transactions');
         Route::get('admin/inbox', Inbox::class)->name('admin.inbox');
+
+        Route::get('admin/reports/export/{filename}', function (string $filename) {
+            $path = storage_path("app/{$filename}");
+
+            if (! file_exists($path)) {
+                abort(404);
+            }
+
+            return Response::streamDownload(function () use ($path) {
+                readfile($path);
+            }, $filename, [
+                'Content-Type' => 'text/csv',
+            ])->deleteFileAfterSend(true);
+        })->name('admin.reports.export');
     });
 
     Route::middleware('role:cashier')->group(function () {
