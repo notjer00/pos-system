@@ -17,23 +17,36 @@
             placeholder="Search products..."
             class="input-field w-full md:w-64"
         >
-        <select wire:model.live="filterCategory" class="input-field w-full md:w-44">
-            <option value="">All Categories</option>
-            @foreach ($this->availableCategories as $cat)
-                <option value="{{ $cat }}">{{ $cat }}</option>
-            @endforeach
-        </select>
-        <select wire:model.live="filterGender" class="input-field w-full md:w-36">
-            <option value="">All Genders</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="unisex">Unisex</option>
-        </select>
-        <select wire:model.live="filterStatus" class="input-field w-full md:w-36">
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-        </select>
+        <x-select
+            wire-model="filterCategory"
+            :value="$filterCategory"
+            :options="array_merge([['label' => 'All Categories', 'value' => '']], array_map(fn($cat) => ['label' => $cat, 'value' => $cat], $this->availableCategories))"
+            placeholder="All Categories"
+            class="w-full md:w-44"
+        />
+        <x-select
+            wire-model="filterGender"
+            :value="$filterGender"
+            :options="[
+                ['label' => 'All Genders', 'value' => ''],
+                ['label' => 'Male', 'value' => 'male'],
+                ['label' => 'Female', 'value' => 'female'],
+                ['label' => 'Unisex', 'value' => 'unisex'],
+            ]"
+            placeholder="All Genders"
+            class="w-full md:w-36"
+        />
+        <x-select
+            wire-model="filterStatus"
+            :value="$filterStatus"
+            :options="[
+                ['label' => 'All Status', 'value' => ''],
+                ['label' => 'Active', 'value' => 'active'],
+                ['label' => 'Inactive', 'value' => 'inactive'],
+            ]"
+            placeholder="All Status"
+            class="w-full md:w-36"
+        />
     </div>
 
     {{-- Products Table --}}
@@ -100,9 +113,22 @@
                                 </div>
                             </td>
                             <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="relative flex h-2 w-2 shrink-0">
+                                        @if ($product->is_active)
+                                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: #5cbfaa;"></span>
+                                            <span class="relative inline-flex rounded-full h-2 w-2" style="background: #5cbfaa;"></span>
+                                        @else
+                                            <span class="relative inline-flex rounded-full h-2 w-2" style="background: #6a6560;"></span>
+                                        @endif
+                                    </span>
+                                    <span class="text-xs font-medium" @if ($product->is_active) style="color: #5cbfaa;" @else style="color: #6a6560;" @endif>
+                                        {{ $product->is_active ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </div>
                                 <button
                                     wire:click="toggleActive({{ $product->id }})"
-                                    class="toggle-switch {{ $product->is_active ? 'active' : '' }}"
+                                    class="toggle-switch {{ $product->is_active ? 'active' : '' }} mt-1.5"
                                 >
                                     <span class="toggle-switch-knob"></span>
                                 </button>
@@ -265,20 +291,30 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-foreground mb-1">Gender *</label>
-                            <select wire:model="gender" class="input-field w-full">
-                                <option value="unisex">Unisex</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
+                            <x-select
+                                wire-model="gender"
+                                :value="$gender"
+                                :options="[
+                                    ['label' => 'Unisex', 'value' => 'unisex'],
+                                    ['label' => 'Male', 'value' => 'male'],
+                                    ['label' => 'Female', 'value' => 'female'],
+                                ]"
+                                placeholder="Select gender"
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-foreground mb-1">Size System *</label>
-                            <select wire:model.live="size_system" class="input-field w-full">
-                                <option value="apparel">Apparel (XS - XXL)</option>
-                                <option value="us_footwear">US Footwear (4 - 14)</option>
-                                <option value="eu_footwear">EU Footwear (35 - 48)</option>
-                                <option value="uk_footwear">UK Footwear (3 - 13)</option>
-                            </select>
+                            <x-select
+                                wire-model="size_system"
+                                :value="$size_system"
+                                :options="[
+                                    ['label' => 'Apparel (XS - XXL)', 'value' => 'apparel'],
+                                    ['label' => 'US Footwear (4 - 14)', 'value' => 'us_footwear'],
+                                    ['label' => 'EU Footwear (35 - 48)', 'value' => 'eu_footwear'],
+                                    ['label' => 'UK Footwear (3 - 13)', 'value' => 'uk_footwear'],
+                                ]"
+                                placeholder="Select size system"
+                            />
                         </div>
                         <div class="flex items-end gap-3">
                             <label class="flex items-center gap-2 cursor-pointer">
@@ -317,35 +353,35 @@
                                 @if ($this->isFootwear())
                                     <div>
                                         <label class="block text-xs font-medium text-muted-foreground mb-1">Size *</label>
-                                        <select wire:model="variants.{{ $index }}.footwear_size" class="input-field w-full text-sm">
-                                            <option value="">-</option>
-                                            @foreach ($this->getCurrentSizeOptions() as $size)
-                                                <option value="{{ $size }}">{{ $size }}</option>
-                                            @endforeach
-                                        </select>
+                                        <x-select
+                                            wire-model="variants.{{ $index }}.footwear_size"
+                                            :value="$variant['footwear_size'] ?? ''"
+                                            :options="array_merge([['label' => '-', 'value' => '']], array_map(fn($s) => ['label' => $s, 'value' => $s], $this->getCurrentSizeOptions()))"
+                                            placeholder="-"
+                                        />
                                         <input type="hidden" wire:model="variants.{{ $index }}.size">
                                     </div>
                                 @else
                                     <div>
                                         <label class="block text-xs font-medium text-muted-foreground mb-1">Size *</label>
-                                        <select wire:model="variants.{{ $index }}.size" class="input-field w-full text-sm">
-                                            <option value="">-</option>
-                                            @foreach ($this->getCurrentSizeOptions() as $size)
-                                                <option value="{{ $size }}">{{ $size }}</option>
-                                            @endforeach
-                                        </select>
+                                        <x-select
+                                            wire-model="variants.{{ $index }}.size"
+                                            :value="$variant['size'] ?? ''"
+                                            :options="array_merge([['label' => '-', 'value' => '']], array_map(fn($s) => ['label' => $s, 'value' => $s], $this->getCurrentSizeOptions()))"
+                                            placeholder="-"
+                                        />
                                         <input type="hidden" wire:model="variants.{{ $index }}.footwear_size">
                                     </div>
                                 @endif
 
                                 <div>
                                     <label class="block text-xs font-medium text-muted-foreground mb-1">Color *</label>
-                                    <select wire:model="variants.{{ $index }}.color" class="input-field w-full text-sm">
-                                        <option value="">-</option>
-                                        @foreach ($this->availableColors as $color)
-                                            <option value="{{ $color }}">{{ $color }}</option>
-                                        @endforeach
-                                    </select>
+                                    <x-select
+                                        wire-model="variants.{{ $index }}.color"
+                                        :value="$variant['color'] ?? ''"
+                                        :options="array_merge([['label' => '-', 'value' => '']], array_map(fn($c) => ['label' => $c, 'value' => $c], $this->availableColors))"
+                                        placeholder="-"
+                                    />
                                 </div>
 
                                 <div>

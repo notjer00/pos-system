@@ -25,12 +25,17 @@
             {{-- Status Filter --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-medium" style="color: #8a8580;">Status</label>
-                <select wire:model.live="statusFilter" class="input-field w-40">
-                    <option value="all">All Statuses</option>
-                    <option value="completed">Completed</option>
-                    <option value="voided">Voided</option>
-                    <option value="refunded">Refunded</option>
-                </select>
+                <x-select
+                    wire-model="statusFilter"
+                    :value="$statusFilter"
+                    :options="[
+                        ['label' => 'All Statuses', 'value' => 'all'],
+                        ['label' => 'Completed', 'value' => 'completed'],
+                        ['label' => 'Voided', 'value' => 'voided'],
+                        ['label' => 'Refunded', 'value' => 'refunded'],
+                    ]"
+                    placeholder="All Statuses"
+                />
             </div>
 
             {{-- Search --}}
