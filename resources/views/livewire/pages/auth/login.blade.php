@@ -32,45 +32,33 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Left Hero Column (Branding & Logo) -->
     <div class="relative w-full lg:w-[46%] xl:w-[44%] min-h-[320px] lg:min-h-screen flex flex-col justify-between p-6 sm:p-10 lg:p-12 text-white z-10 lg:overflow-visible animate-fade-in"
          style="background: #0a0c0e;">
-        <!-- Background Glow & Giant Watermark Container -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <!-- Subtle emerald ambient glow -->
-            <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full" style="background: radial-gradient(circle, rgba(45,133,112,0.1) 0%, transparent 70%); filter: blur(60px);"></div>
-            <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full" style="background: radial-gradient(circle, rgba(61,139,139,0.06) 0%, transparent 70%); filter: blur(60px);"></div>
-
-            <!-- Giant background seal watermark -->
-            <div class="absolute -bottom-20 -left-24 w-[460px] h-[460px] lg:w-[540px] lg:h-[540px] opacity-[0.05] select-none pointer-events-none animate-spin-slower">
-                <img src="{{ asset('images/logo.png') }}" class="w-full h-full object-contain filter brightness-200" alt="" />
-            </div>
-        </div>
+        <!-- Background -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
         <!-- Top-left Small Logo Header -->
         <div class="relative z-10 flex items-center gap-3 animate-fade-in-up">
-            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center" style="background: rgba(45,133,112,0.15); border: 1px solid rgba(45,133,112,0.2);">
-                <img src="{{ asset('images/logo.png') }}" alt="Tribu Pakaras Logo" class="h-7 w-7 sm:h-8 sm:w-8 object-contain" />
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center" style="background: rgba(212,160,80,0.15); border: 1px solid rgba(212,160,80,0.2);">
+                <img src="{{ asset('images/ELEVATION.jpg.jpg') }}" alt="Elevation Logo" class="h-7 w-7 sm:h-8 sm:w-8 object-contain" />
             </div>
         </div>
 
         <!-- Center Content: Main Brand Circular Emblem & Portal Title -->
         <div class="relative z-10 flex flex-col items-center justify-center my-auto py-8 sm:py-12 text-center">
-            <div class="relative">
-                <div class="absolute -inset-2 rounded-full" style="background: radial-gradient(circle, rgba(45,133,112,0.12) 0%, transparent 70%); filter: blur(20px);"></div>
-                <div class="animate-logo-float">
-                    <img
-                        src="{{ asset('images/logo.png') }}"
-                        alt="Tribu Pakaras"
-                        class="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain drop-shadow-2xl rounded-full transition-transform hover:scale-105 duration-300"
-                    />
-                </div>
+            <div>
+                <img
+                    src="{{ asset('images/ELEVATION.jpg.jpg') }}"
+                    alt="Elevation"
+                    class="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain drop-shadow-xl transition-transform hover:scale-105 duration-200"
+                />
             </div>
 
             <h1 class="mt-6 sm:mt-8 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wider uppercase drop-shadow-md animate-fade-in-up [animation-delay:0.15s]"
-                style="color: #e8e4dc;">
-                TRIBU PAKARAS
+                style="color: #e0dcd4;">
+                ELEVATION
             </h1>
             <p class="mt-2 text-sm sm:text-base lg:text-lg font-medium tracking-wide animate-fade-in-up [animation-delay:0.3s]"
-               style="color: #5cbfaa;">
-                ASIS - POS Portal
+               style="color: #d4a050;">
+                POS Portal
             </p>
         </div>
 
@@ -80,7 +68,7 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Layered Organic Curve Divider (Visible on Desktop lg:) -->
         <div class="hidden lg:block absolute top-0 bottom-0 -right-20 xl:-right-28 w-20 xl:w-28 pointer-events-none z-20 overflow-visible">
             <svg class="h-full w-full" viewBox="0 0 100 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,0 Q120,480 30,1000 L0,1000 Z" fill="#1a2a25" opacity="0.5" />
+                <path d="M0,0 Q120,480 30,1000 L0,1000 Z" fill="#1a1510" opacity="0.5" />
                 <path d="M0,0 Q105,480 15,1000 L0,1000 Z" fill="#0a0c0e" />
             </svg>
         </div>
@@ -92,7 +80,7 @@ new #[Layout('layouts.guest')] class extends Component
         <div class="w-full max-w-[420px] mx-auto animate-fade-in-up [animation-delay:0.35s]">
             <!-- Form Title -->
             <h2 class="text-3xl font-extrabold tracking-tight mb-8 animate-fade-in-up [animation-delay:0.45s]"
-                style="color: #e8e4dc;">
+                style="color: #e0dcd4;">
                 Sign In
             </h2>
 
@@ -132,10 +120,7 @@ new #[Layout('layouts.guest')] class extends Component
                         <button
                             type="button"
                             @click="show = !show"
-                            class="absolute inset-y-0 right-0 flex items-center px-3.5 transition cursor-pointer"
-                            style="color: #6a6560;"
-                            onmouseover="this.style.color='#c0bbb0';"
-                            onmouseout="this.style.color='#6a6560';"
+                            class="login-icon-btn"
                             tabindex="-1"
                             title="Toggle password visibility"
                         >
@@ -160,7 +145,7 @@ new #[Layout('layouts.guest')] class extends Component
                               style="border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04);"
                               x-data="{ checked: false }"
                               x-init="checked = $refs.rememberInput?.checked || false"
-                              :style="checked ? 'background: #1a6b5a; border-color: #1a6b5a;' : ''"
+                              :style="checked ? 'background: #c89b3c; border-color: #c89b3c;' : ''"
                         >
                             <input
                                 wire:model="form.remember"
@@ -175,16 +160,13 @@ new #[Layout('layouts.guest')] class extends Component
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
                         </span>
-                        <span class="text-xs sm:text-sm" style="color: #8a8580;">{{ __('Remember Me') }}</span>
+                        <span class="text-xs sm:text-sm" style="color: #706860;">{{ __('Remember Me') }}</span>
                     </label>
 
                     @if (Route::has('password.request'))
                         <a
                             href="{{ route('password.request') }}"
-                            class="text-xs sm:text-sm transition font-normal"
-                            style="color: #6a6560;"
-                            onmouseover="this.style.color='#5cbfaa';"
-                            onmouseout="this.style.color='#6a6560';"
+                            class="login-link"
                             wire:navigate
                         >
                             {{ __('Forgot Password?') }}
@@ -210,8 +192,8 @@ new #[Layout('layouts.guest')] class extends Component
 
             <!-- Bottom Powered By Note -->
             <div class="mt-12 text-center animate-fade-in-up [animation-delay:1s]">
-                <p class="text-xs italic font-medium tracking-wide" style="color: rgba(92,191,170,0.6);">
-                    {{ __('Powered by Tribu Pakaras POS') }}
+                <p class="text-xs italic font-medium tracking-wide" style="color: rgba(212,160,80,0.6);">
+                    {{ __('Powered by Elevation POS') }}
                 </p>
             </div>
         </div>

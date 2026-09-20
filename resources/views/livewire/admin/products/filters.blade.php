@@ -1,4 +1,4 @@
-<div class="mb-6 flex flex-wrap gap-3">
+<div class="flex flex-wrap items-center gap-3">
     <input
         type="text"
         wire:model.live.debounce.300ms="search"

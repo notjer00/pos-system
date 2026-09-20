@@ -5,11 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Tribu Pakaras POS') }}</title>
+        <title>{{ config('app.name', 'Elevation POS') }}</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.png" type="image/png">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" href="/images/ELEVATION.jpg.jpg?v=2" type="image/jpeg">
+        <link rel="apple-touch-icon" href="/images/ELEVATION.jpg.jpg" type="image/jpeg">
 
         <!-- Fonts -->
         
@@ -22,7 +21,7 @@
         <!-- Livewire Scripts -->
         @livewireScripts
     </head>
-    <body class="font-sans text-gray-900 antialiased">
+    <body class="font-sans antialiased" style="background: #0d0f10; color: #e0dcd4;">
         {{ $slot }}
     </body>
 </html>

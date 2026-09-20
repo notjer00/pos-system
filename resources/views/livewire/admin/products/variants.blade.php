@@ -1,60 +1,62 @@
 ﻿<tr>
-    <td colspan="7" class="px-4 py-0">
+    <td colspan="7" style="padding: 0;">
         <div class="py-3 pl-8">
             @if ($product->variants->count() > 0)
-                <div class="border border-border rounded-lg overflow-hidden">
-                    <table class="min-w-full divide-y divide-border">
+                <div class="card overflow-hidden">
+                    <table class="min-w-full pm-subtable">
                         <thead>
-                            <tr class="bg-muted/30">
-                                <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Variant</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">SKU</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Stock</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Threshold</th>
-                                <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Status</th>
-                                <th class="px-3 py-2 text-right text-xs font-medium text-muted-foreground">Adjust</th>
+                            <tr>
+                                <th>Variant</th>
+                                <th>SKU</th>
+                                <th>Stock</th>
+                                <th>Threshold</th>
+                                <th>Status</th>
+                                <th class="text-right">Adjust</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-border">
+                        <tbody>
                             @foreach ($product->variants as $variant)
                                 @php
                                     $isLow = $variant->current_stock <= $variant->low_stock_threshold;
                                     $maxForBar = max($variant->low_stock_threshold * 3, $variant->current_stock, 1);
                                     $stockPercent = min(($variant->current_stock / $maxForBar) * 100, 100);
                                 @endphp
-                                <tr class="hover:bg-muted/20">
-                                    <td class="px-3 py-2 text-sm text-foreground font-medium">{{ $variant->getVariantDisplayName() }}</td>
-                                    <td class="px-3 py-2 text-xs text-muted-foreground font-mono">{{ $variant->sku }}</td>
-                                    <td class="px-3 py-2">
+                                <tr>
+                                    <td class="font-medium" style="color: #e0dcd4;">{{ $variant->getVariantDisplayName() }}</td>
+                                    <td class="font-mono text-xs" style="color: #706860;">{{ $variant->sku }}</td>
+                                    <td>
                                         <div class="flex items-center gap-2">
-                                            <div class="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+                                            <div class="pm-stock-bar">
                                                 <div
-                                                    class="h-full rounded-full transition-all {{ $isLow ? 'bg-destructive' : 'bg-success' }}"
+                                                    class="pm-stock-bar-fill {{ $isLow ? 'pm-stock-danger' : 'pm-stock-ok' }}"
                                                     style="width: {{ $stockPercent }}%"
                                                 ></div>
                                             </div>
-                                            <span class="text-sm {{ $isLow ? 'text-destructive font-medium' : 'text-foreground' }}">{{ $variant->current_stock }}</span>
+                                            <span class="{{ $isLow ? 'font-medium' : '' }}" style="{{ $isLow ? 'color: #f0a0a0;' : 'color: #e0dcd4;' }}">{{ $variant->current_stock }}</span>
                                         </div>
                                     </td>
-                                    <td class="px-3 py-2 text-sm text-muted-foreground">{{ $variant->low_stock_threshold }}</td>
-                                    <td class="px-3 py-2">
+                                    <td style="color: #807870;">{{ $variant->low_stock_threshold }}</td>
+                                    <td>
                                         @if ($isLow)
-                                            <span class="badge badge-destructive">Low Stock</span>
+                                            <span class="badge-destructive">Low Stock</span>
                                         @else
-                                            <span class="badge badge-success">OK</span>
+                                            <span class="badge-success">OK</span>
                                         @endif
                                     </td>
-                                    <td class="px-3 py-2">
+                                    <td>
                                         <div class="flex items-center justify-end gap-1">
                                             <button
                                                 wire:click="quickUpdateStock({{ $variant->id }}, -1)"
-                                                class="btn-ghost btn-icon-sm text-xs w-6 h-6"
+                                                class="btn-ghost btn-icon-sm"
+                                                style="width: 1.5rem; height: 1.5rem;"
                                                 @if ($variant->current_stock <= 0) disabled @endif
                                             >
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
                                             </button>
                                             <button
                                                 wire:click="quickUpdateStock({{ $variant->id }}, 1)"
-                                                class="btn-ghost btn-icon-sm text-xs w-6 h-6"
+                                                class="btn-ghost btn-icon-sm"
+                                                style="width: 1.5rem; height: 1.5rem;"
                                             >
                                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                                             </button>
@@ -66,7 +68,7 @@
                     </table>
                 </div>
             @else
-                <p class="text-sm text-muted-foreground py-2">No variants yet. Click Edit to add variants.</p>
+                <p class="text-sm py-2" style="color: #706860;">No variants yet. Click Edit to add variants.</p>
             @endif
         </div>
     </td>

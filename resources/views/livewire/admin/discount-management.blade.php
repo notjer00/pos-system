@@ -1,16 +1,14 @@
 <div class="flex h-[calc(100vh-4rem)] flex-col overflow-hidden" x-data>
 
     {{-- ── Top Bar ────────────────────────────────────────── --}}
-    <div class="flex items-center justify-between border-b border-border px-6 py-3">
-        <div class="flex items-center gap-3">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-                <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            </div>
-            <h1 class="text-lg font-semibold text-foreground">Discount Management</h1>
+    <div class="flex items-center justify-between px-6 py-3" style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <div>
+            <h1 class="text-lg font-semibold" style="color: #e0dcd4;">Discounts</h1>
+            <p class="text-xs mt-0.5" style="color: #706860;">Manage discounts and promotions.</p>
         </div>
         <button wire:click="create" class="btn-primary">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-            Add Discount
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            Create Discount
         </button>
     </div>
 
@@ -18,9 +16,9 @@
     <div class="flex-1 overflow-y-auto p-6">
 
         {{-- Search --}}
-        <div class="mb-6">
+        <div class="mb-4">
             <div class="relative w-full md:w-96">
-                <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" style="color: #5a5550;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <input
                     type="text"
                     wire:model.live.debounce.300ms="search"
@@ -34,19 +32,19 @@
             {{-- ── Discount Table ───────────────────────────── --}}
             <div class="card overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="min-w-full dm-table">
                         <thead>
-                            <tr class="border-b border-border bg-muted/50">
-                                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Name</th>
-                                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Discount</th>
-                                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Scope</th>
-                                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Period</th>
-                                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Commission</th>
-                                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
-                                <th class="px-4 py-3 text-right font-medium text-muted-foreground">Actions</th>
+                            <tr>
+                                <th>Name</th>
+                                <th>Discount</th>
+                                <th>Scope</th>
+                                <th>Period</th>
+                                <th>Commission</th>
+                                <th>Status</th>
+                                <th class="text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-border">
+                        <tbody>
                             @foreach ($discounts as $discount)
                                 @php
                                     $isStoreWide = is_null($discount->product_id);
@@ -54,35 +52,35 @@
                                     $isScheduled = $discount->is_active && !$isActive;
                                     $isExpired = !$discount->is_active && $discount->ends_at && $discount->ends_at->isPast();
                                 @endphp
-                                <tr class="transition-colors hover:bg-muted/30">
+                                <tr>
                                     {{-- Name --}}
-                                    <td class="px-4 py-3">
-                                        <span class="font-medium text-foreground">{{ $discount->name }}</span>
+                                    <td>
+                                        <span class="font-medium" style="color: #e0dcd4;">{{ $discount->name }}</span>
                                     </td>
 
                                     {{-- Percentage --}}
-                                    <td class="px-4 py-3">
-                                        <span class="text-lg font-bold tabular-nums text-primary">{{ $discount->percentage }}%</span>
+                                    <td>
+                                        <span class="text-lg font-bold tabular-nums" style="color: #d4a850;">{{ $discount->percentage }}%</span>
                                     </td>
 
                                     {{-- Scope Badge --}}
-                                    <td class="px-4 py-3">
+                                    <td>
                                         @if ($isStoreWide)
                                             <span class="badge-primary gap-1">
-                                                <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                                                 Store-wide
                                             </span>
                                         @else
                                             <span class="badge-secondary gap-1">
-                                                <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
                                                 {{ $discount->product->name ?? 'Deleted product' }}
                                             </span>
                                         @endif
                                     </td>
 
                                     {{-- Period --}}
-                                    <td class="px-4 py-3">
-                                        <div class="text-xs text-muted-foreground">
+                                    <td>
+                                        <div class="text-xs" style="color: #706860;">
                                             @if ($discount->starts_at || $discount->ends_at)
                                                 <span>{{ $discount->starts_at?->format('M d') ?? 'Start' }}</span>
                                                 <span class="mx-1">→</span>
@@ -94,7 +92,7 @@
                                     </td>
 
                                     {{-- Commission Impact --}}
-                                    <td class="px-4 py-3">
+                                    <td>
                                         @php
                                             $cashiers = \App\Models\User::where('role', 'cashier')->where('commission_rate', '>', 0)->get();
                                         @endphp
@@ -105,16 +103,16 @@
                                                 $loss = round($samplePrice * ($discount->percentage / 100) * ($rate / 100), 2);
                                             @endphp
                                             <span class="badge-warning text-[10px] gap-1">
-                                                <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                                -₱{{ number_format($loss, 2) }}/item
+                                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                                -&#8369;{{ number_format($loss, 2) }}/item
                                             </span>
                                         @else
-                                            <span class="text-xs text-muted-foreground">N/A</span>
+                                            <span class="text-xs" style="color: #706860;">N/A</span>
                                         @endif
                                     </td>
 
                                     {{-- Status Toggle --}}
-                                    <td class="px-4 py-3">
+                                    <td>
                                         <div class="flex items-center gap-2">
                                             <button
                                                 wire:click="toggleActive({{ $discount->id }})"
@@ -123,7 +121,11 @@
                                                 <span class="toggle-switch-bg"></span>
                                                 <span class="toggle-switch-knob"></span>
                                             </button>
-                                            <span class="text-xs font-medium {{ $isActive ? 'text-success' : ($isScheduled ? 'text-warning' : ($isExpired ? 'text-muted-foreground' : 'text-muted-foreground')) }}">
+                                            <span class="text-xs font-medium"
+                                                @if ($isActive) style="color: #5cc980;"
+                                                @elseif ($isScheduled) style="color: #d4b060;"
+                                                @else style="color: #706860;"
+                                                @endif>
                                                 @if ($isActive) Active
                                                 @elseif ($isScheduled) Scheduled
                                                 @elseif ($isExpired) Expired
@@ -134,17 +136,18 @@
                                     </td>
 
                                     {{-- Actions --}}
-                                    <td class="px-4 py-3 text-right">
+                                    <td class="text-right">
                                         <div class="flex items-center justify-end gap-1">
-                                            <button wire:click="edit({{ $discount->id }})" class="btn-icon-sm text-muted-foreground hover:text-foreground" title="Edit">
-                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                            <button wire:click="edit({{ $discount->id }})" class="btn-ghost btn-icon-sm" title="Edit">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                                             </button>
                                             <button
                                                 @click.prevent="$dispatch('confirm-delete', { id: {{ $discount->id }}, title: 'Delete Discount?', message: 'Are you sure you want to delete this discount? This action cannot be undone.' })"
-                                                class="btn-icon-sm text-muted-foreground hover:text-destructive"
+                                                class="btn-ghost btn-icon-sm"
+                                                style="color: #f0a0a0;"
                                                 title="Delete"
                                             >
-                                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                                             </button>
                                         </div>
                                     </td>
@@ -156,21 +159,21 @@
 
                 {{-- Pagination --}}
                 @if ($discounts->hasPages())
-                    <div class="border-t border-border px-4 py-3">
+                    <div class="px-4 py-3" style="border-top: 1px solid rgba(255,255,255,0.06);">
                         {{ $discounts->links() }}
                     </div>
                 @endif
             </div>
         @else
             {{-- ── Empty State ──────────────────────────────── --}}
-            <div class="card flex flex-col items-center justify-center py-16 text-center">
-                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                    <svg class="h-8 w-8 text-muted-foreground/60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <div class="dm-empty card">
+                <div class="dm-empty-icon">
+                    <svg class="h-7 w-7" style="color: #5a5550;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
                 </div>
-                <h3 class="mt-4 text-sm font-semibold text-foreground">No discounts yet</h3>
-                <p class="mt-1 text-sm text-muted-foreground">Create a discount to offer promotions to customers.</p>
-                <button wire:click="create" class="btn-primary mt-4">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                <h3 class="text-sm font-medium" style="color: #e0dcd4;">No discounts yet</h3>
+                <p class="text-xs mt-1" style="color: #706860;">Create a discount to offer promotions to customers.</p>
+                <button wire:click="create" class="mt-4 btn-primary">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                     Create Discount
                 </button>
             </div>
@@ -183,21 +186,21 @@
     @if ($showModal)
         <div class="dialog-overlay" wire:click="closeModal"></div>
         <div class="dialog-content max-w-2xl">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-foreground">
+            <div class="flex items-center justify-between pb-4" style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <h3 class="text-base font-semibold" style="color: #e0dcd4;">
                     {{ $editingDiscount ? 'Edit Discount' : 'Create Discount' }}
                 </h3>
-                <button wire:click="closeModal" class="btn-icon text-muted-foreground">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <button wire:click="closeModal" class="btn-ghost btn-icon-sm">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
 
-            <form wire:submit.prevent="save" class="mt-6 space-y-5">
+            <form wire:submit.prevent="save" class="pt-4 space-y-5">
 
                 {{-- Name + Percentage --}}
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div class="space-y-1.5">
-                        <label for="discount-name" class="text-sm font-medium text-foreground">Name *</label>
+                        <label for="discount-name" class="block text-[13px] font-medium" style="color: #a09890;">Name *</label>
                         <input
                             type="text"
                             id="discount-name"
@@ -206,10 +209,10 @@
                             placeholder="e.g. Summer Sale"
                             required
                         >
-                        @error('name') <p class="text-xs text-destructive">{{ $message }}</p> @enderror
+                        @error('name') <p class="text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
                     </div>
                     <div class="space-y-1.5">
-                        <label for="discount-pct" class="text-sm font-medium text-foreground">Percentage *</label>
+                        <label for="discount-pct" class="block text-[13px] font-medium" style="color: #a09890;">Percentage *</label>
                         <div class="relative">
                             <input
                                 type="number"
@@ -224,22 +227,22 @@
                             >
                             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
                         </div>
-                        @error('percentage') <p class="text-xs text-destructive">{{ $message }}</p> @enderror
+                        @error('percentage') <p class="text-xs" style="color: #f0a0a0;">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
                 {{-- Scope: Product Selector --}}
                 <div class="space-y-2">
-                    <label for="discount-product" class="text-sm font-medium text-foreground">Scope</label>
+                    <label for="discount-product" class="block text-[13px] font-medium" style="color: #a09890;">Scope</label>
                     <x-select
                         wire-model="product_id"
                         :value="$product_id"
-                        :options="array_merge([['label' => 'Store-wide: applies to all products', 'value' => '']], array_map(fn($p) => ['label' => $p->name . ': ₱' . number_format($p->base_price, 2), 'value' => $p->id], $products))"
+                        :options="array_merge([['label' => 'Store-wide: applies to all products', 'value' => '']], array_map(fn($p) => ['label' => $p->name . ': &#8369;' . number_format($p->base_price, 2), 'value' => $p->id], $products))"
                         placeholder="Store-wide: applies to all products"
                     />
                     @if (empty($product_id))
-                        <div class="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        <div class="flex items-center gap-1.5 text-xs" style="color: #706860;">
+                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                             <span>Leave blank to apply store-wide. Select a product to limit this discount to one item.</span>
                         </div>
                     @endif
@@ -256,15 +259,15 @@
                         <span class="toggle-switch-knob"></span>
                     </button>
                     <div>
-                        <span class="text-sm font-medium text-foreground">{{ $is_active ? 'Active' : 'Inactive' }}</span>
-                        <span class="text-xs text-muted-foreground ml-1">{{ $is_active ? 'Discount is live' : 'Discount is paused' }}</span>
+                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $is_active ? 'Active' : 'Inactive' }}</span>
+                        <span class="text-xs ml-1" style="color: #706860;">{{ $is_active ? 'Discount is live' : 'Discount is paused' }}</span>
                     </div>
                 </div>
 
                 {{-- Date Range --}}
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div class="space-y-1.5">
-                        <label for="discount-starts" class="text-sm font-medium text-foreground">Starts At</label>
+                        <label for="discount-starts" class="block text-[13px] font-medium" style="color: #a09890;">Starts At</label>
                         <input
                             type="datetime-local"
                             id="discount-starts"
@@ -273,7 +276,7 @@
                         >
                     </div>
                     <div class="space-y-1.5">
-                        <label for="discount-ends" class="text-sm font-medium text-foreground">Ends At</label>
+                        <label for="discount-ends" class="block text-[13px] font-medium" style="color: #a09890;">Ends At</label>
                         <input
                             type="datetime-local"
                             id="discount-ends"
@@ -285,30 +288,30 @@
 
                 {{-- Commission Impact Preview --}}
                 @if ($commissionPreview && count($commissionPreview) > 0)
-                    <div class="rounded-lg border border-warning/30 bg-warning/5 p-4 space-y-3">
+                    <div class="dm-commission-preview">
                         <div class="flex items-center gap-2">
-                            <svg class="h-4 w-4 text-warning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span class="text-sm font-semibold text-foreground">Commission Impact</span>
+                            <svg class="h-4 w-4" style="color: #d4b060;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span class="text-sm font-semibold" style="color: #e0dcd4;">Commission Impact</span>
                             <span class="badge-warning text-[10px]">{{ $percentage }}% discount</span>
                         </div>
-                        <div class="text-xs text-muted-foreground">
+                        <div class="text-xs" style="color: #706860;">
                             How this {{ empty($product_id) ? 'store-wide' : 'product' }} discount affects cashier commissions:
                         </div>
                         <div class="space-y-2">
                             @foreach ($commissionPreview as $preview)
-                                <div class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                                <div class="dm-commission-row">
                                     <div class="flex items-center gap-2">
-                                        <div class="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-[10px] font-semibold text-muted-foreground">
+                                        <div class="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold" style="background: rgba(255,255,255,0.06); color: #a09890;">
                                             {{ strtoupper(substr($preview['cashier_name'], 0, 1)) }}
                                         </div>
-                                        <span class="text-sm font-medium text-foreground">{{ $preview['cashier_name'] }}</span>
-                                        <span class="text-xs text-muted-foreground">({{ $preview['commission_rate'] }}%)</span>
+                                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $preview['cashier_name'] }}</span>
+                                        <span class="text-xs" style="color: #706860;">({{ $preview['commission_rate'] }}%)</span>
                                     </div>
                                     <div class="flex items-center gap-3 text-sm tabular-nums">
-                                        <span class="text-muted-foreground">₱{{ number_format($preview['base_commission'], 2) }}</span>
-                                        <svg class="h-3 w-3 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                                        <span class="font-semibold text-warning">₱{{ number_format($preview['discounted_commission'], 2) }}</span>
-                                        <span class="text-xs text-destructive">-₱{{ number_format($preview['commission_loss'], 2) }}</span>
+                                        <span style="color: #807870;">&#8369;{{ number_format($preview['base_commission'], 2) }}</span>
+                                        <svg class="h-3 w-3" style="color: #706860;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                        <span class="font-semibold" style="color: #d4b060;">&#8369;{{ number_format($preview['discounted_commission'], 2) }}</span>
+                                        <span class="text-xs" style="color: #f0a0a0;">-&#8369;{{ number_format($preview['commission_loss'], 2) }}</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -317,12 +320,12 @@
                 @endif
 
                 {{-- Actions --}}
-                <div class="flex justify-end gap-3 border-t border-border pt-4">
+                <div class="flex justify-end gap-3 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
                     <button type="button" wire:click="closeModal" class="btn-secondary">
                         Cancel
                     </button>
                     <button type="submit" class="btn-primary">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
                         {{ $editingDiscount ? 'Update Discount' : 'Create Discount' }}
                     </button>
                 </div>

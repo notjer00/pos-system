@@ -21,7 +21,7 @@ export default function AuthSimpleLayout({
                                 <AppLogoIcon className="size-10 fill-current text-background" />
                             </div>
                             <span className="text-xl font-bold tracking-tight text-foreground">
-                                Tribu Pakaras
+                                ELEVATION
                             </span>
                         </Link>
 
