@@ -47,12 +47,16 @@
 
                             {{-- Product Section --}}
                             <div class="rounded-xl p-4" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);">
-                                {{-- Product Header --}}
-                                <div class="flex items-center justify-between mb-3">
-                                    <div class="flex items-center gap-3">
+                            {{-- Product Header --}}
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    @if ($product->image_path)
+                                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="flex h-10 w-10 items-center justify-center rounded-lg object-cover border" style="border-color: rgba(255,255,255,0.06);">
+                                    @else
                                         <div class="flex h-10 w-10 items-center justify-center rounded-lg" style="background: rgba(45,133,112,0.1); border: 1px solid rgba(45,133,112,0.15);">
                                             <svg class="h-5 w-5" style="color: #5cbfaa;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
                                         </div>
+                                    @endif
                                         <div>
                                             <div class="flex items-center gap-2">
                                                 <h3 class="text-sm font-semibold" style="color: #e8e4dc;">{{ $product->name }}</h3>
@@ -169,10 +173,14 @@
                                 x-data
                                 x-init="$watch('$wire.cart', () => { if ({{ $index }} === $wire.cart.length - 1) { flashId = {{ $index }}; setTimeout(() => flashId = null, 400); } })"
                             >
-                                {{-- Item Image Placeholder --}}
-                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);">
-                                    <svg class="h-4 w-4" style="color: #6a6560;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                                </div>
+                                {{-- Item Image --}}
+                                @if (!empty($item['image_path']))
+                                    <img src="{{ asset('storage/' . $item['image_path']) }}" alt="{{ $item['product_name'] }}" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg object-cover border" style="border-color: rgba(255,255,255,0.06);">
+                                @else
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);">
+                                        <svg class="h-4 w-4" style="color: #6a6560;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                                    </div>
+                                @endif
 
                                 {{-- Item Details --}}
                                 <div class="min-w-0 flex-1">

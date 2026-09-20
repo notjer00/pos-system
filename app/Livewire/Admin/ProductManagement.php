@@ -5,15 +5,17 @@ namespace App\Livewire\Admin;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class ProductManagement extends Component
 {
-    use WithPagination;
+    use WithFileUploads, WithPagination;
 
     public $search = '';
 
@@ -37,6 +39,10 @@ class ProductManagement extends Component
 
     public $unit = 'Piece';
 
+    public $image = null;
+
+    public $removeExistingImage = false;
+
     public $is_active = true;
 
     public $variants = [];
@@ -55,6 +61,8 @@ class ProductManagement extends Component
         $this->category = '';
         $this->brand = '';
         $this->unit = 'Piece';
+        $this->image = null;
+        $this->removeExistingImage = false;
         $this->is_active = true;
         $this->variants = [
             ['variant_name' => '', 'current_stock' => 0, 'low_stock_threshold' => 5, 'sku' => ''],
@@ -71,6 +79,15 @@ class ProductManagement extends Component
             ->sort()
             ->values()
             ->toArray();
+    }
+
+    #[Computed]
+    public function categoryFilterOptions(): array
+    {
+        return array_merge(
+            [['label' => 'All Categories', 'value' => '']],
+            array_map(fn ($cat) => ['label' => $cat, 'value' => $cat], $this->availableCategories)
+        );
     }
 
     public function toggleExpand(int $productId): void
@@ -120,6 +137,8 @@ class ProductManagement extends Component
         $this->category = $product->category;
         $this->brand = $product->brand;
         $this->unit = $product->unit ?? 'Piece';
+        $this->image = null;
+        $this->removeExistingImage = false;
         $this->is_active = $product->is_active;
         $this->variants = $product->variants->map(function ($variant) {
             return [
@@ -141,6 +160,7 @@ class ProductManagement extends Component
             'category' => 'nullable|string|max:255',
             'brand' => 'nullable|string|max:255',
             'unit' => 'required|string|max:50',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'is_active' => 'boolean',
             'variants' => 'required|array|min:1',
             'variants.*.variant_name' => 'required|string|max:255',
@@ -153,13 +173,34 @@ class ProductManagement extends Component
         $isNewProduct = ! $this->editingProduct;
 
         DB::transaction(function () use ($validated, $isNewProduct) {
+            $imagePath = null;
+
             if (! $isNewProduct) {
+                $oldImagePath = $this->editingProduct->image_path;
+
+                if ($this->removeExistingImage) {
+                    $imagePath = null;
+                    if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
+                        Storage::disk('public')->delete($oldImagePath);
+                    }
+                } else {
+                    $imagePath = $oldImagePath;
+                }
+
+                if ($this->image) {
+                    $imagePath = $this->image->store('products', 'public');
+                    if ($oldImagePath && $oldImagePath !== $imagePath && Storage::disk('public')->exists($oldImagePath)) {
+                        Storage::disk('public')->delete($oldImagePath);
+                    }
+                }
+
                 $this->editingProduct->update([
                     'name' => $validated['name'],
                     'base_price' => $validated['base_price'],
                     'category' => $validated['category'],
                     'brand' => $validated['brand'],
                     'unit' => $validated['unit'],
+                    'image_path' => $imagePath,
                     'is_active' => $validated['is_active'],
                 ]);
 
@@ -168,12 +209,17 @@ class ProductManagement extends Component
                 $toDelete = array_diff($existingVariantIds, $submittedVariantIds);
                 ProductVariant::whereIn('id', $toDelete)->delete();
             } else {
+                if ($this->image) {
+                    $imagePath = $this->image->store('products', 'public');
+                }
+
                 $this->editingProduct = Product::create([
                     'name' => $validated['name'],
                     'base_price' => $validated['base_price'],
                     'category' => $validated['category'],
                     'brand' => $validated['brand'],
                     'unit' => $validated['unit'],
+                    'image_path' => $imagePath,
                     'is_active' => $validated['is_active'],
                 ]);
             }
@@ -209,6 +255,9 @@ class ProductManagement extends Component
 
     public function delete(Product $product): void
     {
+        if ($product->image_path && Storage::disk('public')->exists($product->image_path)) {
+            Storage::disk('public')->delete($product->image_path);
+        }
         $product->delete();
         $this->dispatch('refreshProducts');
         $this->dispatch('notify', message: 'Product deleted successfully!');

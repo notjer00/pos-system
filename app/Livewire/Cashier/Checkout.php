@@ -86,6 +86,7 @@ class Checkout extends Component
                 'variant_id' => $variant->id,
                 'product_name' => $variant->product->name,
                 'variant_name' => $variant->getVariantDisplayName(),
+                'image_path' => $variant->product->image_path,
                 'base_price' => $variant->product->base_price,
                 'discount_percentage' => $discountPercentage,
                 'final_price' => $finalPrice,

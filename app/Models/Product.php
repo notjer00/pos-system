@@ -22,6 +22,7 @@ class Product extends Model
         'category',
         'brand',
         'unit',
+        'image_path',
         'description',
         'is_active',
         'gender',
