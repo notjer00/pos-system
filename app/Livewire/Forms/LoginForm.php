@@ -30,14 +30,6 @@ class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        $user = \App\Models\User::where('email', $this->email)->first();
-
-        if ($user && ! $user->hasVerifiedEmail()) {
-            throw ValidationException::withMessages([
-                'form.email' => 'Please verify your email address before logging in. Check your inbox for the OTP code.',
-            ]);
-        }
-
         if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 

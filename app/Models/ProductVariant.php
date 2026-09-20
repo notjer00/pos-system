@@ -21,6 +21,7 @@ class ProductVariant extends Model
 
     protected $fillable = [
         'product_id',
+        'variant_name',
         'sku',
         'size',
         'footwear_size',
@@ -61,19 +62,27 @@ class ProductVariant extends Model
 
     public function getEffectiveSize(): string
     {
-        return $this->footwear_size ?? $this->size;
+        return $this->variant_name ?? $this->footwear_size ?? $this->size ?? '';
+    }
+
+    public function getVariantDisplayName(): string
+    {
+        return $this->variant_name ?? $this->getEffectiveSize();
     }
 
     public function generateSku(): string
     {
         $productCode = strtoupper(substr(preg_replace('/[^A-Z0-9]/', '', $this->product->name), 0, 6));
-        $colorCode = strtoupper(substr(preg_replace('/[^A-Z0-9]/', '', $this->color), 0, 3));
-        $genderCode = strtoupper(substr($this->product->gender, 0, 1));
-        $sizeValue = $this->getEffectiveSize();
+        $variantCode = strtoupper(substr(preg_replace('/[^A-Z0-9]/', '', $this->variant_name ?? ''), 0, 6));
 
-        $baseSku = sprintf('%s-%s-%s-%s', $productCode, $colorCode, $genderCode, $sizeValue);
+        if (empty($variantCode)) {
+            $colorCode = strtoupper(substr(preg_replace('/[^A-Z0-9]/', '', $this->color ?? ''), 0, 3));
+            $sizeValue = $this->getEffectiveSize();
+            $variantCode = trim("{$colorCode}-{$sizeValue}", '-');
+        }
 
-        // Ensure uniqueness by appending a counter if needed
+        $baseSku = sprintf('%s-%s', $productCode, $variantCode);
+
         $counter = 1;
         $sku = $baseSku;
         while (static::where('sku', $sku)->exists()) {

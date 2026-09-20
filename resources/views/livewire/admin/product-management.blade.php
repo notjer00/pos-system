@@ -20,21 +20,9 @@
         <x-select
             wire-model="filterCategory"
             :value="$filterCategory"
-            :options="array_merge([['label' => 'All Categories', 'value' => '']], array_map(fn($cat) => ['label' => $cat, 'value' => $cat], $this->availableCategories))"
+            :options="array_merge([['label' => 'All Categories', 'value' => '']], array_map(fn($cat) => ['label' => $cat, 'value' => $cat], $this->availableCategories)]"
             placeholder="All Categories"
             class="w-full md:w-44"
-        />
-        <x-select
-            wire-model="filterGender"
-            :value="$filterGender"
-            :options="[
-                ['label' => 'All Genders', 'value' => ''],
-                ['label' => 'Male', 'value' => 'male'],
-                ['label' => 'Female', 'value' => 'female'],
-                ['label' => 'Unisex', 'value' => 'unisex'],
-            ]"
-            placeholder="All Genders"
-            class="w-full md:w-36"
         />
         <x-select
             wire-model="filterStatus"
@@ -57,7 +45,6 @@
                     <tr class="bg-muted/50">
                         <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Product</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Gender</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Variants</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Stock</th>
@@ -83,18 +70,13 @@
                                     </button>
                                     <div>
                                         <div class="text-sm font-medium text-foreground">{{ $product->name }}</div>
-                                        @if ($product->description)
-                                            <div class="text-xs text-muted-foreground line-clamp-1 mt-0.5">{{ $product->description }}</div>
+                                        @if ($product->brand)
+                                            <div class="text-xs text-muted-foreground mt-0.5">{{ $product->brand }}</div>
                                         @endif
                                     </div>
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-sm text-muted-foreground">{{ $product->category ?? '-' }}</td>
-                            <td class="px-4 py-3">
-                                <span class="badge {{ match($product->gender) { 'male' => 'badge-primary', 'female' => 'badge-secondary', default => '' } }}">
-                                    {{ ucfirst($product->gender) }}
-                                </span>
-                            </td>
                             <td class="px-4 py-3 text-sm font-medium text-foreground">₱{{ number_format($product->base_price, 2) }}</td>
                             <td class="px-4 py-3 text-sm text-muted-foreground">{{ $product->variants->count() }}</td>
                             <td class="px-4 py-3">
@@ -156,15 +138,14 @@
                         {{-- Expanded Variants --}}
                         @if ($expandedProduct === $product->id)
                             <tr>
-                                <td colspan="8" class="px-4 py-0">
+                                <td colspan="7" class="px-4 py-0">
                                     <div class="py-3 pl-8">
                                         @if ($product->variants->count() > 0)
                                             <div class="border border-border rounded-lg overflow-hidden">
                                                 <table class="min-w-full divide-y divide-border">
                                                     <thead>
                                                         <tr class="bg-muted/30">
-                                                            <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Size</th>
-                                                            <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Color</th>
+                                                            <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Variant</th>
                                                             <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">SKU</th>
                                                             <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Stock</th>
                                                             <th class="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Threshold</th>
@@ -180,8 +161,7 @@
                                                                 $stockPercent = min(($variant->current_stock / $maxForBar) * 100, 100);
                                                             @endphp
                                                             <tr class="hover:bg-muted/20">
-                                                                <td class="px-3 py-2 text-sm text-foreground font-medium">{{ $variant->getEffectiveSize() }}</td>
-                                                                <td class="px-3 py-2 text-sm text-muted-foreground">{{ $variant->color }}</td>
+                                                                <td class="px-3 py-2 text-sm text-foreground font-medium">{{ $variant->getVariantDisplayName() }}</td>
                                                                 <td class="px-3 py-2 text-xs text-muted-foreground font-mono">{{ $variant->sku }}</td>
                                                                 <td class="px-3 py-2">
                                                                     <div class="flex items-center gap-2">
@@ -257,7 +237,7 @@
     {{-- Product Add/Edit Dialog --}}
     @if ($showModal)
         <div class="dialog-overlay" wire:click="closeModal">
-            <div class="dialog-content max-w-3xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="dialog-content max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
                 <div class="flex items-center justify-between p-4 border-b border-border">
                     <h3 class="text-lg font-semibold text-foreground">
                         {{ $editingProduct ? 'Edit Product' : 'Create Product' }}
@@ -290,30 +270,30 @@
                             </datalist>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-foreground mb-1">Gender *</label>
-                            <x-select
-                                wire-model="gender"
-                                :value="$gender"
-                                :options="[
-                                    ['label' => 'Unisex', 'value' => 'unisex'],
-                                    ['label' => 'Male', 'value' => 'male'],
-                                    ['label' => 'Female', 'value' => 'female'],
-                                ]"
-                                placeholder="Select gender"
-                            />
+                            <label class="block text-sm font-medium text-foreground mb-1">Brand</label>
+                            <input type="text" wire:model="brand" class="input-field w-full">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-foreground mb-1">Size System *</label>
+                            <label class="block text-sm font-medium text-foreground mb-1">Unit *</label>
                             <x-select
-                                wire-model="size_system"
-                                :value="$size_system"
+                                wire-model="unit"
+                                :value="$unit"
                                 :options="[
-                                    ['label' => 'Apparel (XS - XXL)', 'value' => 'apparel'],
-                                    ['label' => 'US Footwear (4 - 14)', 'value' => 'us_footwear'],
-                                    ['label' => 'EU Footwear (35 - 48)', 'value' => 'eu_footwear'],
-                                    ['label' => 'UK Footwear (3 - 13)', 'value' => 'uk_footwear'],
+                                    ['label' => 'Piece', 'value' => 'Piece'],
+                                    ['label' => 'Pack', 'value' => 'Pack'],
+                                    ['label' => 'Box', 'value' => 'Box'],
+                                    ['label' => 'Bottle', 'value' => 'Bottle'],
+                                    ['label' => 'Can', 'value' => 'Can'],
+                                    ['label' => 'Tub', 'value' => 'Tub'],
+                                    ['label' => 'Sachet', 'value' => 'Sachet'],
+                                    ['label' => 'Pair', 'value' => 'Pair'],
+                                    ['label' => 'Kilogram', 'value' => 'Kilogram'],
+                                    ['label' => 'Gram', 'value' => 'Gram'],
+                                    ['label' => 'Liter', 'value' => 'Liter'],
+                                    ['label' => 'Milliliter', 'value' => 'Milliliter'],
+                                    ['label' => 'Other', 'value' => 'Other'],
                                 ]"
-                                placeholder="Select size system"
+                                placeholder="Select unit"
                             />
                         </div>
                         <div class="flex items-end gap-3">
@@ -330,11 +310,6 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-foreground mb-1">Description</label>
-                        <textarea wire:model="description" rows="2" class="input-field w-full"></textarea>
-                    </div>
-
                     {{-- Variant Builder --}}
                     <div class="border-t border-border pt-4">
                         <div class="flex items-center justify-between mb-3">
@@ -347,41 +322,13 @@
                         @error('variants') <p class="mb-2 text-xs text-destructive">{{ $message }}</p> @enderror
 
                         @foreach ($variants as $index => $variant)
-                            <div class="grid grid-cols-2 md:grid-cols-7 gap-2 mb-2 p-3 bg-muted/30 rounded-lg border border-border">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 p-3 bg-muted/30 rounded-lg border border-border">
                                 <input type="hidden" wire:model="variants.{{ $index }}.id">
 
-                                @if ($this->isFootwear())
-                                    <div>
-                                        <label class="block text-xs font-medium text-muted-foreground mb-1">Size *</label>
-                                        <x-select
-                                            wire-model="variants.{{ $index }}.footwear_size"
-                                            :value="$variant['footwear_size'] ?? ''"
-                                            :options="array_merge([['label' => '-', 'value' => '']], array_map(fn($s) => ['label' => $s, 'value' => $s], $this->getCurrentSizeOptions()))"
-                                            placeholder="-"
-                                        />
-                                        <input type="hidden" wire:model="variants.{{ $index }}.size">
-                                    </div>
-                                @else
-                                    <div>
-                                        <label class="block text-xs font-medium text-muted-foreground mb-1">Size *</label>
-                                        <x-select
-                                            wire-model="variants.{{ $index }}.size"
-                                            :value="$variant['size'] ?? ''"
-                                            :options="array_merge([['label' => '-', 'value' => '']], array_map(fn($s) => ['label' => $s, 'value' => $s], $this->getCurrentSizeOptions()))"
-                                            placeholder="-"
-                                        />
-                                        <input type="hidden" wire:model="variants.{{ $index }}.footwear_size">
-                                    </div>
-                                @endif
-
-                                <div>
-                                    <label class="block text-xs font-medium text-muted-foreground mb-1">Color *</label>
-                                    <x-select
-                                        wire-model="variants.{{ $index }}.color"
-                                        :value="$variant['color'] ?? ''"
-                                        :options="array_merge([['label' => '-', 'value' => '']], array_map(fn($c) => ['label' => $c, 'value' => $c], $this->availableColors))"
-                                        placeholder="-"
-                                    />
+                                <div class="col-span-2 md:col-span-1">
+                                    <label class="block text-xs font-medium text-muted-foreground mb-1">Variant Name *</label>
+                                    <input type="text" wire:model="variants.{{ $index }}.variant_name" class="input-field w-full text-sm" placeholder="e.g. Chocolate / 60g">
+                                    @error("variants.{$index}.variant_name") <p class="mt-1 text-xs text-destructive">{{ $message }}</p> @enderror
                                 </div>
 
                                 <div>
@@ -399,7 +346,7 @@
                                     <input type="number" min="0" wire:model="variants.{{ $index }}.low_stock_threshold" class="input-field w-full text-sm">
                                 </div>
 
-                                <div class="flex items-end">
+                                <div class="col-span-2 md:col-span-4 flex justify-end">
                                     <button
                                         type="button"
                                         wire:click="removeVariant({{ $index }})"

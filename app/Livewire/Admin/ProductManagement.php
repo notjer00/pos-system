@@ -19,8 +19,6 @@ class ProductManagement extends Component
 
     public $filterCategory = '';
 
-    public $filterGender = '';
-
     public $filterStatus = '';
 
     public $expandedProduct = null;
@@ -35,19 +33,13 @@ class ProductManagement extends Component
 
     public $category = '';
 
-    public $description = '';
+    public $brand = '';
+
+    public $unit = 'Piece';
 
     public $is_active = true;
 
-    public $gender = 'unisex';
-
-    public $size_system = 'apparel';
-
     public $variants = [];
-
-    public $variantColors = ['Black', 'White', 'Gray', 'Navy', 'Blue', 'Red', 'Green', 'Pink', 'Yellow', 'Purple', 'Orange', 'Floral', 'Solid Blue'];
-
-    public $customColor = '';
 
     protected $listeners = ['refreshProducts' => '$refresh'];
 
@@ -61,15 +53,13 @@ class ProductManagement extends Component
         $this->name = '';
         $this->base_price = '';
         $this->category = '';
-        $this->description = '';
+        $this->brand = '';
+        $this->unit = 'Piece';
         $this->is_active = true;
-        $this->gender = 'unisex';
-        $this->size_system = 'apparel';
         $this->variants = [
-            ['size' => '', 'footwear_size' => '', 'color' => '', 'current_stock' => 0, 'low_stock_threshold' => 5, 'sku' => ''],
+            ['variant_name' => '', 'current_stock' => 0, 'low_stock_threshold' => 5, 'sku' => ''],
         ];
         $this->editingProduct = null;
-        $this->customColor = '';
     }
 
     #[Computed]
@@ -81,16 +71,6 @@ class ProductManagement extends Component
             ->sort()
             ->values()
             ->toArray();
-    }
-
-    #[Computed]
-    public function availableColors(): array
-    {
-        $usedColors = ProductVariant::distinct()
-            ->pluck('color')
-            ->toArray();
-
-        return array_unique(array_merge($this->variantColors, $usedColors));
     }
 
     public function toggleExpand(int $productId): void
@@ -113,18 +93,9 @@ class ProductManagement extends Component
         $this->dispatch('notify', message: 'Stock updated');
     }
 
-    public function addCustomColor(): void
-    {
-        $color = trim($this->customColor);
-        if ($color !== '' && ! in_array($color, $this->variantColors)) {
-            $this->variantColors[] = $color;
-        }
-        $this->customColor = '';
-    }
-
     public function addVariant(): void
     {
-        $this->variants[] = ['size' => '', 'footwear_size' => '', 'color' => '', 'current_stock' => 0, 'low_stock_threshold' => 5, 'sku' => ''];
+        $this->variants[] = ['variant_name' => '', 'current_stock' => 0, 'low_stock_threshold' => 5, 'sku' => ''];
     }
 
     public function removeVariant(int $index): void
@@ -147,34 +118,19 @@ class ProductManagement extends Component
         $this->name = $product->name;
         $this->base_price = $product->base_price;
         $this->category = $product->category;
-        $this->description = $product->description;
+        $this->brand = $product->brand;
+        $this->unit = $product->unit ?? 'Piece';
         $this->is_active = $product->is_active;
-        $this->gender = $product->gender;
-        $this->size_system = $product->size_system;
         $this->variants = $product->variants->map(function ($variant) {
             return [
                 'id' => $variant->id,
                 'sku' => $variant->sku,
-                'size' => $variant->size,
-                'footwear_size' => $variant->footwear_size,
-                'color' => $variant->color,
+                'variant_name' => $variant->variant_name,
                 'current_stock' => $variant->current_stock,
                 'low_stock_threshold' => $variant->low_stock_threshold,
             ];
         })->toArray();
         $this->showModal = true;
-    }
-
-    public function getCurrentSizeOptions(): array
-    {
-        $tempProduct = new Product(['size_system' => $this->size_system]);
-
-        return $tempProduct->getSizeOptions();
-    }
-
-    public function isFootwear(): bool
-    {
-        return in_array($this->size_system, ['us_footwear', 'eu_footwear', 'uk_footwear']);
     }
 
     public function save(): void
@@ -183,14 +139,11 @@ class ProductManagement extends Component
             'name' => 'required|string|max:255',
             'base_price' => 'required|numeric|min:0|max:999999.99',
             'category' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'brand' => 'nullable|string|max:255',
+            'unit' => 'required|string|max:50',
             'is_active' => 'boolean',
-            'gender' => 'required|in:male,female,unisex',
-            'size_system' => 'required|in:apparel,us_footwear,eu_footwear,uk_footwear',
             'variants' => 'required|array|min:1',
-            'variants.*.size' => $this->isFootwear() ? 'nullable|string|max:50' : 'required|string|max:50',
-            'variants.*.footwear_size' => $this->isFootwear() ? 'required|string|max:50' : 'nullable|string|max:50',
-            'variants.*.color' => 'required|string|max:50',
+            'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.current_stock' => 'required|integer|min:0',
             'variants.*.low_stock_threshold' => 'nullable|integer|min:0',
             'variants.*.sku' => 'nullable|string|max:50',
@@ -205,10 +158,9 @@ class ProductManagement extends Component
                     'name' => $validated['name'],
                     'base_price' => $validated['base_price'],
                     'category' => $validated['category'],
-                    'description' => $validated['description'],
+                    'brand' => $validated['brand'],
+                    'unit' => $validated['unit'],
                     'is_active' => $validated['is_active'],
-                    'gender' => $validated['gender'],
-                    'size_system' => $validated['size_system'],
                 ]);
 
                 $existingVariantIds = $this->editingProduct->variants->pluck('id')->toArray();
@@ -220,10 +172,9 @@ class ProductManagement extends Component
                     'name' => $validated['name'],
                     'base_price' => $validated['base_price'],
                     'category' => $validated['category'],
-                    'description' => $validated['description'],
+                    'brand' => $validated['brand'],
+                    'unit' => $validated['unit'],
                     'is_active' => $validated['is_active'],
-                    'gender' => $validated['gender'],
-                    'size_system' => $validated['size_system'],
                 ]);
             }
 
@@ -234,9 +185,7 @@ class ProductManagement extends Component
                 if (empty($variantData['sku'])) {
                     $tempVariant = new ProductVariant([
                         'product_id' => $this->editingProduct->id,
-                        'size' => $variantData['size'] ?? '',
-                        'footwear_size' => $variantData['footwear_size'] ?? '',
-                        'color' => $variantData['color'],
+                        'variant_name' => $variantData['variant_name'],
                     ]);
                     $tempVariant->setRelation('product', $this->editingProduct);
                     $variantData['sku'] = $tempVariant->generateSku();
@@ -282,13 +231,11 @@ class ProductManagement extends Component
         $products = Product::with('variants')
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', "%{$this->search}%")
-                    ->orWhere('category', 'like', "%{$this->search}%");
+                    ->orWhere('category', 'like', "%{$this->search}%")
+                    ->orWhere('brand', 'like', "%{$this->search}%");
             })
             ->when($this->filterCategory !== '', function ($query) {
                 $query->where('category', $this->filterCategory);
-            })
-            ->when($this->filterGender !== '', function ($query) {
-                $query->where('gender', $this->filterGender);
             })
             ->when($this->filterStatus !== '', function ($query) {
                 $query->where('is_active', $this->filterStatus === 'active');

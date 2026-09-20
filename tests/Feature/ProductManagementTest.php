@@ -16,29 +16,28 @@ test('admin can create product with variants via model', function () {
         'name' => 'Test Product',
         'base_price' => 29.99,
         'category' => 'Test',
-        'description' => 'Test description',
+        'brand' => 'Test Brand',
+        'unit' => 'Piece',
         'is_active' => true,
     ]);
 
     ProductVariant::create([
         'product_id' => $product->id,
-        'size' => 'M',
-        'color' => 'Blue',
+        'variant_name' => 'Large / Black',
         'current_stock' => 10,
         'low_stock_threshold' => 5,
     ]);
 
     ProductVariant::create([
         'product_id' => $product->id,
-        'size' => 'L',
-        'color' => 'Blue',
+        'variant_name' => 'Small / White',
         'current_stock' => 5,
         'low_stock_threshold' => 5,
     ]);
 
     $this->assertDatabaseHas('products', ['name' => 'Test Product']);
-    $this->assertDatabaseHas('product_variants', ['product_id' => $product->id, 'size' => 'M', 'color' => 'Blue']);
-    $this->assertDatabaseHas('product_variants', ['product_id' => $product->id, 'size' => 'L', 'color' => 'Blue']);
+    $this->assertDatabaseHas('product_variants', ['product_id' => $product->id, 'variant_name' => 'Large / Black']);
+    $this->assertDatabaseHas('product_variants', ['product_id' => $product->id, 'variant_name' => 'Small / White']);
 });
 
 test('cashier cannot access admin routes', function () {

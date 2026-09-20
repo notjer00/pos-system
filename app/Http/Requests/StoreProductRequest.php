@@ -17,11 +17,11 @@ class StoreProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'base_price' => ['required', 'numeric', 'min:0', 'max:999999.99'],
             'category' => ['nullable', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'brand' => ['nullable', 'string', 'max:255'],
+            'unit' => ['required', 'string', 'max:50'],
             'is_active' => ['boolean'],
             'variants' => ['required', 'array', 'min:1'],
-            'variants.*.size' => ['required', 'string', 'max:50'],
-            'variants.*.color' => ['required', 'string', 'max:50'],
+            'variants.*.variant_name' => ['required', 'string', 'max:255'],
             'variants.*.current_stock' => ['required', 'integer', 'min:0'],
             'variants.*.low_stock_threshold' => ['nullable', 'integer', 'min:0'],
         ];
@@ -32,8 +32,7 @@ class StoreProductRequest extends FormRequest
         return [
             'variants.required' => 'At least one variant is required.',
             'variants.min' => 'At least one variant is required.',
-            'variants.*.size.required' => 'Size is required for each variant.',
-            'variants.*.color.required' => 'Color is required for each variant.',
+            'variants.*.variant_name.required' => 'Variant name is required for each variant.',
             'variants.*.current_stock.required' => 'Stock quantity is required for each variant.',
             'variants.*.current_stock.min' => 'Stock cannot be negative.',
         ];

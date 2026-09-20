@@ -85,8 +85,7 @@ class Checkout extends Component
             $this->cart[] = [
                 'variant_id' => $variant->id,
                 'product_name' => $variant->product->name,
-                'size' => $variant->size,
-                'color' => $variant->color,
+                'variant_name' => $variant->getVariantDisplayName(),
                 'base_price' => $variant->product->base_price,
                 'discount_percentage' => $discountPercentage,
                 'final_price' => $finalPrice,
@@ -274,7 +273,7 @@ class Checkout extends Component
                     $variant = ProductVariant::lockForUpdate()->find($item['variant_id']);
 
                     if (! $variant || $variant->current_stock < $item['quantity']) {
-                        throw new \Exception("Insufficient stock for {$item['product_name']} ({$item['size']}/{$item['color']})");
+                        throw new \Exception("Insufficient stock for {$item['product_name']} ({$item['variant_name']})");
                     }
 
                     $variant->decrement('current_stock', $item['quantity']);

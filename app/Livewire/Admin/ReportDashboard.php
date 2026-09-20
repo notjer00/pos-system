@@ -23,8 +23,6 @@ class ReportDashboard extends Component
 
     public $exportFormat = 'csv';
 
-    public ?string $downloadUrl = null;
-
     public function mount(): void
     {
         $this->dateFrom = now()->subDays(30)->format('Y-m-d');
@@ -47,7 +45,7 @@ class ReportDashboard extends Component
             ->toArray();
     }
 
-    public function exportReport(): void
+    public function exportReport()
     {
         $salesSummary = $this->getSalesSummary($this->dateFrom, $this->dateTo);
         $bestSellers = $this->getBestSellers();
@@ -68,7 +66,9 @@ class ReportDashboard extends Component
 
         $export->generateCsv($path);
 
-        $this->downloadUrl = route('admin.reports.export', $filename);
+        return response()->download($path, $filename, [
+            'Content-Type' => 'text/csv',
+        ])->deleteFileAfterSend(true);
     }
 
     public function render()

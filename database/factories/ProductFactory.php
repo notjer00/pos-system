@@ -17,11 +17,10 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->unique()->words(3, true),
             'base_price' => fake()->randomFloat(2, 10, 200),
-            'category' => fake()->randomElement(['Tops', 'Bottoms', 'Outerwear', 'Dresses', 'Accessories', 'Footwear']),
-            'description' => fake()->sentence(),
+            'category' => fake()->randomElement(['Food', 'Beverage', 'Supplements', 'Clothing', 'Accessories', 'Household']),
+            'brand' => fake()->optional()->company(),
+            'unit' => fake()->randomElement(['Piece', 'Pack', 'Box', 'Bottle', 'Can', 'Tub', 'Pair', 'Kilogram']),
             'is_active' => true,
-            'gender' => fake()->randomElement(['male', 'female', 'unisex']),
-            'size_system' => fake()->randomElement(['apparel', 'us_footwear', 'eu_footwear', 'uk_footwear']),
         ];
     }
 }

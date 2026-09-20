@@ -71,9 +71,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if ($product->gender && $product->gender !== 'unisex')
-                                        <span class="badge text-[10px]">{{ ucfirst($product->gender) }}</span>
-                                    @endif
                                 </div>
 
                                 {{-- Variant Grid --}}
@@ -91,12 +88,11 @@
                                         >
                                             <div class="flex items-center justify-between w-full">
                                                 <div class="flex items-center gap-1.5">
-                                                    <span class="font-medium text-foreground">{{ $variant->getEffectiveSize() }}</span>
+                                                    <span class="font-medium text-foreground">{{ $variant->getVariantDisplayName() }}</span>
                                                     @if ($isLowStock)
                                                         <span class="h-1.5 w-1.5 rounded-full bg-destructive" title="Low stock"></span>
                                                     @endif
                                                 </div>
-                                                <span class="text-[10px]" style="color: #6a6560;">{{ $variant->color }}</span>
                                             </div>
                                             <div class="flex items-center justify-between w-full mt-1">
                                                 <span class="text-sm font-semibold {{ $variantDiscount ? 'text-primary' : 'text-foreground' }}">
@@ -187,9 +183,7 @@
                                         @endif
                                     </div>
                                     <div class="mt-0.5 flex items-center gap-1 text-xs" style="color: #6a6560;">
-                                        <span>{{ $item['size'] }}</span>
-                                        <span>·</span>
-                                        <span>{{ $item['color'] }}</span>
+                                        <span>{{ $item['variant_name'] }}</span>
                                     </div>
                                 </div>
 
@@ -396,12 +390,11 @@
                     >
                         <div class="w-full space-y-0.5">
                             <div class="flex items-center justify-between">
-                                <span class="font-medium text-foreground">{{ $variant->getEffectiveSize() }}</span>
+                                <span class="font-medium text-foreground">{{ $variant->getVariantDisplayName() }}</span>
                                 @if ($pLow)
                                     <span class="badge-destructive text-[9px] px-1 py-0">Low</span>
                                 @endif
                             </div>
-                            <div class="text-xs text-muted-foreground">{{ $variant->color }}</div>
                         </div>
                         <div class="flex items-center justify-between w-full">
                             <span class="text-sm font-semibold {{ $pickerDiscount ? 'text-primary' : 'text-foreground' }}">

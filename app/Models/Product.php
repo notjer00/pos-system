@@ -20,6 +20,8 @@ class Product extends Model
         'name',
         'base_price',
         'category',
+        'brand',
+        'unit',
         'description',
         'is_active',
         'gender',
@@ -29,8 +31,6 @@ class Product extends Model
     protected $casts = [
         'base_price' => 'decimal:2',
         'is_active' => 'boolean',
-        'gender' => 'string',
-        'size_system' => 'string',
     ];
 
     public function variants(): HasMany
@@ -45,7 +45,6 @@ class Product extends Model
 
     public function activeDiscount(): ?Discount
     {
-        // First check for product-specific active discount
         $productDiscount = $this->discounts()
             ->where('is_active', true)
             ->where(function ($query) {
@@ -64,7 +63,6 @@ class Product extends Model
             return $productDiscount;
         }
 
-        // Fall back to store-wide active discount (product_id IS NULL)
         return Discount::query()
             ->where('is_active', true)
             ->whereNull('product_id')
@@ -89,15 +87,5 @@ class Product extends Model
         }
 
         return $this->base_price;
-    }
-
-    public function getSizeOptions(): array
-    {
-        return match ($this->size_system) {
-            'us_footwear' => [4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 13, 14],
-            'eu_footwear' => range(35, 48),
-            'uk_footwear' => [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 13],
-            default => ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-        };
     }
 }

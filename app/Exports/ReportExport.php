@@ -56,7 +56,7 @@ class ReportExport
             fputcsv($file, [
                 $index + 1,
                 $seller['product']['name'] ?? 'N/A',
-                "{$seller['size']}/{$seller['color']}",
+                $seller['variant_name'] ?? ($seller['size'].'/'.$seller['color']),
                 $seller['total_sold'],
             ]);
         }
@@ -98,7 +98,7 @@ class ReportExport
         foreach ($this->lowStockVariants as $variant) {
             fputcsv($file, [
                 $variant['product']['name'],
-                "{$variant['size']}/{$variant['color']}",
+                $variant['variant_name'] ?? ($variant['size'].'/'.$variant['color']),
                 $variant['current_stock'],
                 $variant['low_stock_threshold'],
                 'Low Stock',

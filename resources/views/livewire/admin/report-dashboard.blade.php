@@ -1,4 +1,4 @@
-<div class="p-6 space-y-6" x-data="{ downloadUrl: @entangle('downloadUrl') }" x-effect="if (downloadUrl) { window.location.href = downloadUrl; $wire.set('downloadUrl', null); }">
+<div class="p-6 space-y-6">
 
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -14,18 +14,12 @@
             </div>
             <div class="flex items-center gap-2">
                 <label class="text-sm text-muted-foreground">Export:</label>
-                <x-select
-                    wire-model="exportFormat"
-                    :value="$exportFormat"
-                    :options="[
-                        ['label' => 'PDF', 'value' => 'pdf'],
-                        ['label' => 'Excel', 'value' => 'excel'],
-                    ]"
-                    placeholder="Select format"
-                />
-                <button wire:click="exportReport" class="btn-secondary">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Export
+                <span class="text-sm text-foreground px-3 py-1.5 rounded-lg bg-muted/50">CSV</span>
+                <button wire:click="exportReport" wire:loading.attr="disabled" wire:target="exportReport" class="btn-secondary">
+                    <svg wire:loading.remove wire:target="exportReport" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <svg wire:loading wire:target="exportReport" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span wire:loading wire:target="exportReport">Generating...</span>
+                    <span wire:loading.remove wire:target="exportReport">Export CSV</span>
                 </button>
             </div>
         </div>
@@ -90,7 +84,7 @@
                             <tr class="hover:bg-muted/30 transition-colors">
                                 <td class="px-5 py-3.5 text-sm font-medium text-muted-foreground">{{ $index + 1 }}</td>
                                 <td class="px-5 py-3.5 text-sm font-medium text-foreground">{{ $seller['product']['name'] ?? 'N/A' }}</td>
-                                <td class="px-5 py-3.5 text-sm text-muted-foreground">{{ $seller['size'] }}/{{ $seller['color'] }}</td>
+                                <td class="px-5 py-3.5 text-sm text-muted-foreground">{{ $seller['variant_name'] ?? $seller['size'] . '/' . $seller['color'] }}</td>
                                 <td class="px-5 py-3.5 text-sm font-semibold text-primary">{{ $seller['total_sold'] }}</td>
                             </tr>
                         @endforeach
@@ -186,7 +180,7 @@
                         @foreach ($lowStockVariants as $variant)
                             <tr class="hover:bg-muted/30 transition-colors">
                                 <td class="px-5 py-3.5 text-sm font-medium text-foreground">{{ $variant['product']['name'] }}</td>
-                                <td class="px-5 py-3.5 text-sm text-muted-foreground">{{ $variant['size'] }}/{{ $variant['color'] }}</td>
+                                <td class="px-5 py-3.5 text-sm text-muted-foreground">{{ $variant['variant_name'] ?? $variant['size'] . '/' . $variant['color'] }}</td>
                                 <td class="px-5 py-3.5 text-sm font-semibold text-destructive">{{ $variant['current_stock'] }}</td>
                                 <td class="px-5 py-3.5 text-sm text-muted-foreground">{{ $variant['low_stock_threshold'] }}</td>
                                 <td class="px-5 py-3.5">

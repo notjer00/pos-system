@@ -136,7 +136,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-foreground">{{ $variant['product']['name'] }}</p>
-                                    <p class="text-xs text-muted-foreground">{{ $variant['size'] ?? $variant['footwear_size'] }} / {{ $variant['color'] }}</p>
+                                    <p class="text-xs text-muted-foreground">{{ $variant['variant_name'] ?? ($variant['size'] ?? $variant['footwear_size'] ?? '') . ' / ' . ($variant['color'] ?? '') }}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-sm font-bold text-destructive">{{ $variant['current_stock'] }}</p>
