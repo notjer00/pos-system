@@ -51,10 +51,10 @@
                             <div class="flex items-center justify-between mb-3">
                                 <div class="flex items-center gap-3">
                                     @if ($product->image_path)
-                                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="flex h-10 w-10 items-center justify-center rounded-lg object-cover border" style="border-color: rgba(255,255,255,0.06);">
+                                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl object-cover border" style="border-color: rgba(255,255,255,0.06);">
                                     @else
-                                        <div class="flex h-10 w-10 items-center justify-center rounded-lg" style="background: rgba(45,133,112,0.1); border: 1px solid rgba(45,133,112,0.15);">
-                                            <svg class="h-5 w-5" style="color: #5cbfaa;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                                        <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl" style="background: rgba(45,133,112,0.1); border: 1px solid rgba(45,133,112,0.15);">
+                                            <svg class="h-10 w-10" style="color: #5cbfaa;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
                                         </div>
                                     @endif
                                         <div>
@@ -90,20 +90,18 @@
                                             wire:click="addSelectedVariantToCart({{ $variant->id }})"
                                             class="{{ $isLowStock ? 'variant-btn-low-stock' : 'variant-btn' }}"
                                         >
-                                            <div class="flex items-center justify-between w-full">
-                                                <div class="flex items-center gap-1.5">
-                                                    <span class="font-medium text-foreground">{{ $variant->getVariantDisplayName() }}</span>
-                                                    @if ($isLowStock)
-                                                        <span class="h-1.5 w-1.5 rounded-full bg-destructive" title="Low stock"></span>
-                                                    @endif
-                                                </div>
+                                            <div class="flex items-center justify-between w-full gap-1">
+                                                <span class="font-medium text-foreground truncate">{{ $variant->getVariantDisplayName() }}</span>
+                                                @if ($isLowStock)
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-destructive shrink-0" title="Low stock"></span>
+                                                @endif
                                             </div>
-                                            <div class="flex items-center justify-between w-full mt-1">
-                                                <span class="text-sm font-semibold {{ $variantDiscount ? 'text-primary' : 'text-foreground' }}">
+                                            <div class="flex items-baseline gap-1.5 w-full mt-1">
+                                                <span class="text-sm font-semibold shrink-0 {{ $variantDiscount ? 'text-primary' : 'text-foreground' }}">
                                                     ₱{{ number_format($variantFinalPrice, 2) }}
                                                 </span>
                                                 @if ($variantDiscount)
-                                                    <span class="text-[10px] line-through" style="color: #6a6560;">₱{{ number_format($variant->product->base_price, 2) }}</span>
+                                                    <span class="text-[10px] line-through truncate" style="color: #6a6560;">₱{{ number_format($variant->product->base_price, 2) }}</span>
                                                 @endif
                                             </div>
                                             <div class="w-full mt-1.5">

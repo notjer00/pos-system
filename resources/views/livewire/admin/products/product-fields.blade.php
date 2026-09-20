@@ -72,8 +72,9 @@
             <button
                 type="button"
                 wire:click="$set('is_active', {{ $is_active ? 'false' : 'true' }})"
-                class="toggle-switch {{ $is_active ? 'active' : '' }}"
+                class="toggle-switch {{ $is_active ? 'is-on' : '' }}"
             >
+                <span class="toggle-switch-bg"></span>
                 <span class="toggle-switch-knob"></span>
             </button>
             <span class="text-sm text-foreground">{{ $is_active ? 'Active' : 'Inactive' }}</span>

@@ -231,16 +231,12 @@
                 {{-- Scope: Product Selector --}}
                 <div class="space-y-2">
                     <label for="discount-product" class="text-sm font-medium text-foreground">Scope</label>
-                    <select
-                        id="discount-product"
-                        wire:model.live="product_id"
-                        class="input-field"
-                    >
-                        <option value="">Store-wide: applies to all products</option>
-                        @foreach ($products as $product)
-                            <option value="{{ $product->id }}">{{ $product->name }}: ₱{{ number_format($product->base_price, 2) }}</option>
-                        @endforeach
-                    </select>
+                    <x-select
+                        wire-model="product_id"
+                        :value="$product_id"
+                        :options="array_merge([['label' => 'Store-wide: applies to all products', 'value' => '']], array_map(fn($p) => ['label' => $p->name . ': ₱' . number_format($p->base_price, 2), 'value' => $p->id], $products))"
+                        placeholder="Store-wide: applies to all products"
+                    />
                     @if (empty($product_id))
                         <div class="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>

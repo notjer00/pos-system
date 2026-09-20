@@ -12,10 +12,10 @@
                 @endif
             </button>
             @if ($product->image_path)
-                <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-10 h-10 rounded-lg object-cover border border-border">
+                <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-16 h-16 shrink-0 rounded-lg object-cover border border-border">
             @else
-                <div class="flex w-10 h-10 shrink-0 items-center justify-center rounded-lg bg-muted border border-border">
-                    <svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <div class="flex w-16 h-16 shrink-0 items-center justify-center rounded-lg bg-muted border border-border">
+                    <svg class="w-7 h-7 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                 </div>
             @endif
             <div>
@@ -58,12 +58,6 @@
                 {{ $product->is_active ? 'Active' : 'Inactive' }}
             </span>
         </div>
-        <button
-            wire:click="toggleActive({{ $product->id }})"
-            class="toggle-switch {{ $product->is_active ? 'active' : '' }} mt-1.5"
-        >
-            <span class="toggle-switch-knob"></span>
-        </button>
     </td>
     <td class="px-4 py-3">
         <div class="flex items-center justify-end gap-1">
