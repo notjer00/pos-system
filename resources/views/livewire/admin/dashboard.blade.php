@@ -118,7 +118,6 @@
                 <h2 class="text-sm font-semibold text-foreground flex items-center gap-2">
                     @if (count($lowStockVariants) > 0)
                         <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
                         </span>
                     @endif

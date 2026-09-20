@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +27,11 @@ class ProductVariantFactory extends Factory
         ]);
 
         return [
+            'product_id' => Product::factory(),
             'variant_name' => $variantName,
+            'sku' => strtoupper(fake()->bothify('???-####')),
+            'size' => null,
+            'color' => null,
             'current_stock' => fake()->numberBetween(0, 20),
             'low_stock_threshold' => 5,
         ];

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\SalesTransaction;
 use App\Models\StockMovement;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -93,17 +94,15 @@ class TransactionReversalService
 
     private function authorizeVoid(User $user): void
     {
-        // Both cashiers and admins can void
         if (! $user->isCashier() && ! $user->isAdmin()) {
-            abort(403, 'Unauthorized: Only cashiers and admins can void transactions.');
+            throw new AuthorizationException('Unauthorized: Only cashiers and admins can void transactions.');
         }
     }
 
     private function authorizeRefund(User $user): void
     {
-        // Only admins can refund
         if (! $user->isAdmin()) {
-            abort(403, 'Unauthorized: Only admins can process refunds.');
+            throw new AuthorizationException('Unauthorized: Only admins can process refunds.');
         }
     }
 }

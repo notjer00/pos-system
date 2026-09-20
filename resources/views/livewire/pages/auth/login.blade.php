@@ -67,7 +67,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Layered Organic Curve Divider (Visible on Desktop lg:) -->
         <div class="hidden lg:block absolute top-0 bottom-0 -right-20 xl:-right-28 w-20 xl:w-28 pointer-events-none z-20 overflow-visible">
-            <svg class="h-full w-full" viewBox="0 0 100 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-full w-full" viewBox="0 0 100 1000" preserveAspectRatio="none">
                 <path d="M0,0 Q120,480 30,1000 L0,1000 Z" fill="#1a1510" opacity="0.5" />
                 <path d="M0,0 Q105,480 15,1000 L0,1000 Z" fill="#0a0c0e" />
             </svg>

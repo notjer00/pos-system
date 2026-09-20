@@ -10,46 +10,48 @@ trait HasReportQueries
 {
     public function getSalesSummary(?string $dateFrom = null, ?string $dateTo = null): array
     {
-        $query = SalesTransaction::with(['cashier', 'discount', 'lineItems.productVariant.product'])
-            ->where('status', 'completed')
+        $totalSales = SalesTransaction::where('status', 'completed')
             ->when($dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $dateFrom))
-            ->when($dateTo, fn ($q) => $q->whereDate('created_at', '<=', $dateTo));
+            ->when($dateTo, fn ($q) => $q->whereDate('created_at', '<=', $dateTo))
+            ->sum('total_amount');
 
-        $transactions = $query->get();
+        $totalTransactions = SalesTransaction::where('status', 'completed')
+            ->when($dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $dateFrom))
+            ->when($dateTo, fn ($q) => $q->whereDate('created_at', '<=', $dateTo))
+            ->count();
 
-        $totalSales = $transactions->sum('total_amount');
-        $totalTransactions = $transactions->count();
         $averageTransaction = $totalTransactions > 0 ? $totalSales / $totalTransactions : 0;
 
         return [
             'total_sales' => $totalSales,
             'total_transactions' => $totalTransactions,
             'average_transaction' => $averageTransaction,
-            'transactions' => $transactions,
         ];
     }
 
     public function getCommissionSummary(?string $dateFrom = null, ?string $dateTo = null): array
     {
-        $query = CommissionLog::with(['user', 'salesTransaction'])
-            ->where('is_voided', false)
+        $grouped = CommissionLog::where('is_voided', false)
             ->whereHas('salesTransaction', fn ($q) => $q->where('status', 'completed'))
             ->when($dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $dateFrom))
-            ->when($dateTo, fn ($q) => $q->whereDate('created_at', '<=', $dateTo));
+            ->when($dateTo, fn ($q) => $q->whereDate('created_at', '<=', $dateTo))
+            ->select('user_id')
+            ->selectRaw('SUM(commission_earned) as total_commission')
+            ->selectRaw('SUM(final_price) as total_sales')
+            ->selectRaw('COUNT(*) as transactions_count')
+            ->groupBy('user_id')
+            ->with('user')
+            ->get();
 
-        $logs = $query->get();
-
-        $byEmployee = $logs->groupBy('user_id')->map(function ($employeeLogs) {
-            return [
-                'user' => $employeeLogs->first()->user,
-                'total_commission' => $employeeLogs->sum('commission_earned'),
-                'total_sales' => $employeeLogs->sum('final_price'),
-                'transactions_count' => $employeeLogs->count(),
-            ];
-        })->values();
+        $byEmployee = $grouped->map(fn ($log) => [
+            'user' => $log->user,
+            'total_commission' => $log->total_commission,
+            'total_sales' => $log->total_sales,
+            'transactions_count' => $log->transactions_count,
+        ])->values();
 
         return [
-            'total_commission' => $logs->sum('commission_earned'),
+            'total_commission' => $byEmployee->sum('total_commission'),
             'by_employee' => $byEmployee,
         ];
     }

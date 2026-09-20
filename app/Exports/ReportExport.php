@@ -13,6 +13,24 @@ class ReportExport
         public string $dateTo,
     ) {}
 
+    private function sanitizeCsvValue(mixed $value): mixed
+    {
+        if (! is_string($value)) {
+            return $value;
+        }
+
+        if ($value === '' || $value[0] !== '=' && $value[0] !== '+' && $value[0] !== '-' && $value[0] !== '@' && $value[0] !== "\t" && $value[0] !== "\r") {
+            return $value;
+        }
+
+        return "'{$value}";
+    }
+
+    private function sanitizeRow(array $row): array
+    {
+        return array_map(fn ($cell) => $this->sanitizeCsvValue($cell), $row);
+    }
+
     public function generateCsv(string $path): void
     {
         $file = fopen($path, 'w');
@@ -53,12 +71,12 @@ class ReportExport
         fputcsv($file, ['Rank', 'Product', 'Variant', 'Units Sold']);
 
         foreach ($this->bestSellers as $index => $seller) {
-            fputcsv($file, [
+            fputcsv($file, $this->sanitizeRow([
                 $index + 1,
                 $seller['product']['name'] ?? 'N/A',
                 $seller['variant_name'] ?? ($seller['size'].'/'.$seller['color']),
                 $seller['total_sold'],
-            ]);
+            ]));
         }
 
         if (empty($this->bestSellers)) {
@@ -76,12 +94,12 @@ class ReportExport
         fputcsv($file, ['Employee', 'Commission', 'Sales', 'Transactions']);
 
         foreach ($this->commissionSummary['by_employee'] as $emp) {
-            fputcsv($file, [
+            fputcsv($file, $this->sanitizeRow([
                 $emp['user']->name,
                 number_format($emp['total_commission'], 2),
                 number_format($emp['total_sales'], 2),
                 $emp['transactions_count'],
-            ]);
+            ]));
         }
 
         if (empty($this->commissionSummary['by_employee'])) {
@@ -96,13 +114,13 @@ class ReportExport
         fputcsv($file, ['Product', 'Variant', 'Current Stock', 'Threshold', 'Status']);
 
         foreach ($this->lowStockVariants as $variant) {
-            fputcsv($file, [
+            fputcsv($file, $this->sanitizeRow([
                 $variant['product']['name'],
                 $variant['variant_name'] ?? ($variant['size'].'/'.$variant['color']),
                 $variant['current_stock'],
                 $variant['low_stock_threshold'],
                 'Low Stock',
-            ]);
+            ]));
         }
 
         if (empty($this->lowStockVariants)) {

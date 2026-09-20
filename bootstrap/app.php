@@ -2,12 +2,12 @@
 
 use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Middleware\HandleAppearance;
-use Barryvdh\DomPDF\ServiceProvider as DomPDFServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/settings.php'));
-            \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/auth.php'));
+            Route::middleware('web')->group(base_path('routes/settings.php'));
+            Route::middleware('web')->group(base_path('routes/auth.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -31,9 +31,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => EnsureUserHasRole::class,
         ]);
     })
-    ->withProviders([
-        DomPDFServiceProvider::class,
-    ])
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),

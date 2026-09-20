@@ -4,6 +4,8 @@ namespace App\Livewire\Admin;
 
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\StockMovement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
@@ -99,14 +101,45 @@ class ProductManagement extends Component
     {
         $variant = ProductVariant::findOrFail($variantId);
         $newStock = max(0, $variant->current_stock + $quantity);
+        $delta = $newStock - $variant->current_stock;
+
+        if ($delta === 0) {
+            return;
+        }
+
         $variant->update(['current_stock' => $newStock]);
+
+        StockMovement::create([
+            'product_variant_id' => $variant->id,
+            'type' => 'restock',
+            'quantity_change' => $delta,
+            'note' => 'Manual stock adjustment via quick update',
+            'created_by' => Auth::id(),
+        ]);
+
         $this->dispatch('notify', message: 'Stock updated');
     }
 
     public function setQuickStock(int $variantId, int $value): void
     {
         $variant = ProductVariant::findOrFail($variantId);
-        $variant->update(['current_stock' => max(0, $value)]);
+        $newStock = max(0, $value);
+        $delta = $newStock - $variant->current_stock;
+
+        if ($delta === 0) {
+            return;
+        }
+
+        $variant->update(['current_stock' => $newStock]);
+
+        StockMovement::create([
+            'product_variant_id' => $variant->id,
+            'type' => 'restock',
+            'quantity_change' => $delta,
+            'note' => 'Manual stock adjustment via direct set',
+            'created_by' => Auth::id(),
+        ]);
+
         $this->dispatch('notify', message: 'Stock updated');
     }
 
