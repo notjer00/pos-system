@@ -1,4 +1,4 @@
-﻿<tr>
+<tr>
     <td colspan="7" style="padding: 0;">
         <div class="py-3 pl-8">
             @if ($product->variants->count() > 0)

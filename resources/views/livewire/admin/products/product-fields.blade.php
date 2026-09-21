@@ -1,4 +1,4 @@
-﻿<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div>
         <label class="block text-[13px] font-medium mb-1.5" style="color: #a09890;">Name *</label>
         <input type="text" wire:model="name" class="input-field w-full">

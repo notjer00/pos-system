@@ -1,4 +1,4 @@
-﻿<x-app-layout>
+<x-app-layout>
     <div class="p-4 sm:p-6 space-y-5">
         {{-- Header --}}
         <div class="flex items-center justify-between">

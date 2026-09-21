@@ -15,9 +15,8 @@
         <!-- Styles -->
         @vite('resources/css/app.css')
 
-        <!-- Livewire Scripts -->
-         @livewireStyles
-        @livewireScripts
+        <!-- Livewire Styles -->
+        @livewireStyles
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen" x-data="{ mobileOpen: false }"
@@ -77,5 +76,8 @@
                 </main>
             </div>
         </div>
+
+        <!-- Livewire Scripts (must be before closing body tag) -->
+        @livewireScripts
     </body>
 </html>

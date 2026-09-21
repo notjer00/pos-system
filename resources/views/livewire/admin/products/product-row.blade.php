@@ -1,4 +1,4 @@
-﻿<tr class="{{ $expandedProduct === $product->id ? 'pm-row-expanded' : '' }}">
+<tr class="{{ $expandedProduct === $product->id ? 'pm-row-expanded' : '' }}">
     <td>
         <div class="flex items-center gap-3">
             <button

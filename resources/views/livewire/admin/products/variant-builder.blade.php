@@ -1,4 +1,4 @@
-﻿<div class="pm-form-section">
+<div class="pm-form-section">
     <div class="flex items-center justify-between mb-3">
         <h4 class="pm-form-section-title" style="margin-bottom: 0;">Variants</h4>
         <button type="button" wire:click="addVariant" class="text-sm font-medium" style="color: #d4a850;">

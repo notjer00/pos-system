@@ -17,11 +17,11 @@
 
         <!-- Livewire Styles -->
         @livewireStyles
-
-        <!-- Livewire Scripts -->
-        @livewireScripts
     </head>
     <body class="font-sans antialiased" style="background: #0d0f10; color: #e0dcd4;">
         {{ $slot }}
+
+        <!-- Livewire Scripts (must be before closing body tag) -->
+        @livewireScripts
     </body>
 </html>
