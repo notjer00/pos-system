@@ -20,7 +20,7 @@
             this.itemId = null;
         },
         confirmAction() {
-            @this.call(this.method, this.itemId);
+            $wire.call(this.method, this.itemId);
             this.closeConfirm();
         }
     }"
