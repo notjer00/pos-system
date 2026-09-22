@@ -112,7 +112,6 @@
                                         </button>
                                     @endforeach
                                 </div>
-                            </div>
                         @endforeach
                     </div>
                 @else
@@ -356,12 +355,7 @@
         <div
             class="dialog-content max-w-md"
             x-data
-            @click="
-                const btn = $event.target.closest('[data-variant-id]');
-                if (btn) {
-                    $wire.addSelectedVariantToCart(Number(btn.dataset.variantId));
-                }
-            "
+            @click="($b = $event.target.closest('[data-variant-id]')) && $wire.addSelectedVariantToCart(Number($b.dataset.variantId))"
         >
             <div class="flex items-center justify-between">
                 <div>

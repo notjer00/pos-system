@@ -237,7 +237,7 @@
                     <x-select
                         wire-model="product_id"
                         :value="$product_id"
-                        :options="array_merge([['label' => 'Store-wide: applies to all products', 'value' => '']], array_map(fn($p) => ['label' => $p->name . ': &#8369;' . number_format($p->base_price, 2), 'value' => $p->id], $products))"
+                        :options="array_merge([['label' => 'Store-wide: applies to all products', 'value' => '']], array_map(fn($p) => ['label' => $p->name . ': &#8369;' . number_format($p->base_price, 2), 'value' => $p->id], $products->all()))"
                         placeholder="Store-wide: applies to all products"
                     />
                     @if (empty($product_id))

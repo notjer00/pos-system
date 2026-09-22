@@ -14,7 +14,7 @@ class RoleBasedLoginResponse implements LoginResponseContract
         $redirect = match (true) {
             $user->isAdmin() => route('dashboard'),
             $user->isCashier() => route('cashier.checkout'),
-            default => route('dashboard'),
+            default => route('home'),
         };
 
         return $request->wantsJson()

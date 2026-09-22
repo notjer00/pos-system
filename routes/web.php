@@ -10,7 +10,15 @@ use App\Livewire\Cashier\Checkout;
 use App\Livewire\Cashier\RecentTransactions;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login')->name('home');
+Route::get('/', function () {
+    if (auth()->check()) {
+        $user = auth()->user();
+
+        return redirect($user->isAdmin() ? route('dashboard') : route('cashier.checkout'));
+    }
+
+    return redirect()->route('login');
+})->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware('role:admin')->group(function () {
