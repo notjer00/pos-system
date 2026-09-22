@@ -95,7 +95,7 @@ class ReportExport
 
         foreach ($this->commissionSummary['by_employee'] as $emp) {
             fputcsv($file, $this->sanitizeRow([
-                $emp['user']->name,
+                $emp['user']?->name ?? 'Deleted User',
                 number_format($emp['total_commission'], 2),
                 number_format($emp['total_sales'], 2),
                 $emp['transactions_count'],
