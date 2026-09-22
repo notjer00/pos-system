@@ -81,7 +81,7 @@
                                     <div class="text-xs" style="color: #5a5550;">{{ $transaction->created_at->format('H:i') }}</div>
                                 </td>
                                 <td>
-                                    <span class="text-sm" style="color: #a09890;">{{ $transaction->cashier->name }}</span>
+                                    <span class="text-sm" style="color: #a09890;">{{ $transaction->cashier?->name ?? 'Deleted User' }}</span>
                                 </td>
                                 <td>
                                     <span class="text-sm" style="color: #a09890;">{{ $transaction->lineItems->sum('quantity') }}</span>
@@ -178,7 +178,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm" style="color: #706860;">Cashier</span>
-                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $selectedTransaction->cashier->name }}</span>
+                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $selectedTransaction->cashier?->name ?? 'Deleted User' }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm" style="color: #706860;">Total</span>
@@ -239,7 +239,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm" style="color: #706860;">Cashier</span>
-                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $selectedTransaction->cashier->name }}</span>
+                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $selectedTransaction->cashier?->name ?? 'Deleted User' }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-sm" style="color: #706860;">Total</span>

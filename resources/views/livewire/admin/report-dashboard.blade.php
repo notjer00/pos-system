@@ -132,7 +132,7 @@
                         <tbody>
                             @foreach ($commissionSummary['by_employee'] as $emp)
                                 <tr>
-                                    <td style="color: #e0dcd4;">{{ $emp['user']->name }}</td>
+                                    <td style="color: #e0dcd4;">{{ $emp['user']?->name ?? 'Deleted User' }}</td>
                                     <td style="color: #5cc980;">&#8369;{{ number_format($emp['total_commission'], 2) }}</td>
                                     <td style="color: #e0dcd4;">&#8369;{{ number_format($emp['total_sales'], 2) }}</td>
                                     <td style="color: #706860;">{{ $emp['transactions_count'] }}</td>

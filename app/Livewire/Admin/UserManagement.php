@@ -103,6 +103,13 @@ class UserManagement extends Component
 
             return;
         }
+
+        if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
+            $this->dispatch('notify', message: 'Cannot delete the last admin account. At least one admin must remain.', type: 'error');
+
+            return;
+        }
+
         $user->delete();
         $this->dispatch('notify', message: 'User deleted successfully!');
     }

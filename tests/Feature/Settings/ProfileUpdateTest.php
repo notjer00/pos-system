@@ -47,7 +47,7 @@ test('email verification status is unchanged when the email address is unchanged
         ->assertRedirect(route('profile.edit'));
 });
 
-test('user can delete their account', function () {
+test('user cannot delete their account', function () {
     $user = User::factory()->create();
 
     $response = $this
@@ -56,12 +56,9 @@ test('user can delete their account', function () {
             'password' => 'password',
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('home'));
+    $response->assertRedirect();
 
-    $this->assertGuest();
-    expect($user->fresh())->toBeNull();
+    expect($user->fresh())->not->toBeNull();
 });
 
 test('correct password must be provided to delete account', function () {
