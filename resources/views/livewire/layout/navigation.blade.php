@@ -24,8 +24,8 @@ new class extends Component
         <div class="sidebar-header">
             <img src="{{ asset('images/ELEVATION.jpg.jpg') }}" alt="Elevation" class="h-8 w-auto object-contain shrink-0" />
             <div class="flex flex-col min-w-0">
-                <span class="text-xs font-bold tracking-wider leading-tight truncate" style="color: #e0dcd4;">ELEVATION</span>
-                <span class="text-[10px] leading-tight" style="color: #706860;">POS Portal</span>
+                <span class="text-xs font-bold tracking-wider leading-tight truncate" style="color: hsl(var(--foreground));">ELEVATION</span>
+                <span class="text-[10px] leading-tight" style="color: hsl(var(--muted-foreground));">POS Portal</span>
             </div>
         </div>
 
@@ -106,12 +106,12 @@ new class extends Component
 
         <div class="sidebar-user">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-semibold text-xs shrink-0" style="background: rgba(200,155,60,0.15); color: #d4a850;">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-semibold text-xs shrink-0" style="background: rgba(200,155,60,0.15); color: hsl(var(--gold-text));">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="text-[13px] font-medium truncate" style="color: #e0dcd4;">{{ $user->name }}</div>
-                    <div class="text-[11px] truncate" style="color: #706860;">{{ ucfirst($user->role) }}</div>
+                    <div class="text-[13px] font-medium truncate" style="color: hsl(var(--foreground));">{{ $user->name }}</div>
+                    <div class="text-[11px] truncate" style="color: hsl(var(--muted-foreground));">{{ ucfirst($user->role) }}</div>
                 </div>
                 <button wire:click="logout" title="Log Out" class="btn-icon-sm">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -152,8 +152,8 @@ new class extends Component
             <div class="flex items-center gap-3">
                 <img src="{{ asset('images/ELEVATION.jpg.jpg') }}" alt="Elevation" class="h-8 w-auto object-contain shrink-0" />
                 <div class="flex flex-col min-w-0">
-                    <span class="text-xs font-bold tracking-wider leading-tight truncate" style="color: #e0dcd4;">ELEVATION</span>
-                    <span class="text-[10px] leading-tight" style="color: #706860;">POS Portal</span>
+                    <span class="text-xs font-bold tracking-wider leading-tight truncate" style="color: hsl(var(--foreground));">ELEVATION</span>
+                    <span class="text-[10px] leading-tight" style="color: hsl(var(--muted-foreground));">POS Portal</span>
                 </div>
             </div>
             <button @click="mobileOpen = false" class="btn-icon-sm">
@@ -240,12 +240,12 @@ new class extends Component
 
         <div class="sidebar-user">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-semibold text-xs shrink-0" style="background: rgba(200,155,60,0.15); color: #d4a850;">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-semibold text-xs shrink-0" style="background: rgba(200,155,60,0.15); color: hsl(var(--gold-text));">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="text-[13px] font-medium truncate" style="color: #e0dcd4;">{{ $user->name }}</div>
-                    <div class="text-[11px] truncate" style="color: #706860;">{{ ucfirst($user->role) }}</div>
+                    <div class="text-[13px] font-medium truncate" style="color: hsl(var(--foreground));">{{ $user->name }}</div>
+                    <div class="text-[11px] truncate" style="color: hsl(var(--muted-foreground));">{{ ucfirst($user->role) }}</div>
                 </div>
                 <button wire:click="logout" title="Log Out" class="btn-icon-sm">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">

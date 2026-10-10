@@ -2,17 +2,17 @@
     {{-- Page Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-lg font-semibold" style="color: #e0dcd4;">Recent Transactions</h1>
-            <p class="text-sm mt-0.5" style="color: #706860;">Today's sales activity</p>
+            <h1 class="text-lg font-semibold" style="color: hsl(var(--foreground));">Recent Transactions</h1>
+            <p class="text-sm mt-0.5" style="color: hsl(var(--muted-foreground));">Today's sales activity</p>
         </div>
     </div>
 
     {{-- Search Section --}}
     <div class="tx-filter-panel">
         <div class="flex flex-col gap-1.5">
-            <label class="text-xs font-medium" style="color: #706860;">Search</label>
+            <label class="text-xs font-medium" style="color: hsl(var(--muted-foreground));">Search</label>
             <div class="relative max-w-md">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style="color: #5a5550;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style="color: hsl(var(--muted-foreground));" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <input
                     type="text"
                     wire:model.live.debounce.300ms="search"
@@ -42,16 +42,16 @@
                         @foreach ($transactions as $transaction)
                             <tr>
                                 <td>
-                                    <span class="font-semibold" style="color: #e0dcd4;">#{{ $transaction->id }}</span>
+                                    <span class="font-semibold" style="color: hsl(var(--foreground));">#{{ $transaction->id }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-sm" style="color: #a09890;">{{ $transaction->created_at->format('H:i:s') }}</span>
+                                    <span class="text-sm" style="color: hsl(var(--muted-foreground));">{{ $transaction->created_at->format('H:i:s') }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-sm" style="color: #a09890;">{{ $transaction->lineItems->sum('quantity') }}</span>
+                                    <span class="text-sm" style="color: hsl(var(--muted-foreground));">{{ $transaction->lineItems->sum('quantity') }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-sm font-semibold" style="color: #e0dcd4;">&#8369;{{ number_format($transaction->total_amount, 2) }}</span>
+                                    <span class="text-sm font-semibold" style="color: hsl(var(--foreground));">&#8369;{{ number_format($transaction->total_amount, 2) }}</span>
                                 </td>
                                 <td>
                                     @if ($transaction->status === 'completed')
@@ -82,7 +82,7 @@
                                             Void
                                         </button>
                                     @else
-                                        <span class="text-xs" style="color: #5a5550;">—</span>
+                                        <span class="text-xs" style="color: hsl(var(--muted-foreground));">—</span>
                                     @endif
                                 </td>
                             </tr>
@@ -101,12 +101,12 @@
         <div class="card">
             <div class="tx-empty">
                 <div class="tx-empty-icon">
-                    <svg class="w-8 h-8" style="color: #5a5550;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <svg class="w-8 h-8" style="color: hsl(var(--muted-foreground));" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
-                <h3 class="text-sm font-semibold" style="color: #a09890;">No transactions today</h3>
-                <p class="text-xs mt-1" style="color: #5a5550;">Completed transactions will appear here</p>
+                <h3 class="text-sm font-semibold" style="color: hsl(var(--muted-foreground));">No transactions today</h3>
+                <p class="text-xs mt-1" style="color: hsl(var(--muted-foreground));">Completed transactions will appear here</p>
             </div>
         </div>
     @endif
@@ -116,8 +116,8 @@
         <div class="dialog-overlay" wire:click="closeModals"></div>
         <div class="dialog-content max-w-md">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold" style="color: #e0dcd4;">Void Transaction</h3>
-                <button wire:click="closeModals" class="btn-icon-sm" style="color: #5a5550;">
+                <h3 class="text-lg font-semibold" style="color: hsl(var(--foreground));">Void Transaction</h3>
+                <button wire:click="closeModals" class="btn-icon-sm" style="color: hsl(var(--muted-foreground));">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -128,22 +128,22 @@
                 {{-- Transaction Details --}}
                 <div class="tx-modal-details">
                     <div class="flex justify-between">
-                        <span class="text-sm" style="color: #706860;">Transaction</span>
-                        <span class="text-sm font-medium" style="color: #e0dcd4;">#{{ $selectedTransaction?->id }}</span>
+                        <span class="text-sm" style="color: hsl(var(--muted-foreground));">Transaction</span>
+                        <span class="text-sm font-medium" style="color: hsl(var(--foreground));">#{{ $selectedTransaction?->id }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-sm" style="color: #706860;">Time</span>
-                        <span class="text-sm font-medium" style="color: #e0dcd4;">{{ $selectedTransaction?->created_at?->format('H:i:s') }}</span>
+                        <span class="text-sm" style="color: hsl(var(--muted-foreground));">Time</span>
+                        <span class="text-sm font-medium" style="color: hsl(var(--foreground));">{{ $selectedTransaction?->created_at?->format('H:i:s') }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-sm" style="color: #706860;">Total</span>
-                        <span class="text-sm font-semibold" style="color: #e0dcd4;">&#8369;{{ number_format($selectedTransaction?->total_amount ?? 0, 2) }}</span>
+                        <span class="text-sm" style="color: hsl(var(--muted-foreground));">Total</span>
+                        <span class="text-sm font-semibold" style="color: hsl(var(--foreground));">&#8369;{{ number_format($selectedTransaction?->total_amount ?? 0, 2) }}</span>
                     </div>
                 </div>
 
                 {{-- Reason --}}
                 <div class="space-y-2">
-                    <label class="text-sm font-medium" style="color: #a09890;">Reason / Note</label>
+                    <label class="text-sm font-medium" style="color: hsl(var(--muted-foreground));">Reason / Note</label>
                     <textarea
                         wire:model="voidNote"
                         rows="3"

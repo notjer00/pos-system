@@ -1,8 +1,8 @@
 @if ($showModal)
     <div class="dialog-overlay" wire:click="closeModal">
         <div class="dialog-content max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-            <div class="flex items-center justify-between pb-4" style="border-bottom: 1px solid rgba(255,255,255,0.06);">
-                <h3 class="text-base font-semibold" style="color: #e0dcd4;">
+            <div class="flex items-center justify-between pb-4" style="border-bottom: 1px solid hsl(var(--border));">
+                <h3 class="text-base font-semibold" style="color: hsl(var(--foreground));">
                     {{ $editingProduct ? 'Edit Product' : 'Create Product' }}
                 </h3>
                 <button wire:click="closeModal" class="btn-ghost btn-icon-sm">
@@ -15,7 +15,7 @@
 
                 @include('livewire.admin.products.variant-builder')
 
-                <div class="flex justify-end gap-3 pt-4" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex justify-end gap-3 pt-4" style="border-top: 1px solid hsl(var(--border));">
                     <button type="button" wire:click="closeModal" class="btn-secondary">Cancel</button>
                     <button type="submit" class="btn-primary">
                         {{ $editingProduct ? 'Update Product' : 'Create Product' }}

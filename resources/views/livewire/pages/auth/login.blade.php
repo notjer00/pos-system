@@ -28,10 +28,10 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div class="min-h-screen w-full flex flex-col lg:flex-row overflow-x-hidden font-sans select-none sm:select-text"
-     style="background: #0d0f10;">
+     style="background: hsl(var(--background));">
     <!-- Left Hero Column (Branding & Logo) -->
     <div class="relative w-full lg:w-[46%] xl:w-[44%] min-h-[320px] lg:min-h-screen flex flex-col justify-between p-6 sm:p-10 lg:p-12 text-white z-10 lg:overflow-visible animate-fade-in"
-         style="background: #0a0c0e;">
+         style="background: hsl(var(--card));">
         <!-- Background -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
@@ -53,11 +53,11 @@ new #[Layout('layouts.guest')] class extends Component
             </div>
 
             <h1 class="mt-6 sm:mt-8 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wider uppercase drop-shadow-md animate-fade-in-up [animation-delay:0.15s]"
-                style="color: #e0dcd4;">
+                style="color: hsl(var(--foreground));">
                 ELEVATION
             </h1>
             <p class="mt-2 text-sm sm:text-base lg:text-lg font-medium tracking-wide animate-fade-in-up [animation-delay:0.3s]"
-               style="color: #d4a050;">
+               style="color: hsl(var(--gold-text));">
                 POS Portal
             </p>
         </div>
@@ -68,19 +68,19 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Layered Organic Curve Divider (Visible on Desktop lg:) -->
         <div class="hidden lg:block absolute top-0 bottom-0 -right-20 xl:-right-28 w-20 xl:w-28 pointer-events-none z-20 overflow-visible">
             <svg class="h-full w-full" viewBox="0 0 100 1000" preserveAspectRatio="none">
-                <path d="M0,0 Q120,480 30,1000 L0,1000 Z" fill="#1a1510" opacity="0.5" />
-                <path d="M0,0 Q105,480 15,1000 L0,1000 Z" fill="#0a0c0e" />
+                <path d="M0,0 Q120,480 30,1000 L0,1000 Z" fill="hsl(var(--muted))" opacity="0.5" />
+                <path d="M0,0 Q105,480 15,1000 L0,1000 Z" fill="hsl(var(--background))" />
             </svg>
         </div>
     </div>
 
     <!-- Right Content Column (Sign In Form) -->
     <div class="flex-1 min-h-[calc(100vh-320px)] lg:min-h-screen flex flex-col justify-center items-center px-6 sm:px-12 lg:px-16 xl:px-24 py-12 relative z-10"
-         style="background: #0d0f10;">
+         style="background: hsl(var(--background));">
         <div class="w-full max-w-[420px] mx-auto animate-fade-in-up [animation-delay:0.35s]">
             <!-- Form Title -->
             <h2 class="text-3xl font-extrabold tracking-tight mb-8 animate-fade-in-up [animation-delay:0.45s]"
-                style="color: #e0dcd4;">
+                style="color: hsl(var(--foreground));">
                 Sign In
             </h2>
 
@@ -101,7 +101,7 @@ new #[Layout('layouts.guest')] class extends Component
                         placeholder="Email"
                         class="input-field w-full"
                     />
-                    <x-input-error :messages="$errors->get('form.email')" class="mt-1.5 text-xs" style="color: #f0a0a0;" />
+                    <x-input-error :messages="$errors->get('form.email')" class="mt-1.5 text-xs" style="color: hsl(var(--danger-text));" />
                 </div>
 
                 <!-- Password Input with Show/Hide Toggle -->
@@ -135,14 +135,14 @@ new #[Layout('layouts.guest')] class extends Component
                             </svg>
                         </button>
                     </div>
-                    <x-input-error :messages="$errors->get('form.password')" class="mt-1.5 text-xs" style="color: #f0a0a0;" />
+                    <x-input-error :messages="$errors->get('form.password')" class="mt-1.5 text-xs" style="color: hsl(var(--danger-text));" />
                 </div>
 
                 <!-- Remember Me & Forgot Password Row -->
                 <div class="flex items-center justify-between pt-1 animate-fade-in-up [animation-delay:0.7s]">
                     <label for="remember" class="inline-flex items-center gap-2.5 cursor-pointer select-none group">
                         <span class="relative inline-flex items-center justify-center w-4 h-4 rounded border transition-all duration-200 shrink-0"
-                              style="border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04);"
+                              style="border-color: hsl(var(--input)); background: hsl(var(--muted));"
                               x-data="{ checked: false }"
                               x-init="checked = $refs.rememberInput?.checked || false"
                               :style="checked ? 'background: #c89b3c; border-color: #c89b3c;' : ''"
@@ -160,7 +160,7 @@ new #[Layout('layouts.guest')] class extends Component
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
                         </span>
-                        <span class="text-xs sm:text-sm" style="color: #706860;">{{ __('Remember Me') }}</span>
+                        <span class="text-xs sm:text-sm" style="color: hsl(var(--muted-foreground));">{{ __('Remember Me') }}</span>
                     </label>
 
                     @if (Route::has('password.request'))

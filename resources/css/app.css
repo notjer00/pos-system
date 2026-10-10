@@ -4,30 +4,33 @@
 
 @layer base {
     :root {
-        --background: 30 5% 7%;
-        --foreground: 30 8% 88%;
-        --card: 30 5% 8%;
-        --card-foreground: 30 8% 88%;
-        --popover: 30 5% 9%;
-        --popover-foreground: 30 8% 88%;
+        --background: 30 10% 98%;
+        --foreground: 30 5% 10%;
+        --card: 0 0% 100%;
+        --card-foreground: 30 5% 10%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 30 5% 10%;
         --primary: 38 52% 48%;
-        --primary-foreground: 30 5% 7%;
-        --secondary: 30 5% 12%;
-        --secondary-foreground: 30 8% 88%;
-        --muted: 30 5% 12%;
-        --muted-foreground: 30 4% 50%;
+        --primary-foreground: 30 10% 10%;
+        --secondary: 30 5% 90%;
+        --secondary-foreground: 30 5% 15%;
+        --muted: 30 5% 90%;
+        --muted-foreground: 30 4% 45%;
         --accent: 38 52% 48%;
-        --accent-foreground: 30 5% 7%;
-        --destructive: 0 55% 42%;
+        --accent-foreground: 30 10% 10%;
+        --destructive: 0 65% 45%;
         --destructive-foreground: 0 0% 98%;
-        --border: 30 5% 15%;
-        --input: 30 5% 12%;
+        --border: 30 5% 85%;
+        --input: 30 5% 88%;
         --ring: 38 52% 48%;
         --radius: 0.5rem;
         --success: 142 50% 42%;
         --success-foreground: 0 0% 98%;
         --warning: 38 50% 52%;
-        --warning-foreground: 30 5% 7%;
+        --warning-foreground: 30 5% 10%;
+        --gold-text: 40 60% 32%;
+        --danger-text: 0 55% 32%;
+        --success-text: 140 45% 24%;
     }
 
     .dark {
@@ -50,6 +53,9 @@
         --border: 30 5% 13%;
         --input: 30 5% 11%;
         --ring: 38 52% 48%;
+        --gold-text: 40 61% 57%;
+        --danger-text: 0 55% 78%;
+        --success-text: 140 50% 57%;
     }
 
     [x-cloak] { display: none !important; }
@@ -65,7 +71,7 @@
     /* Force dark backgrounds on native form controls */
     input, select, textarea {
         background-color: rgba(255, 255, 255, 0.04) !important;
-        color: #e0dcd4 !important;
+        color: hsl(var(--foreground)) !important;
     }
 
     /* Kill white autofill backgrounds in WebKit/Blink browsers */
@@ -78,10 +84,10 @@
     textarea:-webkit-autofill,
     textarea:-webkit-autofill:hover,
     textarea:-webkit-autofill:focus {
-        -webkit-box-shadow: 0 0 0px 1000px rgba(16, 18, 21, 0.96) inset !important;
-        -webkit-text-fill-color: #e0dcd4 !important;
-        caret-color: #e0dcd4 !important;
-        border-color: rgba(255, 255, 255, 0.08) !important;
+        -webkit-box-shadow: 0 0 0px 1000px hsl(var(--background)) inset !important;
+        -webkit-text-fill-color: hsl(var(--foreground)) !important;
+        caret-color: hsl(var(--foreground)) !important;
+        border-color: hsl(var(--border)) !important;
         transition: background-color 5000s ease-in-out 0s;
     }
 
@@ -99,25 +105,26 @@
 @layer components {
     /* ── Surface ────────────────────────────────── */
     .surface {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .surface-raised {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.07);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
     .surface-overlay {
-        background: rgba(18, 20, 24, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: hsl(var(--popover));
+        border: 1px solid hsl(var(--border));
     }
 
     /* ── Buttons ─────────────────────────────────── */
     .btn-primary {
         @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150
             shadow-sm
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background
             disabled:pointer-events-none disabled:opacity-50;
         background: #c89b3c;
         color: #0d0f10;
@@ -132,11 +139,11 @@
 
     .btn-secondary {
         @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background
             disabled:pointer-events-none disabled:opacity-50;
         background: rgba(255, 255, 255, 0.05);
-        color: #e0dcd4;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: hsl(var(--foreground));
+        border: 1px solid hsl(var(--border));
     }
     .btn-secondary:hover {
         background: rgba(255, 255, 255, 0.08);
@@ -144,48 +151,48 @@
 
     .btn-destructive {
         @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background
             disabled:pointer-events-none disabled:opacity-50;
-        background: rgba(180, 50, 50, 0.2);
-        color: #f0a0a0;
-        border: 1px solid rgba(180, 50, 50, 0.15);
+        background: hsl(var(--destructive) / 0.2);
+        color: hsl(var(--danger-text));
+        border: 1px solid hsl(var(--destructive) / 0.15);
     }
     .btn-destructive:hover {
-        background: rgba(180, 50, 50, 0.35);
+        background: hsl(var(--destructive) / 0.35);
     }
 
     .btn-warning {
         @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background
             disabled:pointer-events-none disabled:opacity-50;
-        background: rgba(200, 155, 60, 0.2);
-        color: #d4b060;
-        border: 1px solid rgba(200, 155, 60, 0.15);
+        background: hsl(var(--warning) / 0.2);
+        color: hsl(var(--gold-text));
+        border: 1px solid hsl(var(--warning) / 0.15);
     }
     .btn-warning:hover {
-        background: rgba(200, 155, 60, 0.3);
+        background: hsl(var(--warning) / 0.3);
     }
 
     .btn-ghost {
         @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background
             disabled:pointer-events-none disabled:opacity-50;
-        color: #a09890;
+        color: hsl(var(--muted-foreground));
     }
     .btn-ghost:hover {
-        background: rgba(255, 255, 255, 0.05);
-        color: #e0dcd4;
+        background: hsl(var(--accent) / 0.1);
+        color: hsl(var(--foreground));
     }
 
     .btn-icon {
         @apply inline-flex items-center justify-center rounded-lg p-2 transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background
             disabled:pointer-events-none disabled:opacity-50;
-        color: #706860;
+        color: hsl(var(--muted-foreground));
     }
     .btn-icon:hover {
-        background: rgba(255, 255, 255, 0.05);
-        color: #e0dcd4;
+        background: hsl(var(--accent) / 0.1);
+        color: hsl(var(--foreground));
     }
 
     .btn-icon-sm {
@@ -195,15 +202,15 @@
     /* ── Inputs ──────────────────────────────────── */
     .input-field {
         @apply flex h-10 w-full rounded-lg text-sm transition-all duration-150
-            placeholder:text-[#5a5550]
+            placeholder:text-muted-foreground
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/25
             disabled:cursor-not-allowed disabled:opacity-50;
         background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        color: #e0dcd4;
+        border: 1px solid hsl(var(--border));
+        color: hsl(var(--foreground));
     }
     .input-field:focus {
-        border-color: rgba(200, 155, 60, 0.35);
+        border-color: hsl(var(--primary) / 0.35);
         background: rgba(255, 255, 255, 0.05);
     }
 
@@ -223,25 +230,26 @@
             active:scale-[0.98]
             disabled:pointer-events-none disabled:opacity-50
             min-h-[100px] overflow-hidden min-w-0;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        color: hsl(var(--card-foreground));
     }
     .variant-btn:hover {
-        border-color: rgba(200, 155, 60, 0.25);
-        background: rgba(255, 255, 255, 0.04);
+        border-color: hsl(var(--primary) / 0.25);
+        background: hsl(var(--accent) / 0.05);
     }
 
     .variant-btn-low-stock {
         @apply variant-btn;
-        border-color: rgba(180, 50, 50, 0.25);
-        background: rgba(180, 50, 50, 0.04);
+        border-color: hsl(var(--destructive) / 0.25);
+        background: hsl(var(--destructive) / 0.04);
     }
 
     .variant-btn-selected {
         @apply variant-btn;
-        border-color: rgba(200, 155, 60, 0.45);
-        background: rgba(200, 155, 60, 0.06);
-        box-shadow: 0 0 0 1px rgba(200, 155, 60, 0.15);
+        border-color: hsl(var(--primary) / 0.45);
+        background: hsl(var(--primary) / 0.06);
+        box-shadow: 0 0 0 1px hsl(var(--primary) / 0.15);
     }
 
     /* ── Dialog / Modal ──────────────────────────── */
@@ -253,67 +261,68 @@
     .dialog-content {
         @apply fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2
             w-full max-w-lg rounded-xl p-6 shadow-xl;
-        background: #14161a;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        color: hsl(var(--card-foreground));
     }
 
     /* ── Badge ────────────────────────────────────── */
     .badge {
         @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors;
-        background: rgba(255, 255, 255, 0.05);
-        color: #a09890;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        color: hsl(var(--muted-foreground));
+        border: 1px solid hsl(var(--border));
     }
 
     .badge-primary {
         @apply badge;
-        background: rgba(200, 155, 60, 0.12);
-        color: #d4a850;
-        border-color: rgba(200, 155, 60, 0.18);
+        background: hsl(var(--primary) / 0.12);
+        color: hsl(var(--gold-text));
+        border-color: hsl(var(--primary) / 0.18);
     }
 
     .badge-destructive {
         @apply badge;
-        background: rgba(180, 50, 50, 0.12);
-        color: #f0a0a0;
-        border-color: rgba(180, 50, 50, 0.18);
+        background: hsl(var(--destructive) / 0.12);
+        color: hsl(var(--danger-text));
+        border-color: hsl(var(--destructive) / 0.18);
     }
 
     .badge-success {
         @apply badge;
-        background: rgba(34, 139, 80, 0.12);
-        color: #5cc980;
-        border-color: rgba(34, 139, 80, 0.18);
+        background: hsl(var(--success) / 0.12);
+        color: hsl(var(--success-text));
+        border-color: hsl(var(--success) / 0.18);
     }
 
     .badge-warning {
         @apply badge;
-        background: rgba(200, 155, 60, 0.12);
-        color: #d4b060;
-        border-color: rgba(200, 155, 60, 0.18);
+        background: hsl(var(--warning) / 0.12);
+        color: hsl(var(--gold-text));
+        border-color: hsl(var(--warning) / 0.18);
     }
 
     .badge-secondary {
         @apply badge;
-        background: rgba(255, 255, 255, 0.06);
-        color: #a09890;
-        border-color: rgba(255, 255, 255, 0.08);
+        background: hsl(var(--muted));
+        color: hsl(var(--muted-foreground));
+        border-color: hsl(var(--border));
     }
 
     /* ── Discount Management ────────────────────── */
     .dm-table th {
         @apply px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider;
-        color: #706860;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .dm-table td {
         @apply px-4 py-3 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .dm-table tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
+        background: hsl(var(--accent) / 0.05);
     }
 
     .dm-empty {
@@ -322,47 +331,48 @@
 
     .dm-empty-icon {
         @apply mx-auto w-14 h-14 mb-3 flex items-center justify-center rounded-full;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .dm-commission-preview {
         @apply rounded-lg p-4 space-y-3;
-        background: rgba(200, 155, 60, 0.05);
-        border: 1px solid rgba(200, 155, 60, 0.15);
+        background: hsl(var(--primary) / 0.05);
+        border: 1px solid hsl(var(--primary) / 0.15);
     }
 
     .dm-commission-row {
         @apply flex items-center justify-between rounded-md px-3 py-2;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     /* ── Card ─────────────────────────────────────── */
     .card {
         @apply rounded-xl shadow-md;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        color: hsl(var(--card-foreground));
     }
 
     /* ── Toggle Switch ────────────────────────────── */
     .toggle-switch {
         @apply relative inline-flex items-center h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0f10];
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
     }
 
     .toggle-switch-bg {
         @apply pointer-events-none absolute inset-0 rounded-full transition-colors duration-200;
-        background: rgba(255, 255, 255, 0.1);
+        background: hsl(var(--muted));
     }
 
     .toggle-switch.is-on .toggle-switch-bg {
-        background: #c89b3c;
+        background: hsl(var(--primary));
     }
 
     .toggle-switch-knob {
         @apply pointer-events-none absolute left-0.5 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out;
-        background: #e0dcd4;
+        background: hsl(var(--foreground));
     }
 
     .toggle-switch.is-on .toggle-switch-knob {
@@ -381,25 +391,25 @@
     /* ── Checkout ─────────────────────────────────── */
     .co-search-bar {
         @apply flex gap-3 px-6 py-4;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid hsl(var(--border));
+        background: hsl(var(--muted));
     }
 
     .co-product-section {
         @apply rounded-xl p-4;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .co-product-img {
         @apply w-24 h-24 shrink-0 rounded-xl object-cover;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid hsl(var(--border));
     }
 
     .co-product-img-fallback {
         @apply w-24 h-24 shrink-0 rounded-xl flex items-center justify-center;
-        background: rgba(200, 155, 60, 0.1);
-        border: 1px solid rgba(200, 155, 60, 0.15);
+        background: hsl(var(--primary) / 0.1);
+        border: 1px solid hsl(var(--primary) / 0.15);
     }
 
     .co-variant-grid {
@@ -409,50 +419,50 @@
 
     .co-panel {
         @apply flex w-full flex-col md:w-[380px] lg:w-[420px];
-        background: rgba(255, 255, 255, 0.02);
-        border-left: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        border-left: 1px solid hsl(var(--border));
     }
 
     .co-panel-header {
         @apply flex items-center justify-between px-5 py-4;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .co-cart-item {
         @apply flex items-center gap-3 rounded-lg p-3 transition-all duration-150;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .co-cart-item:hover {
-        background: rgba(255, 255, 255, 0.03);
-        border-color: rgba(255, 255, 255, 0.06);
+        background: hsl(var(--accent) / 0.05);
+        border-color: hsl(var(--border) / 0.8);
     }
 
     .co-cart-img {
         @apply w-10 h-10 shrink-0 rounded-lg object-cover;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid hsl(var(--border));
     }
 
     .co-cart-img-fallback {
         @apply w-10 h-10 shrink-0 rounded-lg flex items-center justify-center;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .co-footer {
         @apply px-5 py-5 space-y-4;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid hsl(var(--border));
+        background: hsl(var(--muted));
     }
 
     .co-remove-btn {
         @apply transition-colors duration-150;
-        color: #4a4540;
+        color: hsl(var(--muted-foreground));
     }
 
     .co-remove-btn:hover {
-        color: #f0a0a0;
+        color: hsl(var(--danger-text));
     }
 
     .co-empty {
@@ -461,83 +471,122 @@
 
     .co-empty-icon {
         @apply w-14 h-14 flex items-center justify-center rounded-2xl;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .co-product-card {
         @apply rounded-xl p-4 transition-all duration-150;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .co-product-card:hover {
-        background: rgba(255, 255, 255, 0.03);
-        border-color: rgba(200, 155, 60, 0.15);
+        background: hsl(var(--accent) / 0.05);
+        border-color: hsl(var(--primary) / 0.15);
     }
 
     /* ── Sidebar Navigation ─────────────────────── */
     .sidebar {
-        background: #0f1114;
-        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border-right: 1px solid hsl(var(--border));
     }
 
     .nav-section-label {
         @apply block px-3 pt-5 pb-1.5 text-[10px] font-semibold uppercase tracking-widest;
-        color: #5a5550;
+        color: hsl(var(--muted-foreground));
     }
 
     .nav-item {
         @apply flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors duration-150;
-        color: #807870;
+        color: hsl(var(--muted-foreground));
     }
 
     .nav-item:hover {
-        background: rgba(255, 255, 255, 0.04);
-        color: #c0bbb0;
+        background: hsl(var(--accent) / 0.1);
+        color: hsl(var(--foreground));
     }
 
     .nav-item-active {
-        background: rgba(200, 155, 60, 0.08);
-        color: #d4a850;
+        background: hsl(var(--primary) / 0.1);
+        color: hsl(var(--gold-text));
     }
 
     .nav-item-active:hover {
-        background: rgba(200, 155, 60, 0.12);
-        color: #d4a850;
+        background: hsl(var(--primary) / 0.15);
+        color: hsl(var(--gold-text));
     }
 
     .sidebar-header {
         @apply flex items-center gap-3 h-14 px-4 shrink-0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .sidebar-user {
         @apply px-3 py-3 shrink-0;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid hsl(var(--border));
     }
 
     .mobile-header {
         @apply flex items-center h-14 px-4 shrink-0 sticky top-0 z-20;
-        background: #0f1114;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .app-header {
         @apply flex items-center h-14 px-4 sm:px-6 shrink-0 sticky top-0 z-20;
-        background: #0f1114;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border-bottom: 1px solid hsl(var(--border));
+    }
+
+    /* ── Theme selector ─────────────────────────── */
+    .theme-selector {
+        @apply inline-flex items-center gap-0.5 mr-2;
+        padding: 4px;
+        border-radius: 10px;
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
+    }
+
+    .theme-selector button {
+        @apply inline-flex items-center justify-center transition-colors duration-150;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: hsl(var(--muted-foreground));
+        cursor: pointer;
+    }
+
+    .theme-selector button:hover {
+        color: hsl(var(--foreground));
+        background: hsl(var(--accent) / 0.12);
+    }
+
+    .theme-selector button:focus-visible {
+        outline: 2px solid hsl(var(--ring) / 0.6);
+        outline-offset: 1px;
+    }
+
+    :root[data-appearance='light'] .theme-selector button[data-theme-mode='light'],
+    :root[data-appearance='dark'] .theme-selector button[data-theme-mode='dark'],
+    :root[data-appearance='system'] .theme-selector button[data-theme-mode='system'] {
+        background: hsl(var(--card));
+        border-color: hsl(var(--border));
+        color: hsl(var(--gold-text));
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
     }
 
     /* ── Dashboard ──────────────────────────────── */
     .dash-card {
         @apply rounded-xl p-4 transition-colors duration-150;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .dash-card:hover {
-        border-color: rgba(255, 255, 255, 0.08);
+        border-color: hsl(var(--border) / 0.8);
     }
 
     .dash-card-link {
@@ -545,17 +594,17 @@
     }
 
     .dash-card-link:hover {
-        border-color: rgba(200, 155, 60, 0.2);
+        border-color: hsl(var(--primary) / 0.2);
     }
 
     .dash-stat-label {
         @apply text-xs font-medium;
-        color: #706860;
+        color: hsl(var(--muted-foreground));
     }
 
     .dash-stat-value {
         @apply text-xl font-bold mt-1;
-        color: #e0dcd4;
+        color: hsl(var(--foreground));
     }
 
     .dash-icon {
@@ -564,88 +613,88 @@
 
     .dash-section-title {
         @apply text-xs font-semibold uppercase tracking-wider mb-3;
-        color: #706860;
+        color: hsl(var(--muted-foreground));
     }
 
     .dash-table th {
         @apply px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider;
-        color: #706860;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .dash-table td {
         @apply px-4 py-2.5 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .dash-table tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
+        background: hsl(var(--accent) / 0.05);
     }
 
     /* ── Product Management ─────────────────────── */
     .pm-table th {
         @apply px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider;
-        color: #706860;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .pm-table td {
         @apply px-4 py-3 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .pm-table tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
+        background: hsl(var(--accent) / 0.05);
     }
 
     .pm-row-expanded td {
-        background: rgba(255, 255, 255, 0.015) !important;
+        background: hsl(var(--accent) / 0.02) !important;
     }
 
     .pm-thumb {
         @apply w-16 h-16 shrink-0 rounded-lg object-cover;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid hsl(var(--border));
     }
 
     .pm-thumb-fallback {
         @apply w-16 h-16 shrink-0 rounded-lg flex items-center justify-center;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .pm-expand-btn {
         @apply w-5 h-5 flex items-center justify-center rounded transition-colors duration-150;
-        color: #706860;
+        color: hsl(var(--muted-foreground));
     }
 
     .pm-expand-btn:hover {
-        background: rgba(255, 255, 255, 0.06);
-        color: #a09890;
+        background: hsl(var(--accent) / 0.1);
+        color: hsl(var(--foreground));
     }
 
     .pm-subtable th {
         @apply px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wider;
-        color: #605850;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .pm-subtable td {
         @apply px-3 py-2.5 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .pm-subtable tr:hover td {
-        background: rgba(255, 255, 255, 0.015);
+        background: hsl(var(--accent) / 0.03);
     }
 
     .pm-variant-row {
         @apply p-3 rounded-lg;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .pm-variant-row:hover {
-        border-color: rgba(255, 255, 255, 0.06);
+        border-color: hsl(var(--border) / 0.8);
     }
 
     .pm-empty {
@@ -654,22 +703,22 @@
 
     .pm-empty-icon {
         @apply mx-auto w-12 h-12 mb-3;
-        color: #4a4540;
+        color: hsl(var(--muted-foreground));
     }
 
     .pm-form-section {
         @apply border-t pt-4;
-        border-color: rgba(255, 255, 255, 0.06);
+        border-color: hsl(var(--border));
     }
 
     .pm-form-section-title {
         @apply text-xs font-semibold uppercase tracking-wider mb-3;
-        color: #706860;
+        color: hsl(var(--muted-foreground));
     }
 
     .pm-stock-bar {
         @apply w-16 h-1.5 rounded-full overflow-hidden;
-        background: rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
     }
 
     .pm-stock-bar-fill {
@@ -677,70 +726,70 @@
     }
 
     .pm-stock-ok {
-        background: rgba(34, 139, 80, 0.7);
+        background: hsl(var(--success));
     }
 
     .pm-stock-low {
-        background: rgba(200, 155, 60, 0.8);
+        background: hsl(var(--warning));
     }
 
     .pm-stock-danger {
-        background: rgba(180, 50, 50, 0.8);
+        background: hsl(var(--destructive));
     }
 
     /* ── Transactions ────────────────────────────── */
     .tx-table th {
         @apply px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider;
-        color: #706860;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .tx-table td {
         @apply px-5 py-3.5 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .tx-table tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
+        background: hsl(var(--accent) / 0.05);
     }
 
     .tx-filter-panel {
         @apply rounded-xl p-4;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .tx-action-void {
         @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150;
-        background: rgba(200, 155, 60, 0.1);
-        color: #d4b060;
-        border: 1px solid rgba(200, 155, 60, 0.2);
+        background: hsl(var(--primary) / 0.1);
+        color: hsl(var(--gold-text));
+        border: 1px solid hsl(var(--primary) / 0.2);
     }
 
     .tx-action-void:hover {
-        background: rgba(200, 155, 60, 0.2);
+        background: hsl(var(--primary) / 0.2);
     }
 
     .tx-action-refund {
         @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150;
-        background: rgba(180, 50, 50, 0.1);
-        color: #f0a0a0;
-        border: 1px solid rgba(180, 50, 50, 0.2);
+        background: hsl(var(--destructive) / 0.1);
+        color: hsl(var(--danger-text));
+        border: 1px solid hsl(var(--destructive) / 0.2);
     }
 
     .tx-action-refund:hover {
-        background: rgba(180, 50, 50, 0.2);
+        background: hsl(var(--destructive) / 0.2);
     }
 
     .tx-modal-details {
         @apply rounded-xl p-4 space-y-2;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .tx-modal-actions {
         @apply flex justify-end gap-3 pt-4;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid hsl(var(--border));
     }
 
     .tx-empty {
@@ -749,19 +798,19 @@
 
     .tx-empty-icon {
         @apply mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-2xl;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     /* ── Reports Dashboard ──────────────────────── */
     .rpt-stat-card {
         @apply rounded-xl p-5 transition-colors duration-150;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .rpt-stat-card:hover {
-        border-color: rgba(255, 255, 255, 0.08);
+        border-color: hsl(var(--border) / 0.8);
     }
 
     .rpt-stat-icon {
@@ -770,46 +819,46 @@
 
     .rpt-table th {
         @apply px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider;
-        color: #706860;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .rpt-table td {
         @apply px-5 py-3.5 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .rpt-table tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
+        background: hsl(var(--accent) / 0.05);
     }
 
     .rpt-section {
         @apply rounded-xl overflow-hidden;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .rpt-section-header {
         @apply px-5 py-3.5 flex items-center justify-between;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .rpt-section-title {
         @apply text-sm font-semibold flex items-center gap-2;
-        color: #e0dcd4;
+        color: hsl(var(--foreground));
     }
 
     .rpt-commission-card {
         @apply rounded-lg p-4;
-        background: rgba(200, 155, 60, 0.05);
-        border: 1px solid rgba(200, 155, 60, 0.15);
+        background: hsl(var(--primary) / 0.05);
+        border: 1px solid hsl(var(--primary) / 0.15);
     }
 
     .rpt-export-label {
         @apply text-sm px-3 py-1.5 rounded-lg;
-        background: rgba(255, 255, 255, 0.04);
-        color: #e0dcd4;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        color: hsl(var(--foreground));
+        border: 1px solid hsl(var(--border));
     }
 
     .rpt-empty {
@@ -819,53 +868,53 @@
     /* ── Dropdown Link ────────────────────────────── */
     .dropdown-link-item {
         @apply block w-full px-4 py-2 text-start text-sm leading-5 transition duration-150 ease-in-out;
-        color: #a09890;
+        color: hsl(var(--muted-foreground));
     }
 
     .dropdown-link-item:hover {
-        background: rgba(255, 255, 255, 0.04);
-        color: #e0dcd4;
+        background: hsl(var(--accent) / 0.1);
+        color: hsl(var(--foreground));
     }
 
     /* ── Login ────────────────────────────────────── */
     .login-icon-btn {
         @apply absolute inset-y-0 right-0 flex items-center px-3.5 transition cursor-pointer;
-        color: #5a5550;
+        color: hsl(var(--muted-foreground));
     }
 
     .login-icon-btn:hover {
-        color: #a09890;
+        color: hsl(var(--foreground));
     }
 
     .login-link {
         @apply text-xs sm:text-sm transition font-normal;
-        color: #706860;
+        color: hsl(var(--muted-foreground));
     }
 
     .login-link:hover {
-        color: #d4a050;
+        color: hsl(var(--gold-text));
     }
 
     /* ── User Management ────────────────────────── */
     .um-dropdown-item {
         @apply block px-3 py-2 text-[13px] transition-colors duration-150;
-        color: #a09890;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .um-dropdown-item:hover {
-        background: rgba(255, 255, 255, 0.04);
-        color: #e0dcd4;
+        background: hsl(var(--accent) / 0.1);
+        color: hsl(var(--foreground));
     }
 
     .um-stat-card {
         @apply rounded-xl p-4 transition-colors duration-150;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
     }
 
     .um-stat-card:hover {
-        border-color: rgba(255, 255, 255, 0.08);
+        border-color: hsl(var(--border) / 0.8);
     }
 
     .um-stat-icon {
@@ -874,43 +923,43 @@
 
     .um-table th {
         @apply px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider;
-        color: #706860;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        color: hsl(var(--muted-foreground));
+        border-bottom: 1px solid hsl(var(--border));
     }
 
     .um-table td {
         @apply px-5 py-3.5 text-sm;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid hsl(var(--border) / 0.5);
     }
 
     .um-table tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
+        background: hsl(var(--accent) / 0.05);
     }
 
     .um-action-edit {
         @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150;
-        background: rgba(255, 255, 255, 0.04);
-        color: #a09890;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        color: hsl(var(--muted-foreground));
+        border: 1px solid hsl(var(--border));
     }
 
     .um-action-edit:hover {
-        background: rgba(200, 155, 60, 0.12);
-        color: #d4a850;
-        border-color: rgba(200, 155, 60, 0.2);
+        background: hsl(var(--primary) / 0.12);
+        color: hsl(var(--gold-text));
+        border-color: hsl(var(--primary) / 0.2);
     }
 
     .um-action-delete {
         @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150;
-        background: rgba(255, 255, 255, 0.04);
-        color: #a09890;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        color: hsl(var(--muted-foreground));
+        border: 1px solid hsl(var(--border));
     }
 
     .um-action-delete:hover {
-        background: rgba(180, 50, 50, 0.12);
-        color: #f0a0a0;
-        border-color: rgba(180, 50, 50, 0.2);
+        background: hsl(var(--destructive) / 0.12);
+        color: hsl(var(--danger-text));
+        border-color: hsl(var(--destructive) / 0.2);
     }
 
     .um-avatar {
@@ -923,8 +972,8 @@
 
     .um-empty-icon {
         @apply mx-auto w-14 h-14 mb-4 flex items-center justify-center rounded-2xl;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     /* ── Focus ring reset ─────────────────────────── */
@@ -933,7 +982,7 @@
     }
 
     *:focus-visible {
-        outline: 2px solid rgba(200, 155, 60, 0.4);
+        outline: 2px solid hsl(var(--primary) / 0.4);
         outline-offset: 2px;
     }
 
@@ -948,12 +997,12 @@
     }
 
     ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.08);
+        background: hsl(var(--muted-foreground) / 0.2);
         border-radius: 3px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.12);
+        background: hsl(var(--muted-foreground) / 0.3);
     }
 }
 

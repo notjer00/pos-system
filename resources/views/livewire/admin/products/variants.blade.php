@@ -22,8 +22,8 @@
                                     $stockPercent = min(($variant->current_stock / $maxForBar) * 100, 100);
                                 @endphp
                                 <tr>
-                                    <td class="font-medium" style="color: #e0dcd4;">{{ $variant->getVariantDisplayName() }}</td>
-                                    <td class="font-mono text-xs" style="color: #706860;">{{ $variant->sku }}</td>
+                                    <td class="font-medium" style="color: hsl(var(--foreground));">{{ $variant->getVariantDisplayName() }}</td>
+                                    <td class="font-mono text-xs" style="color: hsl(var(--muted-foreground));">{{ $variant->sku }}</td>
                                     <td>
                                         <div class="flex items-center gap-2">
                                             <div class="pm-stock-bar">
@@ -32,10 +32,10 @@
                                                     style="width: {{ $stockPercent }}%"
                                                 ></div>
                                             </div>
-                                            <span class="{{ $isLow ? 'font-medium' : '' }}" style="{{ $isLow ? 'color: #f0a0a0;' : 'color: #e0dcd4;' }}">{{ $variant->current_stock }}</span>
+                                            <span class="{{ $isLow ? 'font-medium' : '' }}" style="{{ $isLow ? 'color: hsl(var(--danger-text));' : 'color: hsl(var(--foreground));' }}">{{ $variant->current_stock }}</span>
                                         </div>
                                     </td>
-                                    <td style="color: #807870;">{{ $variant->low_stock_threshold }}</td>
+                                    <td style="color: hsl(var(--muted-foreground));">{{ $variant->low_stock_threshold }}</td>
                                     <td>
                                         @if ($isLow)
                                             <span class="badge-destructive">Low Stock</span>
@@ -68,7 +68,7 @@
                     </table>
                 </div>
             @else
-                <p class="text-sm py-2" style="color: #706860;">No variants yet. Click Edit to add variants.</p>
+                <p class="text-sm py-2" style="color: hsl(var(--muted-foreground));">No variants yet. Click Edit to add variants.</p>
             @endif
         </div>
     </td>

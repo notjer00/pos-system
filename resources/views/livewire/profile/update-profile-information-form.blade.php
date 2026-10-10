@@ -41,11 +41,11 @@ new class extends Component
 
 <section>
     <header>
-        <h2 class="text-base font-semibold" style="color: #e0dcd4;">
+        <h2 class="text-base font-semibold" style="color: hsl(var(--foreground));">
             {{ __('Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-xs" style="color: #706860;">
+        <p class="mt-1 text-xs" style="color: hsl(var(--muted-foreground));">
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </header>

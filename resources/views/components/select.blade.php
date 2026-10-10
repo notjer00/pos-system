@@ -76,8 +76,8 @@
         :class="{ 'ring-2 ring-amber-500/30 border-amber-500/40': open }"
         style="{{ $attributes->get('style', '') }}"
     >
-        <span x-text="selectedLabel" :class="{ 'text-[#706860]': !selected }" class="truncate"></span>
-        <svg class="w-4 h-4 shrink-0 transition-transform duration-200" :class="{ 'rotate-180': open }" style="color: #5a5550;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <span x-text="selectedLabel" :class="{ 'text-muted-foreground': !selected }" class="truncate"></span>
+        <svg class="w-4 h-4 shrink-0 transition-transform duration-200" :class="{ 'rotate-180': open }" style="color: hsl(var(--muted-foreground));" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
     </button>
@@ -92,7 +92,7 @@
         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
         x-transition:leave-end="opacity-0 -translate-y-1 scale-[0.97]"
         class="absolute z-50 mt-1.5 w-full rounded-xl shadow-xl overflow-hidden"
-        style="background: #14161a; border: 1px solid rgba(255,255,255,0.08);"
+        style="background: hsl(var(--popover)); border: 1px solid hsl(var(--border));"
     >
         <div x-ref="list" class="max-h-60 overflow-y-auto py-1" role="listbox">
             <template x-for="(option, index) in options" :key="option.value">
@@ -103,14 +103,14 @@
                     @mouseenter="focused = index"
                     class="w-full text-left px-3 py-2 text-sm transition-colors duration-100 flex items-center justify-between gap-2"
                     :class="{
-                        'text-[#706860]': String(option.value) !== String(selected) && focused !== index,
-                        'text-[#e0dcd4] bg-white/[0.06]': focused === index && String(option.value) !== String(selected),
-                        'text-[#d4a850] bg-[#c89b3c]/15': String(option.value) === String(selected),
-                        'text-[#d4a850] bg-[#c89b3c]/20': focused === index && String(option.value) === String(selected),
+                        'text-muted-foreground': String(option.value) !== String(selected) && focused !== index,
+                        'text-foreground bg-muted': focused === index && String(option.value) !== String(selected),
+                        'text-[hsl(var(--gold-text))] bg-[#c89b3c]/15': String(option.value) === String(selected),
+                        'text-[hsl(var(--gold-text))] bg-[#c89b3c]/20': focused === index && String(option.value) === String(selected),
                     }"
                 >
                     <span x-text="option.label" class="truncate"></span>
-                    <svg x-show="String(option.value) === String(selected)" class="w-4 h-4 shrink-0" style="color: #d4a850;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg x-show="String(option.value) === String(selected)" class="w-4 h-4 shrink-0" style="color: hsl(var(--gold-text));" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                 </button>

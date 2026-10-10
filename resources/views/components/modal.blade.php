@@ -64,7 +64,7 @@ $maxWidth = [
     <div
         x-show="show"
         class="mb-6 overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto rounded-xl"
-        style="background: #14161a; border: 1px solid rgba(255,255,255,0.08);"
+        style="background: hsl(var(--popover)); border: 1px solid hsl(var(--border));"
         x-transition:enter="ease-out duration-200"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"

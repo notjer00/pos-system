@@ -40,11 +40,11 @@ new class extends Component
 
 <section>
     <header>
-        <h2 class="text-base font-semibold" style="color: #e0dcd4;">
+        <h2 class="text-base font-semibold" style="color: hsl(var(--foreground));">
             {{ __('Update Password') }}
         </h2>
 
-        <p class="mt-1 text-xs" style="color: #706860;">
+        <p class="mt-1 text-xs" style="color: hsl(var(--muted-foreground));">
             {{ __('Ensure your account is using a long, random password to stay secure.') }}
         </p>
     </header>

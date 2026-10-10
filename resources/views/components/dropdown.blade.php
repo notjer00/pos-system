@@ -26,7 +26,7 @@ $width = match ($width) {
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
             class="absolute z-50 mt-2 {{ $width }} rounded-xl shadow-xl {{ $alignmentClasses }}"
-            style="display: none; background: #14161a; border: 1px solid rgba(255,255,255,0.08);"
+            style="display: none; background: hsl(var(--popover)); border: 1px solid hsl(var(--border));"
             @click="open = false">
         <div class="rounded-xl {{ $contentClasses }}">
             {{ $content }}

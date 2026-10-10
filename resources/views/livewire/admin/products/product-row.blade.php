@@ -19,23 +19,23 @@
                 </div>
             @endif
             <div class="min-w-0">
-                <div class="text-sm font-medium" style="color: #e0dcd4;">{{ $product->name }}</div>
+                <div class="text-sm font-medium" style="color: hsl(var(--foreground));">{{ $product->name }}</div>
                 @if ($product->brand)
-                    <div class="text-xs mt-0.5" style="color: #706860;">{{ $product->brand }}</div>
+                    <div class="text-xs mt-0.5" style="color: hsl(var(--muted-foreground));">{{ $product->brand }}</div>
                 @endif
             </div>
         </div>
     </td>
-    <td style="color: #807870;">{{ $product->category ?? '-' }}</td>
-    <td class="font-medium" style="color: #e0dcd4;">&#8369;{{ number_format($product->base_price, 2) }}</td>
-    <td style="color: #807870;">{{ $product->variants->count() }}</td>
+    <td style="color: hsl(var(--muted-foreground));">{{ $product->category ?? '-' }}</td>
+    <td class="font-medium" style="color: hsl(var(--foreground));">&#8369;{{ number_format($product->base_price, 2) }}</td>
+    <td style="color: hsl(var(--muted-foreground));">{{ $product->variants->count() }}</td>
     <td>
         @php
             $totalStock = $product->variants->sum('current_stock');
             $hasLowStock = $product->variants->contains(fn($v) => $v->current_stock <= $v->low_stock_threshold);
         @endphp
         <div class="flex items-center gap-2">
-            <span style="color: #e0dcd4;">{{ $totalStock }}</span>
+            <span style="color: hsl(var(--foreground));">{{ $totalStock }}</span>
             @if ($hasLowStock)
                 <span class="relative flex h-1.5 w-1.5 shrink-0">
                     <span class="relative inline-flex rounded-full h-1.5 w-1.5" style="background: #d4a850;"></span>
@@ -52,7 +52,7 @@
                     <span class="relative inline-flex rounded-full h-1.5 w-1.5" style="background: #706860;"></span>
                 @endif
             </span>
-            <span class="text-xs font-medium" @if ($product->is_active) style="color: #5cc980;" @else style="color: #706860;" @endif>
+            <span class="text-xs font-medium" @if ($product->is_active) style="color: hsl(var(--success-text));" @else style="color: hsl(var(--muted-foreground));" @endif>
                 {{ $product->is_active ? 'Active' : 'Inactive' }}
             </span>
         </div>
@@ -69,7 +69,7 @@
             <button
                 @click.prevent="$dispatch('confirm-delete', { id: {{ $product->id }}, title: 'Delete Product?', message: 'Are you sure you want to delete this product and all its variants? This action cannot be undone.' })"
                 class="btn-ghost btn-icon-sm"
-                style="color: #f0a0a0;"
+                style="color: hsl(var(--danger-text));"
                 title="Delete product"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
